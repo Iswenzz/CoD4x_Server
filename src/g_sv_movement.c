@@ -40,16 +40,16 @@ void Pmove_ExtendedInitForClient(client_t *cl)
 {
     if (cl->gentity && cl->gentity->client)
     {
-        if(g_speed)
-            cl->gentity->client->ps.speed = g_speed->integer;
-        else
-            cl->gentity->client->ps.speed = 190;
-
-          if(g_gravity)
+        if(g_gravity)
             cl->gentity->client->ps.gravity = (int)g_gravity->value;
         else
             cl->gentity->client->ps.gravity = 800;
     }
+
+    if(g_speed)
+        cl->playerMoveSpeed = g_speed->integer;
+    else
+        cl->playerMoveSpeed = 190;
 
     if(jump_height)
         cl->jumpHeight = jump_height->value;
@@ -85,21 +85,9 @@ void Pmove_ExtendedTurnOn(void)
 __cdecl __optimize3 int Pmove_GetSpeed(playerState_t *ps) 
 {
 	if(extendedMovementControl)
-		return ps->speed;
+        return svs.clients[ps->clientNum].playerMoveSpeed;
 	else
 		return g_speed->integer;
-}
-
-__cdecl __optimize3 int Pmove_GetGravity(playerState_t *ps) 
-{
-	int gravity;
-
-	if(extendedMovementControl)
-		gravity = ps->gravity;
-	else
-		gravity = (int)g_gravity->value;
-
-	return gravity;
 }
 
 float Dirty_GetJumpHeight(unsigned int num)

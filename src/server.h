@@ -150,6 +150,7 @@ struct client_s
 	unsigned int		clFrameCalcTime;
 	unsigned int		clFPS;
 	float			jumpHeight;
+	int				playerMoveSpeed;
 	qboolean		needPassword;
 	unsigned int	connectedTime;
 	char			xversion[8];

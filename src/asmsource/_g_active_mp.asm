@@ -54,6 +54,7 @@
 	extern SV_EntityContact
 	extern BG_PlayerTouchesItem
 	extern BG_GetSpeed
+	extern Pmove_GetSpeed
 	extern g_speed
 	extern BG_CalculateViewAngles
 	extern BG_GetWeaponDef
@@ -1407,9 +1408,19 @@ ClientThink_real_100:
 	lea eax, [edi+0x3164]
 	mov [ebp-0x268], eax
 	mov [ebp-0xac], eax
-	mov eax, g_speed
-	mov eax, [eax]
-	mov eax, [eax+0xc]
+	; -------------------------- SR Pmove_Extended --------------------------
+	; Get the player's gspeed instead of
+	; the global server CVar
+	; -----------------------------------------------------------------------
+	; Old code:
+	; mov eax, g_speed 					; cvar_t* g_speed;
+	; mov eax, [eax]					; deref
+	; mov eax, [eax+0xc]				; eax = g_speed.integer;
+	;
+	; New code:
+	mov ecx, [edi+0x24]					; playerState_t* ps
+	call Pmove_GetSpeed					; __cdecl __optimize3 int Pmove_GetSpeed(playerState_t *ps)
+	; -------------------------- SR Pmove_Extended --------------------------
 	mov [edi+0x60], eax
 	lea edx, [ebp-0x3c]
 	mov [esp+0x4], edx

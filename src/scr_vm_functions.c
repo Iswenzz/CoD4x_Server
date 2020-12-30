@@ -800,7 +800,7 @@ void PlayerCmd_SetMoveSpeed(scr_entref_t arg)
 
     Pmove_ExtendedTurnOn();
 
-    gentity->client->ps.speed = speed;
+    svs.clients[entityNum].playerMoveSpeed = speed;
 }
 
 /*
