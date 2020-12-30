@@ -718,7 +718,7 @@ void Com_Init(char* commandLine){
 
 	Com_DownloadAndExecGlobalConfig();
 
-    Sec_Update( qfalse );
+    // Sec_Update( qfalse );
 
     FS_InitFilesystem();
 
@@ -1606,7 +1606,7 @@ void* Debug_HitchWatchdog(void* arg)
         ++watchdog_timer;
         if(watchdog_timer >= 40)
             asm("int $3");
-            
+
         Sys_LeaveCriticalSection(CRITSECT_WATCHDOG);
         Sys_SleepMSec(100);
     }
