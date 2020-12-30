@@ -21,25 +21,93 @@
 
 
 
-#include "q_shared.h"
+#include "q_math.h"
+#include "cvar.h"
 #include "q_shared.h"
 #include "g_shared.h"
+#include "qcommon_io.h"
 #include "entity.h"
+#include "player.h"
+#include "server.h"
+#include "g_sv_shared.h"
 
+#include <math.h>
 
+qboolean extendedMovementControl = 0;
 
-__cdecl __optimize3 void StuckInClient( gentity_t* gen )
+//This function init movement variables with default values
+void Pmove_ExtendedInitForClient(client_t *cl)
 {
+    if (cl->gentity && cl->gentity->client)
+    {
+        if(g_speed)
+            cl->gentity->client->ps.speed = g_speed->integer;
+        else
+            cl->gentity->client->ps.speed = 190;
 
+          if(g_gravity)
+            cl->gentity->client->ps.gravity = (int)g_gravity->value;
+        else
+            cl->gentity->client->ps.gravity = 800;
+    }
+
+    if(jump_height)
+        cl->jumpHeight = jump_height->value;
+    else
+        cl->jumpHeight = 39;
+}
+
+void Pmove_ExtendedResetState(void)
+{
+    int i;
+    client_t *cl;
+
+    for(cl = svs.clients, i = 0; i < MAX_CLIENTS; i++)
+        Pmove_ExtendedInitForClient(cl);
+
+    extendedMovementControl = qfalse;
+}
+
+void Pmove_ExtendedTurnOn(void)
+{
+    int i;
+    client_t *cl;
+
+    if(extendedMovementControl)
+        return;
+
+    for(cl = svs.clients, i = 0; i < MAX_CLIENTS; i++)
+        Pmove_ExtendedInitForClient(cl);
+
+    extendedMovementControl = qtrue;
+}
+
+__cdecl __optimize3 int Pmove_GetSpeed(playerState_t *ps) 
+{
+	if(extendedMovementControl)
+		return ps->speed;
+	else
+		return g_speed->integer;
+}
+
+__cdecl __optimize3 int Pmove_GetGravity(playerState_t *ps) 
+{
+	int gravity;
+
+	if(extendedMovementControl)
+		gravity = ps->gravity;
+	else
+		gravity = (int)g_gravity->value;
+
+	return gravity;
 }
 
 float Dirty_GetJumpHeight(unsigned int num)
 {
-    if(num > level.maxclients)
-    {
-        return 40;
-    }
-	return level.clients[num].jumpHeight;
+    if(extendedMovementControl)
+		return level.clients[num].jumpHeight;
+	else
+		return jump_height->value;
 }
 
-
+__cdecl __optimize3 void StuckInClient(gentity_t* gen) { }

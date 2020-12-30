@@ -2522,7 +2522,7 @@ void SV_MasterHeartbeatInit()
         {
             Com_Printf(CON_CHANNEL_SERVER,"Resolving %s \n", masterservers.servers[i].name);
             //NA_IPANY For broadcasting to all interfaces
-            res = NET_StringToAdr(masterservers.servers[i].name, &masterservers.servers[i].i4, NA_IP);				
+            res = NET_StringToAdr(masterservers.servers[i].name, &masterservers.servers[i].i4, NA_IP);
             if(res == 2)
             {
                 masterservers.servers[i].i4.port = BigShort(PORT_MASTER);
@@ -2535,7 +2535,7 @@ void SV_MasterHeartbeatInit()
                 Com_Printf(CON_CHANNEL_SERVER, "Couldn't resolve(IPv4) %s\n", masterservers.servers[i].name);
                 masterservers.servers[i].i4.type = NA_DOWN;
             }
-            res = NET_StringToAdr(masterservers.servers[i].name, &masterservers.servers[i].i6, NA_IP6);				
+            res = NET_StringToAdr(masterservers.servers[i].name, &masterservers.servers[i].i6, NA_IP6);
             if(res == 2)
             {
                 masterservers.servers[i].i6.port = BigShort(PORT_MASTER);
@@ -2583,7 +2583,7 @@ void SV_MasterHeartbeat(const char *message)
 
     // this command should be changed if the server info / status format
     // ever incompatably changes
-    
+
     /* Official CoD4X master servers used also by ingame serverbrowser */
     for(i = 0; i < masterservers.count; ++i)
     {
@@ -3421,7 +3421,7 @@ void SV_GetServerStaticHeader(){
     svs.nextCachedSnapshotEntities = svsHeader.nextCachedSnapshotEntities;
     svs.nextCachedSnapshotClients = svsHeader.nextCachedSnapshotClients;
     svs.archivedEntityCount = svsHeader.archivedEntityCount;
-    
+
     svsHeaderValid = 0;
 }
 
@@ -3750,7 +3750,7 @@ void SV_MapRestart( qboolean fastRestart ){
     SV_RestartGameProgs(pers);
     SV_BuildXAssetCSString();
 
-/*    
+/*
     // run a few frames to allow everything to settle
     for ( i = 0 ; i < 3 ; i++ ) {
         svs.time += 100;
@@ -5121,7 +5121,7 @@ void SV_ReadHostMigrationStart(netadr_t* from, msg_t* msg)
     {
         MSG_WriteLong(0);
         return;
-    }    
+    }
 
     MSG_WriteLong(1);
     Com_RandomBytes((byte*)&svs.migrationChallenge, sizeof(svs.migrationChallenge));
@@ -5168,13 +5168,13 @@ void SV_HostMigrationSendData(msg_t* inmsg, netadr_t* dest)
     byte buffer[1200];
 
     int offset, datalen;
-    
+
     if(inmsg->cursize > 0x40000)
     {
         Com_PrintError(CON_CHANNEL_SERVER, "Oversize hostmigration message generated!\n");
         return;
     }
-    
+
     int numpackets = inmsg->cursize / MIGRATION_PACKETSIZE;
     if(inmsg->cursize % MIGRATION_PACKETSIZE > 0)
     {

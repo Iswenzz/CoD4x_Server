@@ -621,6 +621,8 @@ void PlayerCmd_SetGravity(scr_entref_t arg)
         return;
     }
 
+    Pmove_ExtendedTurnOn();
+
     gentity->client->ps.gravity = gravity;
     SV_SendServerCommandNoLoss(&svs.clients[entityNum], va("v g_gravity \"%d\"", gravity));
 }
@@ -740,6 +742,9 @@ void PlayerCmd_SetJumpHeight(scr_entref_t arg)
         Scr_Error("setjumpheight range is between 1 and 50000\n");
         return;
     }
+
+    Pmove_ExtendedTurnOn();
+
     gentity->client->jumpHeight = height;
     SV_GameSendServerCommand(entityNum, 1, va("v jump_height \"%d\"", height));
 }
@@ -792,8 +797,10 @@ void PlayerCmd_SetMoveSpeed(scr_entref_t arg)
         Scr_Error("setmovespeed range is between 0 and 50000\n");
         return;
     }
-    gentity->client->sess.moveSpeedScaleMultiplier = speed / g_speed->integer;
-    Com_PrintWarning(CON_CHANNEL_SCRIPT, "PlayerCmd_SetMoveSpeed() is deprecated! Please use setmovespeedscale(speed / 190)\n");
+
+    Pmove_ExtendedTurnOn();
+
+    gentity->client->ps.speed = speed;
 }
 
 /*
