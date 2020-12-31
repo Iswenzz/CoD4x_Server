@@ -209,27 +209,27 @@ void SV_RecordClient( client_t* cl, char* basename ) {
 	}
 
 	int number;
-
 	if(!basename)
 	{
 		basename = "demo";
-	}
+		// scan for a free demo name
+		for ( number = 0 ; number <= 9999 ; number++ ) {
+			SV_DemoFilename( number, basename, demoName );
+			Com_sprintf( name, sizeof( name ), "demos/%s.dm_%d", demoName, 1 );
 
-	// scan for a free demo name
-	for ( number = 0 ; number <= 9999 ; number++ ) {
-		SV_DemoFilename( number, basename, demoName );
-		Com_sprintf( name, sizeof( name ), "demos/%s.dm_%d", demoName, 1 );
-
-		if ( !FS_DemoFileExists( name ) ) {
-			break;  // file doesn't exist
+			if ( !FS_DemoFileExists( name ) ) {
+				break;  // file doesn't exist
+			}
 		}
 	}
+	else
+		Com_sprintf( name, sizeof( name ), "%s.dm_%d", basename, 1 );
 
 	// open the demo file
-	Com_Printf(CON_CHANNEL_SERVERDEMO, "recording to %s.\n", name );
+	// Com_Printf( "recording to %s.\n", name );
 	if(!FS_FOpenDemoFileWrite( name, &cl->demofile ))
 	{
-		Com_Printf(CON_CHANNEL_SERVERDEMO, "ERROR: couldn't open.\n" );
+		// Com_Printf( "ERROR: couldn't open.\n" );
 		return;
 	}
 
