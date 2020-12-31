@@ -19,20 +19,10 @@
 ===========================================================================
 */
 
-
-
-#include "q_math.h"
-#include "cvar.h"
-#include "q_shared.h"
 #include "g_shared.h"
-#include "qcommon_io.h"
-#include "entity.h"
-#include "player.h"
-#include "server.h"
 #include "g_sv_shared.h"
+#include "qcommon_io.h"
 #include "sr.h"
-
-#include <math.h>
 
 qboolean extendedMovementControl = 0;
 
