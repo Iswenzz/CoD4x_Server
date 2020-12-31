@@ -1123,6 +1123,13 @@ __optimize3 __regparm3 void SV_UserMove( client_t *cl, msg_t *msg, qboolean delt
 		}
 
 		cl->clFrames++;
+		// @todo new antilag; fix no fall damage binds
+		// SV_ClientCalcFramerate() need to be removed from sv loop (legacy method)
+		// get client fps ratio if not laggy
+		// if (cmds[i].serverTime < svs.time + 1000) 
+		// 	cl->clFPS = cmds[i].serverTime - cl->lastUsercmd.serverTime;
+		// else // if laggy set to a high number
+		// 	cl->clFPS = 10000001;
 
 		SV_ClientThink( cl, &cmds[ i ] );
 
