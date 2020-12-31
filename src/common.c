@@ -60,6 +60,7 @@
 #include "tests.h"
 #include "null_client.h"
 #include "db_load.h"
+#include "sr.h"
 
 #include <string.h>
 #include <setjmp.h>
@@ -875,6 +876,8 @@ void Com_Init(char* commandLine){
     }
     Tests_Init();
     CM_DebugInit();
+
+	SR_Init();
 
 
 //    Init_Watchdog();

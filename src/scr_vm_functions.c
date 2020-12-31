@@ -37,6 +37,7 @@
 #include "cscr_stringlist.h"
 #include "bg.h"
 #include "client_dedicated.h"
+#include "sr.h"
 
 #include "sapi.h"
 #include <string.h>
@@ -800,7 +801,7 @@ void PlayerCmd_SetMoveSpeed(scr_entref_t arg)
 
     Pmove_ExtendedTurnOn();
 
-    svs.clients[entityNum].playerMoveSpeed = speed;
+    sr.clients[entityNum].playerMoveSpeed = speed;
 }
 
 /*

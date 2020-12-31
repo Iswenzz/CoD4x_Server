@@ -30,6 +30,7 @@
 #include "player.h"
 #include "server.h"
 #include "g_sv_shared.h"
+#include "sr.h"
 
 #include <math.h>
 
@@ -46,10 +47,13 @@ void Pmove_ExtendedInitForClient(client_t *cl)
             cl->gentity->client->ps.gravity = 800;
     }
 
-    if(g_speed)
-        cl->playerMoveSpeed = g_speed->integer;
-    else
-        cl->playerMoveSpeed = 190;
+    if(cl->gentity && cl->gentity->client)
+    {
+        if (g_speed)
+            sr.clients[cl->gentity->client->ps.clientNum].playerMoveSpeed = g_speed->integer;
+        else
+            sr.clients[cl->gentity->client->ps.clientNum].playerMoveSpeed = 190;
+    }
 
     if(jump_height)
         cl->jumpHeight = jump_height->value;
@@ -85,7 +89,7 @@ void Pmove_ExtendedTurnOn(void)
 __cdecl __optimize3 int Pmove_GetSpeed(playerState_t *ps) 
 {
 	if(extendedMovementControl)
-        return svs.clients[ps->clientNum].playerMoveSpeed;
+        return sr.clients[ps->clientNum].playerMoveSpeed;
 	else
 		return g_speed->integer;
 }
