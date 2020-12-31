@@ -141,6 +141,25 @@ ASSETS_OBJ=$(patsubst $(ASSETS_DIR)/%.c,$(OBJ_DIR)/%.o,$(ASSETS_SOURCES))
 #############################################################
 #############################################################
 
+##################################
+# CGSC
+CGSC_DIR=$(SRC_DIR)/CGSC
+
+CGSC_C_SOURCES=$(wildcard $(CGSC_DIR)/*.c)
+CGSC_C_OBJ=$(patsubst $(CGSC_DIR)/%.c,$(OBJ_DIR)/%.o,$(CGSC_C_SOURCES))
+C_OBJ:=$(C_OBJ) $(CGSC_C_OBJ)
+
+$(OBJ_DIR)/%.o: $(CGSC_DIR)/%.c
+	@echo   $(CC)  $@
+	@$(CC) -c $(CFLAGS) $(DCFLAGS) $(C_DEFINES) -o $@ $<
+
+CGSC_ASM_SOURCES=$(wildcard $(CGSC_DIR)/*.asm)
+CGSC_ASM_OBJ=$(patsubst $(CGSC_DIR)/%.asm,$(OBJ_DIR)/%.o,$(CGSC_ASM_SOURCES))
+ASM_OBJ:=$(ASM_OBJ) $(CGSC_ASM_OBJ)
+
+$(OBJ_DIR)/%.o: $(CGSC_DIR)/%.asm
+	@echo   $(NASM)  $@
+	@$(NASM) $(NASMFLAGS) $< -o $@
 
 ###############################
 # Default rule: rebuild server.

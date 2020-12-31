@@ -1,0 +1,6 @@
+[submodule "src/CGSC"]
+	path = src/CGSC
+	url = https://github.com/Iswenzz/CGSC.git
+[submodule "plugins/gsclib"]
+	path = plugins/gsclib
+	url = https://github.com/Iswenzz/gsclib.git
