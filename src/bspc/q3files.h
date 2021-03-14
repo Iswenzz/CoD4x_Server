@@ -40,7 +40,7 @@ If you have questions concerning this license or the applicable additional terms
 
 
 // the maximum size of game reletive pathnames
-#define MAX_QPATH       64
+#define MAX_QPATH       255
 
 
 /*

@@ -177,7 +177,7 @@ typedef enum {qfalse, qtrue}	qboolean;
 
 #define	MAX_STRING_CHARS	1024	// max length of a string passed to Cmd_TokenizeString
 #define	MAX_NAME_LENGTH		16	// max length of a client name
-#define	MAX_QPATH		64	// max length of a quake game pathname
+#define	MAX_QPATH		255	// max length of a quake game pathname
 
 #define	BIG_INFO_STRING		8192  // used for system info key only
 #define	BIG_INFO_KEY		8192

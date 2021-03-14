@@ -3,7 +3,7 @@
 
 #include "../sys_cod4defs.h"
 
-#define MAX_QPATH 64
+#define MAX_QPATH 255
 #define MAX_TOKENLENGTH     1024
 
 
