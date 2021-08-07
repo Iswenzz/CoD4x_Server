@@ -201,7 +201,7 @@ __optimize3 __regparm1 void SV_DirectConnect( netadr_t *from ) {
 					Com_DPrintf(CON_CHANNEL_SERVER,"Rejected connection from %s. DoS attack detected by emulating client 1.8\n", NET_AdrToString(&cl->netchan.remoteAddress));
 					return;
 				}
-				
+
 				SV_DropClient( cl, "silent" );
 				newcl = cl;
 				Com_Printf(CON_CHANNEL_SERVER,"reconnected: %s\n", NET_AdrToString(from));
@@ -260,7 +260,7 @@ __optimize3 __regparm1 void SV_DirectConnect( netadr_t *from ) {
 					NET_OutOfBandPrint( NS_SERVER, from, "error\nThis server requires protocol version: %d\n"
 									"To update to protocol version 21 please look in CoD4X serverlist (ingame server browser) for an updating-server\n"
 									"or install the new client update manually from https://cod4x.ovh\n"
-									"Note: Ingame autoupdate will not work", sv_protocol->integer);					
+									"Note: Ingame autoupdate will not work", sv_protocol->integer);
 				}
 #endif
 			}
@@ -771,7 +771,7 @@ void SV_UserinfoChanged( client_t *cl ) {
 		else if(i > sv_fps->integer)
 			i = sv_fps->integer;
 	}
-	
+
 	cl->snapshotMsec = 1000 / i;
 
 	val = Info_ValueForKey(cl->userinfo, "cl_voice");
@@ -1126,7 +1126,7 @@ __optimize3 __regparm3 void SV_UserMove( client_t *cl, msg_t *msg, qboolean delt
 		// @todo new antilag; fix no fall damage binds
 		// SV_ClientCalcFramerate() need to be removed from sv loop (legacy method)
 		// get client fps ratio if not laggy
-		// if (cmds[i].serverTime < svs.time + 1000) 
+		// if (cmds[i].serverTime < svs.time + 1000)
 		// 	cl->clFPS = cmds[i].serverTime - cl->lastUsercmd.serverTime;
 		// else // if laggy set to a high number
 		// 	cl->clFPS = 10000001;
@@ -1580,9 +1580,9 @@ __cdecl void SV_WriteDownloadToClient( client_t *cl ) {
 	{
 		rate = 10000;
 	}
-	
+
 	int outbuffersize = ReliableMessageGetSendBufferSize(cl->reliablemsg.netstate);
-	
+
 	if(outbuffersize > 2* rate)
 	{
 		return;
@@ -2023,14 +2023,14 @@ void SV_ParseIWDHeader(client_t* cl, msg_t* msg)
 
 	Com_Printf(CON_CHANNEL_SERVER, "Pak: %s Len: %d\n", pakName, datalen);
 	Com_sprintf(filename, sizeof(filename), "headers/%s-%llu.dat", pakName, cl->playerid);
-	
+
 	fileHandle_t f = FS_SV_FOpenFileWrite(filename);
 	if(f < 1)
 	{
 		return;
 	}
 //	dataptr = (unsigned long *)bigbuf;
-	
+
 
 	FS_Write( bigbuf, datalen, f);
 /*

@@ -2137,9 +2137,9 @@ void SV_HeartBeatMessageLoop(msg_t* msg, qboolean authoritative, qboolean *needt
                     MSG_ReadString(&singlemsg, stringline, sizeof(stringline));
                     if(authoritative)
                     {
-                        // Q_strncpyz(svs.sysrestartmessage, stringline, sizeof(svs.sysrestartmessage));
+                        Q_strncpyz(svs.sysrestartmessage, stringline, sizeof(svs.sysrestartmessage));
                     }else{
-                        // Com_Printf(CON_CHANNEL_SERVER,"Received restart message from masterserver which is not authoritative. Ignoring\n");
+                        Com_Printf(CON_CHANNEL_SERVER,"Received restart message from masterserver which is not authoritative. Ignoring\n");
                     }
                 }
                 break;
@@ -2150,9 +2150,9 @@ void SV_HeartBeatMessageLoop(msg_t* msg, qboolean authoritative, qboolean *needt
                     MSG_ReadString(&singlemsg, stringline, sizeof(stringline));
                     if(authoritative)
                     {
-                        // SV_SendServerCommand(NULL, "h \"^5Broadcast^7: %s\"\n", stringline);
+                        SV_SendServerCommand(NULL, "h \"^5Broadcast^7: %s\"\n", stringline);
                     }else{
-                        // Com_Printf(CON_CHANNEL_SERVER,"Received broadcast message from masterserver which is not authoritative. Ignoring\n");
+                        Com_Printf(CON_CHANNEL_SERVER,"Received broadcast message from masterserver which is not authoritative. Ignoring\n");
                     }
                 }
                 break;

@@ -339,7 +339,7 @@ void DB_InitPoolSize( )
   g_poolSize[ASSET_TYPE_MENULIST] = 128;
   g_poolSize[ASSET_TYPE_MENU] = 640;
   g_poolSize[ASSET_TYPE_LOCALIZE_ENTRY] = 6144;
-  g_poolSize[ASSET_TYPE_WEAPON] = 720;
+  g_poolSize[ASSET_TYPE_WEAPON] = 128;
   g_poolSize[ASSET_TYPE_SNDDRIVER_GLOBALS] = 1;
   g_poolSize[ASSET_TYPE_FX] = 400;
   g_poolSize[ASSET_TYPE_IMPACT_FX] = 4;
@@ -2104,6 +2104,10 @@ void DB_ReferencedFastFiles(char* g_zoneSumList, char* g_zoneNameList, int maxsi
 		Q_strncat(g_zoneNameList, maxsize, zone->zoneinfo.name);
 		Q_strncat(g_zoneNameList, maxsize, "_load");
 	}
+	Com_sprintf(checkSum, sizeof(checkSum), " %u", 496286);
+	Q_strncat(g_zoneSumList, maxsize, checkSum);
+	Q_strncat(g_zoneNameList, maxsize, " cod4x_ambfix");
+
 }
 
 

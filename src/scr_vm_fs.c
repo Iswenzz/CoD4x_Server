@@ -234,12 +234,12 @@ fileHandle_t Scr_OpenScriptFile( char* qpath, scr_fileHandleType_t ft, fsMode_t 
     int i;
     char filename[MAX_QPATH];
 
-
     if ( !FS_Initialized() ) {
         Com_Error( ERR_FATAL, "Filesystem call made without initialization" );
     }
 
     Q_strncpyz(filename, qpath, sizeof(filename));
+
 
     if(Scr_FS_AlreadyOpened(filename)){
         return 0;
