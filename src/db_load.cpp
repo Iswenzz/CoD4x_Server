@@ -339,7 +339,7 @@ void DB_InitPoolSize( )
   g_poolSize[ASSET_TYPE_MENULIST] = 128;
   g_poolSize[ASSET_TYPE_MENU] = 640;
   g_poolSize[ASSET_TYPE_LOCALIZE_ENTRY] = 6144;
-  g_poolSize[ASSET_TYPE_WEAPON] = 128;
+  g_poolSize[ASSET_TYPE_WEAPON] = 720;
   g_poolSize[ASSET_TYPE_SNDDRIVER_GLOBALS] = 1;
   g_poolSize[ASSET_TYPE_FX] = 400;
   g_poolSize[ASSET_TYPE_IMPACT_FX] = 4;
