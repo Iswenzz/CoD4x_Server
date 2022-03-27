@@ -54,10 +54,10 @@ DCFLAGS=-fno-pie -O1 -DNDEBUG
 endif
 
 WIN_LFLAGS=-m32 -g -Wl,--nxcompat,--stack,0x800000 -mwindows -static-libgcc -static -lm
-WIN_LLIBS=tomcrypt mbedtls mbedcrypto mbedx509 ws2_32 wsock32 iphlpapi gdi32 winmm crypt32 stdc++
+WIN_LLIBS=tomcrypt mbedtls mbedcrypto mbedx509 ws2_32 wsock32 iphlpapi gdi32 winmm crypt32 stdc++ CGSC
 LINUX_LFLAGS=-m32 -g -static-libgcc -rdynamic -Wl,-rpath=./
-LINUX_LLIBS=tomcrypt mbedtls mbedcrypto mbedx509 dl pthread m stdc++
-BSD_LLIBS=tomcrypt mbedtls mbedcrypto mbedx509 pthread m execinfo stdc++
+LINUX_LLIBS=tomcrypt mbedtls mbedcrypto mbedx509 dl pthread m stdc++ CGSC
+BSD_LLIBS=tomcrypt mbedtls mbedcrypto mbedx509 pthread m execinfo stdc++ CGSC
 COD4X_DEFINES=COD4X18UPDATE BUILD_NUMBER=$(BUILD_NUMBER) BUILD_BRANCH=$(BUILD_BRANCH) BUILD_REVISION=$(BUILD_REVISION)
 
 ########################
@@ -145,19 +145,11 @@ ASSETS_OBJ=$(patsubst $(ASSETS_DIR)/%.c,$(OBJ_DIR)/%.o,$(ASSETS_SOURCES))
 # CGSC
 CGSC_DIR=$(SRC_DIR)/CGSC
 
-CGSC_C_SOURCES=$(wildcard $(CGSC_DIR)/*.c)
-CGSC_C_OBJ=$(patsubst $(CGSC_DIR)/%.c,$(OBJ_DIR)/%.o,$(CGSC_C_SOURCES))
-C_OBJ:=$(C_OBJ) $(CGSC_C_OBJ)
-
-$(OBJ_DIR)/%.o: $(CGSC_DIR)/%.c
-	@echo   $(CC)  $@
-	@$(CC) -c $(CFLAGS) $(DCFLAGS) $(C_DEFINES) -o $@ $<
-
-CGSC_ASM_SOURCES=$(wildcard $(CGSC_DIR)/*.asm)
-CGSC_ASM_OBJ=$(patsubst $(CGSC_DIR)/%.asm,$(OBJ_DIR)/%.o,$(CGSC_ASM_SOURCES))
+CGSC_ASM_SOURCES=$(wildcard $(CGSC_DIR)/asm/*.asm)
+CGSC_ASM_OBJ=$(patsubst $(CGSC_DIR)/asm/%.asm,$(OBJ_DIR)/%.o,$(CGSC_ASM_SOURCES))
 ASM_OBJ:=$(ASM_OBJ) $(CGSC_ASM_OBJ)
 
-$(OBJ_DIR)/%.o: $(CGSC_DIR)/%.asm
+$(OBJ_DIR)/%.o: $(CGSC_DIR)/asm/%.asm
 	@echo   $(NASM)  $@
 	@$(NASM) $(NASMFLAGS) $< -o $@
 
@@ -187,7 +179,7 @@ gittagging:
 ifneq ($(OS),Windows_NT)
 	git tag -a v$(VERSION)
 	git push origin --tags
-endif	
+endif
 
 #################################
 # A rule to make mbedtls library.
@@ -303,7 +295,7 @@ clean_all:
 docker: $(TARGET)
 	@docker build . -t cod4x/bleeding
 
-plugins: 
+plugins:
 	@$(MAKE) -C $(PLUGIN_DIR)/screenshotsender
 	#@$(MAKE) -C $(PLUGIN_DIR)/antispam
 	@$(MAKE) -C $(PLUGIN_DIR)/censor

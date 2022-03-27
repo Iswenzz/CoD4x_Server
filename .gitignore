@@ -11,6 +11,8 @@
 
 *.lib
 
+*.exp
+
 *.def
 
 *.ff
