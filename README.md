@@ -1,10 +1,23 @@
-# CoD4x Server [![build](https://github.com/callofduty4x/CoD4x_Server/actions/workflows/build.yml/badge.svg)](https://github.com/callofduty4x/CoD4x_Server/actions/workflows/build.yml)
+# SR CoD4x
+
+[![Checks](https://img.shields.io/github/checks-status/Iswenzz/SR-CoD4x/master?logo=github)](https://github.com/Iswenzz/SR-CoD4x/actions)
+[![License](https://img.shields.io/github/license/Iswenzz/SR-CoD4x?color=blue&logo=gitbook&logoColor=white)](https://github.com/Iswenzz/SR-CoD4x/blob/master/LICENSE)
+
 CoD4x is a modification of the Call of Duty 4 - Modern Warfare server. It fixes several bugs in the original binaries and allows developers to extend server functionality with additional variables and plugins. When using the CoD4x server, the clients invoke installation of the proprietary CoD4x client to players joining the server using the CoD4x servers, which fixes several known base game bugs in the client, and in combination with the server allows for extra features.
+
 A compatible client modification can be found here: [CoD4x_Client_pub](https://github.com/callofduty4x/CoD4x_Client_pub)
 
 [Website](http://cod4x.ovh/) - [Forums](https://cod4x.ovh/index.php?/forums/) - [Documentation](http://docs.cod4x.ovh/) - [Masterserver](http://cod4master.cod4x.ovh/)
 
-## The most prominent features are:
+# SR Features
+* CGSC
+* gsclib
+* Client g_speed
+* Increased weapon assets pool
+* Record demos
+* Faster FPS calculation
+
+## CoD4x Features
 * Administration commands
 * Measurements against hackers
 * Reliable player identification
@@ -13,8 +26,9 @@ A compatible client modification can be found here: [CoD4x_Client_pub](https://g
 * Backwards compatibility to 1.7 and 1.7a servers
 * A new [masterserver](http://cod4master.cod4x.ovh/), for when the official masterserver is down
 
-The CoD4x server can run on Windows and Linux. 
-The CoD4x client update is only available for windows.
+# TODO
+* Speedrun BOT
+* 3xP FPS calculation
 
 ## Setting up a Call of Duty 4 server with Cod4x 1.8
 Download binaries: [Releases](https://github.com/callofduty4x/CoD4x_Server/releases)
@@ -23,8 +37,6 @@ You also require the base game to run a server. Copy every .iwd file in `cod4dir
 Also copy everything inside `cod4directory/zone` to `serverdirectory/zone`.
 
 Now you can run the server with `./cod4x18_dedrun +map mp_killhouse`. If you are running a local server on Windows use `cod4x18_dedrun.exe +map mp_killhouse +set dedicated 2 +set net_ip 127.0.0.1`. Join the server with your client via the console (`^`) by typing `/connect 127.0.0.1` (if hosted locally), and see if you can join the server.
-
-Hint: you probably want to run the server on a separate user. Please don't run the server (any server) as root. That would be a major security threat.
 
 A more detailed server tutorial is available on [our wiki](https://github.com/callofduty4x/CoD4x_Server/wiki/Server-setup).
 [Also read about new banlists here](https://github.com/callofduty4x/CoD4x_Server/wiki/Banlists-in-version-15.9--and-other-changes)
@@ -48,11 +60,11 @@ sudo apt-get update
 sudo apt-get install nasm:i386 build-essential gcc-multilib g++-multilib
 ```
 
-openSUSE 32-bit: 
+openSUSE 32-bit:
 ```
 sudo zypper install nasm gcc-32bit gcc-c++-32bit
 ```
- 
+
 Arch Linux 64-bit:
 ```
 sudo pacman -S nasm gcc lib32-gcc-libs make
