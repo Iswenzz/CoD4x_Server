@@ -9,7 +9,7 @@ on:
       - master
 
 jobs:
-  windows:
+  build:
     runs-on: windows-latest
     steps:
     - name: MinGW

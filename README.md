@@ -5,7 +5,7 @@
 
 CoD4x is a modification of the Call of Duty 4 - Modern Warfare server. It fixes several bugs in the original binaries and allows developers to extend server functionality with additional variables and plugins. When using the CoD4x server, the clients invoke installation of the proprietary CoD4x client to players joining the server using the CoD4x servers, which fixes several known base game bugs in the client, and in combination with the server allows for extra features.
 
-A compatible client modification can be found here: [CoD4x_Client_pub](https://github.com/callofduty4x/CoD4x_Client_pub)
+A compatible client modification can be found here: [client](https://github.com/callofduty4x/CoD4x_Client_pub)
 
 [Website](http://cod4x.ovh/) - [Forums](https://cod4x.ovh/index.php?/forums/) - [Documentation](http://docs.cod4x.ovh/) - [Masterserver](http://cod4master.cod4x.ovh/)
 
