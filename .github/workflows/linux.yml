@@ -18,6 +18,9 @@ jobs:
         fetch-depth: 0
         submodules: "recursive"
 
+    - name: Conan
+      uses: turtlebrowser/get-conan@main
+
     - name: Dependencies
       run: |
         sudo apt-get install g++-multilib gcc-multilib
