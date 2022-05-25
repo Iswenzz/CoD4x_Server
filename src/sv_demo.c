@@ -63,7 +63,6 @@ void SV_WriteDemoArchive(client_t *client){
 
 	int archiveIndex;
 	playerState_t *ps = SV_GameClientNum(client - svs.clients);
-	vec3_t nullvec = {0, 0, 0};
 
 	MSG_WriteByte(&msg, 1);
 
@@ -71,10 +70,10 @@ void SV_WriteDemoArchive(client_t *client){
 	MSG_WriteLong(&msg, archiveIndex);
 	MSG_WriteVector(&msg, ps->origin);
 
-	MSG_WriteVector(&msg, nullvec);
-	MSG_WriteLong(&msg, 0); //Velocity
+	MSG_WriteVector(&msg, ps->velocity);
+	MSG_WriteLong(&msg, ps->movementDir);
 
-	MSG_WriteLong(&msg, 0);
+	MSG_WriteLong(&msg, ps->bobCycle);
 	MSG_WriteLong(&msg, ps->commandTime);
 	MSG_WriteVector(&msg, ps->viewangles);
 	client->demoArchiveIndex++;
