@@ -124,7 +124,7 @@ void SV_StopRecord( client_t *cl ) {
 	static char cmdline[1024];
 
 	if ( !cl->demorecording ) {
-		Com_Printf(CON_CHANNEL_SERVERDEMO, "Not recording a demo.\n" );
+		// Com_Printf(CON_CHANNEL_SERVERDEMO, "Not recording a demo.\n" );
 		return;
 	}
 	// finish up
@@ -140,7 +140,7 @@ void SV_StopRecord( client_t *cl ) {
 
 	FS_FCloseDemoFile( &cl->demofile );
 	cl->demorecording = qfalse;
-	Com_Printf(CON_CHANNEL_SERVERDEMO, "Stopped demo for: %s\n", cl->name);
+	// Com_Printf(CON_CHANNEL_SERVERDEMO, "Stopped demo for: %s\n", cl->name);
 
 	if(!*sv_demoCompletedCmd->string)
 		return;
@@ -198,12 +198,12 @@ void SV_RecordClient( client_t* cl, char* basename ) {
 	char demoName[MAX_QPATH];
 
 	if ( cl->demorecording ) {
-		Com_Printf(CON_CHANNEL_SERVERDEMO, "Already recording.\n" );
+		// Com_Printf(CON_CHANNEL_SERVERDEMO, "Already recording.\n" );
 		return;
 	}
 
 	if ( cl->state != CS_ACTIVE ) {
-		Com_Printf(CON_CHANNEL_SERVERDEMO, "Client must be in a level to record.\n" );
+		// Com_Printf(CON_CHANNEL_SERVERDEMO, "Client must be in a level to record.\n" );
 		return;
 	}
 

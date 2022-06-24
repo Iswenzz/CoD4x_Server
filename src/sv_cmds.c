@@ -1542,7 +1542,7 @@ static void SV_StopRecord_f( void ) {
 
 	cl = SV_Cmd_GetPlayerByHandle();
 	if(!cl.cl){
-		Com_Printf(CON_CHANNEL_DONT_FILTER,"Error: This player is not online and can not be recorded\n");
+		// Com_Printf(CON_CHANNEL_DONT_FILTER,"Error: This player is not online and can not be recorded\n");
 		return;
 	}
 	SV_StopRecord(cl.cl);
