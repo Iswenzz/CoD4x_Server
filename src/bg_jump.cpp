@@ -4,7 +4,10 @@
 #include "bg_local.h"
 #include "q_shared.h"
 #include "server.h"
-#include "sr.h"
+
+extern "C" {
+	#include "sr.h"
+}
 
 #define PMF_JUMPING 0x4000
 #define PMF_LADDER 0x8
@@ -34,7 +37,7 @@ __cdecl __optimize3 float Jump_GetHeight( playerState_t *ps) {
 
 
 __cdecl __optimize3 float Jump_CalcHeight( playerState_t* ps ) {
-	
+
 	float val;
 	float newdiv;
 	float jumpHeight = Jump_GetHeight(ps);
@@ -105,7 +108,7 @@ void __cdecl Jump_PushOffLadder(playerState_s *ps, pml_t *pml)
   vec3_t flatForward;
   vec3_t pushOffDir;
   float dot;
-  
+
   assert(ps->pm_flags & PMF_LADDER);
 
   ps->velocity[2] = ps->velocity[2] * 0.75;
@@ -171,7 +174,7 @@ void __cdecl Jump_Start(pmove_t *pm, pml_t *pml, float height)
 
 extern "C"
 {
-    
+
 
 void __cdecl Jump_ClearState(playerState_s *ps)
 {
