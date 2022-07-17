@@ -266,6 +266,8 @@ qboolean __cdecl Jump_Check(pmove_t *pm, pml_t *pml)
   ps = pm->ps;
   assert(ps);
 
+  sr.clients[ps->clientNum].surfaceFlags = pml->groundTrace.sflags;
+
   if ( ps->pm_flags & 0x80000 )
   {
     return qfalse;
