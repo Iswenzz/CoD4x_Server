@@ -3,6 +3,8 @@
 #include "cvar.h"
 #include "bg_local.h"
 #include "q_shared.h"
+#include "server.h"
+#include "sr.h"
 
 #define PMF_JUMPING 0x4000
 #define PMF_LADDER 0x8
@@ -303,7 +305,7 @@ qboolean __cdecl Jump_Check(pmove_t *pm, pml_t *pml)
     result = 0;
   }
 */
-  Jump_Start(pm, pml, jump_height->value);
+  Jump_Start(pm, pml, svs.clients[ps->clientNum].jumpHeight);
   Jump_AddSurfaceEvent(ps, pml);
   if ( ps->pm_flags & PMF_LADDER )
   {

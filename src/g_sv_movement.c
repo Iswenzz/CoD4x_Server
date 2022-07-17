@@ -29,26 +29,12 @@ qboolean extendedMovementControl = 0;
 //This function init movement variables with default values
 void Pmove_ExtendedInitForClient(client_t *cl)
 {
-    if (cl->gentity && cl->gentity->client)
-    {
-        if(g_gravity)
-            cl->gentity->client->ps.gravity = (int)g_gravity->value;
-        else
-            cl->gentity->client->ps.gravity = 800;
-    }
+	if (!cl->gentity || !cl->gentity->client)
+		return;
 
-    if(cl->gentity && cl->gentity->client)
-    {
-        if (g_speed)
-            sr.clients[cl->gentity->client->ps.clientNum].playerMoveSpeed = g_speed->integer;
-        else
-            sr.clients[cl->gentity->client->ps.clientNum].playerMoveSpeed = 190;
-    }
-
-    if(jump_height)
-        cl->jumpHeight = jump_height->value;
-    else
-        cl->jumpHeight = 39;
+	cl->gentity->client->ps.gravity = g_gravity ? (int)g_gravity->value : 800;
+	sr.clients[cl->gentity->client->ps.clientNum].playerMoveSpeed = g_speed ? g_speed->integer : 190;
+	cl->jumpHeight = jump_height ? jump_height->value : 39;
 }
 
 void Pmove_ExtendedResetState(void)
@@ -76,7 +62,7 @@ void Pmove_ExtendedTurnOn(void)
     extendedMovementControl = qtrue;
 }
 
-__cdecl __optimize3 int Pmove_GetSpeed(playerState_t *ps) 
+__cdecl __optimize3 int Pmove_GetSpeed(playerState_t *ps)
 {
 	if(extendedMovementControl)
         return sr.clients[ps->clientNum].playerMoveSpeed;
@@ -87,7 +73,7 @@ __cdecl __optimize3 int Pmove_GetSpeed(playerState_t *ps)
 float Dirty_GetJumpHeight(unsigned int num)
 {
     if(extendedMovementControl)
-		return level.clients[num].jumpHeight;
+		return svs.clients[num].jumpHeight;
 	else
 		return jump_height->value;
 }

@@ -746,8 +746,8 @@ void PlayerCmd_SetJumpHeight(scr_entref_t arg)
 
     Pmove_ExtendedTurnOn();
 
-    gentity->client->jumpHeight = height;
-    SV_GameSendServerCommand(entityNum, 1, va("v jump_height \"%d\"", height));
+    svs.clients[entityNum].jumpHeight = height;
+    SV_SendServerCommandNoLoss(&svs.clients[entityNum], va("v jump_height \"%d\"", height));
 }
 
 /*
