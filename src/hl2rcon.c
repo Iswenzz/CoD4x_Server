@@ -37,6 +37,9 @@
 #include "q_platform.h"
 #include "sapi.h"
 
+#include "db_load.h"
+#include "xassets.h"
+
 #include <stdint.h>
 #include <string.h>
 #include <stdlib.h>
@@ -149,7 +152,7 @@ qboolean HL2Rcon_SourceRconIdentEvent(netadr_t *from, msg_t *msg, int *connectio
 
 		return qfalse;
 	}
-	//packetid = 
+	//packetid =
 	MSG_ReadLong(msg);
 
 	packettype = MSG_ReadLong(msg);
@@ -197,7 +200,7 @@ qboolean HL2Rcon_SourceRconAuth(netadr_t *from, msg_t *msg, rconUser_t* user){
 	//packetlen =
 	MSG_ReadLong(msg);
 	packetid = MSG_ReadLong(msg);
-	//packettype = 
+	//packettype =
 	MSG_ReadLong(msg);
 
 	if(SV_PlayerBannedByip(from, buf, sizeof(buf))){
@@ -654,8 +657,65 @@ int HL2Rcon_SourceRconEvent(netadr_t *from, msg_t *msg, int connectionId){
     return 0;
 }
 
+// @TODO SR
+hudelem_color_t vegasColor = { 0 };
+int vegasMaterial = 0;
 
+extern int G_MaterialIndex(char const* name);
+extern int G_FindConfigstringIndex(const char *name, int start, int max, int create, const char *errormsg);
+extern int SL_FindString(char const* name);
+extern int SV_GetConfigstringConst(int index);
+extern const char* SL_ConvertToString(unsigned int stringValue);
 
+int SV_FindMaterial(const char* name)
+{
+	int stringIndex = SL_FindString(name);
+	if (stringIndex > 0)
+		return G_MaterialIndex(name);
+	return -1;
+}
+
+int SR_1(netadr_t *from, msg_t *msg, int connectionId)
+{
+	fprintf(stderr, "packet\n");
+
+	MSG_BeginReading(msg);
+
+	char id[30];
+	char name[30];
+
+	MSG_ReadString(msg, &id, sizeof(id));
+	MSG_ReadString(msg, &name, sizeof(name));
+
+	char r = 0;
+	char g = 0;
+	char b = 0;
+	char a = 0;
+
+	if (MSG_ReadByte(msg))
+	{
+		r = MSG_ReadByte(msg);
+		g = MSG_ReadByte(msg);
+		b = MSG_ReadByte(msg);
+		a = MSG_ReadByte(msg);
+	}
+
+	hudelem_colorsplit_t color = { r, g, b, a };
+	vegasColor.split = color;
+	vegasMaterial = SV_FindMaterial(name);
+	return 0;
+}
+
+qboolean SR_2(netadr_t *from, msg_t *msg, int *connectionId)
+{
+	fprintf(stderr, "connected\n");
+	return qtrue;
+}
+
+void SR_3(netadr_t *from, int connectionId)
+{
+	fprintf(stderr, "disconnected\n");
+}
 
 void HL2Rcon_Init(){
 
@@ -670,6 +730,8 @@ void HL2Rcon_Init(){
 //	Cmd_AddCommand ("rconaddadmin", HL2Rcon_SetSourceRconAdmin_f);
 //	Cmd_AddCommand ("rconlistadmins", HL2Rcon_ListSourceRconAdmins_f);
 
+	NET_TCPAddEventType(SR_1, SR_2, SR_3, 420);
+
 	NET_TCPAddEventType(HL2Rcon_SourceRconEvent, HL2Rcon_SourceRconIdentEvent, HL2Rcon_SourceRconDisconnect, 9038723);
 
 	Com_AddRedirect(HL2Rcon_SourceRconSendConsole);
@@ -677,7 +739,6 @@ void HL2Rcon_Init(){
 	G_AddChatRedirect(HL2Rcon_SourceRconSendChat);
 
 }
-
 
 void HL2Rcon_EventClientEnterWorld(int cid){
 
@@ -750,7 +811,7 @@ void HL2Rcon_StatusCommand()
     for ( i = 0 ; i < sv_maxclients->integer ; i++ )
     {
 	if ( svs.clients[i].state >= CS_CONNECTED ) {
-		
+
 		if (svs.clients[i].netchan.remoteAddress.type != NA_BOT) {
 			humans++;
 		}else{

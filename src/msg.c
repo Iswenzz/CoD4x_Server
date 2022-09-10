@@ -100,13 +100,13 @@ void MSG_InitReadOnlySplit( msg_t *buf, byte *data, int length, byte* splitData,
 
 
 void MSG_Clear( msg_t *buf ) {
-	
+
 	if(buf->readonly == qtrue || buf->splitData != NULL)
 	{
 		Com_Error(ERR_FATAL, "MSG_Clear: Can not clear a read only msg");
 		return;
 	}
-	
+
 	buf->cursize = 0;
 	buf->overflowed = qfalse;
 	buf->bit = 0;			//<- in bits
@@ -395,7 +395,7 @@ void MSG_WriteEFlags(int clientnum, msg_t *msg, const int oldFlags, const int ne
 			MSG_WriteByte(msg, shiftedflags);
 			shiftedflags >>= 8;
 		}
-	  
+
 	}
 	else
 	{
@@ -567,7 +567,7 @@ float MSG_GetFloat( msg_t *msg, int where )
 	{
 		((byte*)&c)[i] = MSG_GetByte(msg, where +i);
 	}
-	
+
 	return *(float*)&c;
 }
 
@@ -591,7 +591,7 @@ int MSG_ReadShort( msg_t *msg ) {
 	if ( msg->readcount+sizeof(short) > msg->splitSize + msg->cursize ) {
 		msg->overflowed = 1;
 		return -1;
-	}	
+	}
 	c = MSG_GetShort(msg, msg->readcount);
 
 	msg->readcount += sizeof(short);
@@ -604,7 +604,7 @@ int32_t MSG_ReadLong( msg_t *msg ) {
 	if ( msg->readcount+sizeof(int32_t) > msg->cursize + msg->splitSize) {
 		msg->overflowed = 1;
 		return -1;
-	}	
+	}
 	c = MSG_GetLong(msg, msg->readcount);
 
 	msg->readcount += sizeof(int32_t);
@@ -618,7 +618,7 @@ int64_t MSG_ReadInt64( msg_t *msg ) {
 	if ( msg->readcount+sizeof(int64_t) > msg->cursize + msg->splitSize ) {
 		msg->overflowed = 1;
 		return -1;
-	}	
+	}
 	c = MSG_GetInt64(msg, msg->readcount);
 
 	msg->readcount += sizeof(int64_t);
@@ -684,22 +684,22 @@ char *MSG_ReadStringLine( msg_t *msg, char* bigstring, int len ) {
 		bigstring[l] = c;
 		l++;
 	} while (l < len -1);
-	
+
 	bigstring[l] = 0;
-	
+
 	return bigstring;
 }
 
 float MSG_ReadFloat( msg_t *msg ) {
 
 	float	c;
-	
+
 	if ( msg->readcount+sizeof(float) > msg->cursize + msg->splitSize) {
 		msg->overflowed = 1;
 		return -1;
-	}	
+	}
 	c = MSG_GetFloat( msg, msg->readcount );
-	
+
 	msg->readcount += sizeof(float);
 	return c;
 }
@@ -1904,7 +1904,7 @@ int __cdecl MSG_WriteDelta_LastChangedField(byte *from, byte *to, netField_t* fi
 		fromF = ( int * )( (byte *)from + fields[j].offset );
 		toF = ( int * )( (byte *)to + fields[j].offset );
 
-	
+
 		if ( !MSG_ValuesAreEqual(fields[j].bits, fromF, toF) )
 		{
 			lc = j;
@@ -1934,11 +1934,11 @@ void MSG_WriteOriginFloat(const int clientNum, msg_t *msg, int bits, float value
   signed int ioldval;
   signed int mcenterbits, delta;
   vec3_t center;
-  
+
   ival = (signed int)f2rint(value);
   ioldval = (signed int)f2rint(oldValue);
   delta = ival - ioldval;
-  
+
   if ( (unsigned int)(delta + 64)  > 127 )
   {
     MSG_WriteBit1(msg);
@@ -1959,10 +1959,10 @@ void MSG_WriteOriginZFloat(const int clientNum, msg_t *msg, float value, float o
   signed int ioldval;
   signed int mcenterbits;
   vec3_t center;
-  
+
   ival = (signed int)f2rint(value);
   ioldval = (signed int)f2rint(oldValue);
-  
+
   if ( (unsigned int)(ival - ioldval + 64)  > 127 )
   {
     MSG_WriteBit1(msg);
@@ -1994,28 +1994,28 @@ __regparm3 void MSG_WriteDeltaField(struct snapshotInfo_s *snapInfo, msg_t *msg,
 	int32_t int32todata;
 	int32_t int32todatafromfloat;
 	int32_t int32fromdatafromfloat;
-	
+
 	int32_t int32data1;
 	float floattodata;
-	float floatfromdata;	
-	
+	float floatfromdata;
+
 	fromdata = &from[field->offset];
 	todata = &to[field->offset];
 	if(forceSend)
 	{
 		nullfield = 0;
-		fromdata = (const byte *)&nullfield; 
+		fromdata = (const byte *)&nullfield;
 	}
 	if ( field->changeHints != 2 )
 	{
 		if ( !forceSend && MSG_ValuesAreEqual(field->bits, (const int *)fromdata, (const int *)todata))
 		{
-			MSG_WriteBit0(msg);		
-			return;		
+			MSG_WriteBit0(msg);
+			return;
 		}
 		MSG_WriteBit1(msg);
 	}
-	
+
 	int32todata = *(uint32_t* )todata;
 	floattodata = *(float* )todata;
 	floatfromdata = *(float* )fromdata;
@@ -2023,7 +2023,7 @@ __regparm3 void MSG_WriteDeltaField(struct snapshotInfo_s *snapInfo, msg_t *msg,
 	int32fromdatafromfloat = (signed int)(*(float *)fromdata);
 	uint32todata = *(uint32_t* )todata;
 	uint32fromdata = *(uint32_t* )fromdata;
-  
+
 	switch(field->bits)
 	{
 		case 0:
@@ -2064,11 +2064,11 @@ __regparm3 void MSG_WriteDeltaField(struct snapshotInfo_s *snapInfo, msg_t *msg,
 			MSG_WriteByte(msg, int32data1 >> 5);
 			break;
 			//LABEL_54;
-			
+
 		case -88:
 			MSG_WriteLong(msg, uint32todata ^ uint32fromdata);
 			break;
-			
+
 		case -99:
 			if ( *(float *)todata != 0.0 || int32todata == 0x80000000 )
 			{
@@ -2149,7 +2149,7 @@ __regparm3 void MSG_WriteDeltaField(struct snapshotInfo_s *snapInfo, msg_t *msg,
 			  MSG_WriteLong(msg, uint32todata);
 			}
 			break;
-			
+
 		case -98:
 			MSG_WriteEFlags(snapInfo->clnum, msg, uint32fromdata, uint32todata);
 			break;
@@ -2179,15 +2179,15 @@ __regparm3 void MSG_WriteDeltaField(struct snapshotInfo_s *snapInfo, msg_t *msg,
 		case -92:
 			MSG_WriteOriginFloat(snapInfo->clnum, msg, field->bits, floattodata, floatfromdata);
 			break;
-			
+
 		case -90:
 			MSG_WriteOriginZFloat(snapInfo->clnum, msg, floattodata, floatfromdata);
 			break;
-			
+
 		case -95:
 			MSG_WriteBits(msg, uint32todata / 100, 7);
 			break;
-			
+
 		default:
 			if ( uint32todata )
 			{
@@ -2221,13 +2221,13 @@ __regparm3 void MSG_WriteDeltaField(struct snapshotInfo_s *snapInfo, msg_t *msg,
 
 void MSG_WriteEntityRemoval(struct snapshotInfo_s *snapInfo, msg_t *msg, byte *from, int indexBits, byte changeBit)
 {
-	
+
 	if ( snapInfo->clnum == sv_shownet->integer )
 	{
 			Com_Printf(CON_CHANNEL_SYSTEM, "W|%3i: #%-3i remove\n", msg->cursize, *(uint32_t*)from);
 	}
 
-	
+
 	if(changeBit)
 	{
 		MSG_WriteBit1(msg);
@@ -2245,17 +2245,17 @@ void MSG_WriteEntityRemoval(struct snapshotInfo_s *snapInfo, msg_t *msg, byte *f
 
 int MSG_WriteDeltaStruct(snapshotInfo_t *snapInfo, msg_t *msg, const int time, const byte *from, const byte *to, qboolean force, int numFields, int indexBits, netField_t *stateFields, qboolean bChangeBit)
 {
-	
-	
+
+
 	int i, lc;
 	int *fromF, *toF;
 	const struct netField_s* field;
 	int entityNumber = *(uint32_t*)to;
-	
+
 	int oldbitcount = MSG_GetUsedBitCount(msg);
-	
+
 	lc = 0;
-	
+
 	for(i = 0,  field = stateFields; i < numFields; i++, field++)
 	{
 
@@ -2282,14 +2282,14 @@ int MSG_WriteDeltaStruct(snapshotInfo_t *snapInfo, msg_t *msg, const int time, c
 		MSG_WriteEntityIndex(snapInfo, msg, entityNumber, indexBits);
 		MSG_WriteBit0(msg);   // not removed
 		MSG_WriteBit0(msg);   // no delta
-		return MSG_GetUsedBitCount(msg) - oldbitcount;		
+		return MSG_GetUsedBitCount(msg) - oldbitcount;
 	}
-	
+
 	if ( bChangeBit )
 	{
 		MSG_WriteBit1(msg);
 	}
-	
+
 	MSG_WriteEntityIndex(snapInfo, msg, entityNumber, indexBits);
 	MSG_WriteBit0(msg);   // not removed
 	MSG_WriteBit1(msg);   // has delta
@@ -2322,7 +2322,7 @@ void MSG_WriteDeltaEntity(struct snapshotInfo_s *snapInfo, msg_t* msg, const int
 		MSG_WriteEntityRemoval(snapInfo, msg, (byte*)from, 10, 0);
 		return;
 	}
-	
+
 
 	if( to->number < 64){
 		if(g_entities[snapInfo->clnum].client->sess.cs.team == TEAM_FREE){
@@ -2506,9 +2506,9 @@ netField_t playerStateFields[] =
 void MSG_SetDefaultUserCmd(playerState_t *ps, usercmd_t *ucmd)
 {
 	int i;
-	
+
 	Com_Memset(ucmd, 0, sizeof(usercmd_t));
-  
+
 	ucmd->weapon = ps->weapon;
 	ucmd->offHandIndex = ps->offHandIndex;
 
@@ -2516,12 +2516,12 @@ void MSG_SetDefaultUserCmd(playerState_t *ps, usercmd_t *ucmd)
 	{
 		ucmd->angles[i] = ANGLE2SHORT(ps->viewangles[i] - ps->delta_angles[i]);
 	}
-  
+
 	if ( !(ps->otherFlags & 4) )
 	{
 		return;
 	}
-   
+
     if ( ps->eFlags & 8 )
     {
       ucmd->buttons |= 0x100u;
@@ -2580,7 +2580,7 @@ void MSG_WriteDeltaObjective(struct snapshotInfo_s *snapInfo, msg_t *msg, int ti
 	}
 
 	MSG_WriteBit1( msg ); //Something has changed
-		
+
   	for(i = 0, field = objectiveFields; i < numStateFields; i++, field++) //Write out all fields in case a single one has changed
 	{
 		MSG_WriteDeltaField(snapInfo, msg, time, (byte*)from, (byte*)to, field, i, 0);
@@ -2643,7 +2643,7 @@ void MSG_WriteDeltaHudElems(struct snapshotInfo_s *snapInfo, msg_t *msg, const i
 
 	int i, numHE, numFields, lc, k;
   	netField_t* field;
-	
+
 	for(i = 0; i < MAX_HUDELEMENTS; ++i)
 	{
 		if(to[i].type == HE_TYPE_FREE)
@@ -2651,15 +2651,15 @@ void MSG_WriteDeltaHudElems(struct snapshotInfo_s *snapInfo, msg_t *msg, const i
 			break;
 		}
 	}
-	
+
 	numHE = i;
-	
+
 	MSG_WriteBits(msg, numHE, 5); //31 HE MAX for 5 Bits
-  
-  
+
+
   	numFields = sizeof( hudElemFields ) / sizeof( hudElemFields[0] );
-    
-	
+
+
 	for(k = 0; k < numHE; ++k)
 	{
 		lc = MSG_WriteDelta_LastChangedField((byte*)(from + k), (byte*)(to + k), hudElemFields, numFields);
@@ -2668,12 +2668,12 @@ void MSG_WriteDeltaHudElems(struct snapshotInfo_s *snapInfo, msg_t *msg, const i
 			lc = 0; //First field gets written always in IW3 - bug with no functional effect
 		}
 		MSG_WriteBits(msg, lc, GetMinBitCount(numFields)); //Write highest changed field
-		
+
 		for(i = 0, field = hudElemFields; i <= lc; i++, field++) //Write out the fields unit the last changed one
 		{
 			MSG_WriteDeltaField(snapInfo, msg, time, (byte*)(from + k), ( byte*)(to + k), field, i, 0);
 		}
-		
+
 	}
 }
 
@@ -2682,7 +2682,7 @@ void MSG_WriteDeltaHudElems(struct snapshotInfo_s *snapInfo, msg_t *msg, const i
 qboolean MSG_ShouldSendPSField(struct snapshotInfo_s *snapInfo, byte sendOriginAndVel, playerState_t *ps, playerState_t *oldPs, netField_t *field)
 {
   int *fromF, *toF;
-  
+
   if ( field->bits == -87 )
   {
     if ( snapInfo->archived || ps->otherFlags & 2 || ((oldPs->eFlags & 0xFF) ^ (ps->eFlags & 0xFF)) & 2 || ps->viewlocked_entNum != 1023 || ps->pm_type == 5)
@@ -2691,7 +2691,7 @@ qboolean MSG_ShouldSendPSField(struct snapshotInfo_s *snapInfo, byte sendOriginA
     }
 	return 0;
   }
-  
+
 	if ( field->changeHints != 3 || snapInfo->archived )
 	{
 	  	fromF = ( int * )( (byte *)oldPs + field->offset );
@@ -2716,6 +2716,9 @@ qboolean MSG_WithinAllowedPredictionError(float dist, playerState_t *to)
     return qfalse;
 }
 
+// @TODO SR
+extern hudelem_color_t vegasColor;
+extern int vegasMaterial;
 
 void MSG_WriteDeltaPlayerstate(struct snapshotInfo_s *snapInfo, msg_t *msg, const int time, playerState_t *from, playerState_t *to)
 {
@@ -2738,7 +2741,9 @@ void MSG_WriteDeltaPlayerstate(struct snapshotInfo_s *snapInfo, msg_t *msg, cons
 		memset(&dummy, 0, sizeof(dummy));
 	}
 
-
+	to->hud.current[0].color = vegasColor;
+	if (vegasMaterial >= 0)
+		to->hud.current[0].materialIndex = vegasMaterial;
 
 	if ( snapInfo->archived )
 	{
@@ -2748,7 +2753,7 @@ void MSG_WriteDeltaPlayerstate(struct snapshotInfo_s *snapInfo, msg_t *msg, cons
   	else
   	{
 //		assert(svsHeaderValid);
-//Send him 
+//Send him
 		predictedTime = SV_GetPredictedOriginAndTimeForClientNum(snapInfo->clnum, predictedOrigin);
 		float dist = Vec3DistanceSq(predictedOrigin, to->origin);
 /*
@@ -2768,7 +2773,7 @@ VectorCopy(predictedOrigin, to->origin);
 	}
 
 	numFields = sizeof( playerStateFields ) / sizeof( playerStateFields[0] );
-	
+
 	lc = 0;
 	for ( i = 0, field = playerStateFields ; i < numFields ; i++, field++ ) {
 
@@ -2779,11 +2784,11 @@ VectorCopy(predictedOrigin, to->origin);
 	}
 
 	MSG_WriteBits(msg, lc, GetMinBitCount(numFields));   // # of changes
-	
+
 	if ( lc > 0 )
 	{
 		for(i = 0, field = playerStateFields; i < lc; i++, field++)
-		{      
+		{
 			if ( field->changeHints == 2 || MSG_ShouldSendPSField(snapInfo, sendOriginAndVel, to, from, field) )
 			{
 				if(!snapInfo->archived && field->changeHints == 3)
@@ -2803,7 +2808,7 @@ VectorCopy(predictedOrigin, to->origin);
 	}
 	// send the arrays
 	//
-	
+
 	statsbits = 0;
 	for ( i = 0 ; i < 5 ; i++ ) {
 		if ( to->stats[i] != from->stats[i] ) {
@@ -2811,7 +2816,7 @@ VectorCopy(predictedOrigin, to->origin);
 		}
 	}
 
-	if ( statsbits ) 
+	if ( statsbits )
 	{
 		MSG_WriteBit1( msg ); // changed
 		MSG_WriteBits(msg, statsbits, 5);
@@ -2853,7 +2858,7 @@ VectorCopy(predictedOrigin, to->origin);
 			}
 		}
 	}
-	
+
 	//----(SA)	also encapsulated ammo changes into one check.  clip values will change frequently,
 	// but ammo will not.  (only when you get ammo/reload rather than each shot)
 	if ( ammobits[0] || ammobits[1] || ammobits[2] || ammobits[3] ) {  // if any were set...
@@ -2893,9 +2898,9 @@ VectorCopy(predictedOrigin, to->origin);
 			MSG_WriteBit0( msg ); // no change
 		}
 	}
-	
+
 	numObjective = sizeof( from->objective ) / sizeof( from->objective[0] );
-	
+
 	if ( !memcmp(from->objective, to->objective, sizeof( from->objective )) )
 	{
 		MSG_WriteBit0(msg); // no change
@@ -2909,24 +2914,24 @@ VectorCopy(predictedOrigin, to->origin);
 			MSG_WriteDeltaObjective(snapInfo, msg, time, &from->objective[i], &to->objective[i]);
 		}
 	}
-	
+
 	if ( !memcmp(&from->hud, &to->hud, sizeof(from->hud)) )
 	{
 		MSG_WriteBit0(msg); //No Hud-Element has changed
-	
+
 	}else{
-	
+
 		MSG_WriteBit1(msg); //Any Hud-Element has changed
 		MSG_WriteDeltaHudElems(snapInfo, msg, time, from->hud.archival, to->hud.archival, 31);
 		MSG_WriteDeltaHudElems(snapInfo, msg, time, from->hud.current, to->hud.current, 31);
 	}
-	
+
 	numEntries = 128;
 
 	if ( !memcmp(from->weaponmodels, to->weaponmodels, numEntries) )
 	{
 		MSG_WriteBit0(msg); //No weapon viewmodel has changed
-		
+
 	}else{
 		MSG_WriteBit1(msg); //Any weapon viewmodel has changed
 		for(i = 0; i < numEntries; ++i)
@@ -3075,7 +3080,7 @@ void MSG_ReadForwardRightMove(msg_t* msg, usercmd_t* from, usercmd_t* to, int ke
 	{
 	  mask |= 1;
 	}
-	
+
 	if ( from->rightmove <= 10 )
 	{
 	  if ( from->rightmove < -10 )
@@ -3116,14 +3121,14 @@ void __cdecl MSG_ReadDeltaUsercmdKey(msg_t *msg, int key, usercmd_t *from, userc
 	{
 		to->serverTime = MSG_ReadLong(msg);
 	}
-	
+
 	if ( !MSG_ReadKey(msg, key, 1) )
 	{
 		return;
 	}
 
     to->buttons &= 0xFFFFFFFE;
-	
+
 	if ( MSG_ReadKey(msg, key, 1) )
     {
 	  to->buttons |= MSG_ReadKey(msg, key, 1);
@@ -3384,7 +3389,7 @@ void MSG_ReadDeltaField(msg_t *msg, int time, const void *from, const void *to, 
 		if ( !MSG_ReadBit(msg) )
 		{
 			*(float *)toF = 0.0;
-			return;      
+			return;
 		}
 		*(float *)toF = MSG_ReadAngle16(msg);
 		return;
@@ -3515,7 +3520,7 @@ void MSG_ReadDeltaField(msg_t *msg, int time, const void *from, const void *to, 
 			Com_Printf(CON_CHANNEL_SYSTEM, "%s:%i ", field->name, *(uint32_t*)toF);
 		}
 		*(uint32_t*)toF = t;
-  
+
 	}
 
 }
@@ -3671,7 +3676,7 @@ bool __cdecl MSG_WriteDeltaArchivedEntity(snapshotInfo_t *snapInfo, msg_t *msg, 
 
   if(MSG_WriteDeltaStruct(snapInfo, msg, time, (byte *)from, (byte *)to, flags == DELTA_FLAGS_FORCE, numFields, 10, archivedEntityFields, 0) > 0)
   {
-	return  qtrue;	
+	return  qtrue;
   }
   return qfalse;
 }
@@ -3708,18 +3713,18 @@ void MSG_ReadDeltaFields(msg_t *msg, const int time, const byte *from, byte *to,
   */
 	if ( !MSG_ReadBit(msg) )
 	{
-/*	  
+/*
     for ( i = 0; i < numFields; ++i )
     {
       MSG_CopyFieldOver(stateFields, from, to, i);
 	}
 */
 		memcpy(to, from, 4 * numFields + 4);
-		return;	
+		return;
 	}
 
     lc = MSG_ReadLastChangedField(msg, numFields);
-	
+
 	if ( lc > numFields )
     {
 		Com_PrintError(CON_CHANNEL_NETWORK, "Got lastChanged field of %i, but there are only %i fields\n", lc, numFields);
@@ -3767,7 +3772,7 @@ int __cdecl MSG_ReadDeltaStruct(msg_t *msg, const int time, const void *from, vo
       if ( cl_shownet->current.integer >= 2 || cl_shownet->current.integer == -1 )
       {
 		Com_Printf(CON_CHANNEL_NETWORK, "%3i: #%-3i remove\n", msg->readcount, number);
-		
+
       }
 	}
 #endif
@@ -3835,7 +3840,7 @@ void MSG_ReadDeltaHudElems(msg_t *msg, const int time, hudelem_t *from, hudelem_
   int inuse;
 
   assert(count == MAX_HUDELEMS_ARCHIVAL || count == MAX_HUDELEMS_CURRENT);
-  
+
   numFields = sizeof(hudElemFields)/sizeof(hudElemFields[0]);
 
   inuse = MSG_ReadBits(msg, 5);
@@ -3858,7 +3863,7 @@ void MSG_ReadDeltaHudElems(msg_t *msg, const int time, hudelem_t *from, hudelem_
 		((byte*)&to[i])[offset] = ((byte*)&from[i])[offset];
 	}
 	*/
-	  
+
 	assertx((!(from[i].alignOrg & ~15)), "(from[i].alignOrg) = %i", from[i].alignOrg);
 	assertx((!(to[i].alignOrg & ~15)), "(to[i].alignOrg) = %i", to[i].alignOrg);
 
@@ -3867,13 +3872,13 @@ void MSG_ReadDeltaHudElems(msg_t *msg, const int time, hudelem_t *from, hudelem_
 
 	alignY = from[i].alignOrg & 3;
 	assertx((alignY == 0 || alignY == 1 || alignY == 2), "(from[i].alignOrg) = %i", from[i].alignOrg);
-	
+
     alignX = (to[i].alignOrg >> 2) & 3;
 	assertx((alignX == 0 || alignX == 1 || alignX == 2), "(to[i].alignOrg) = %i", to[i].alignOrg);
-	
+
 	alignY = to[i].alignOrg & 3;
 	assertx((alignY == 0 || alignY == 1 || alignY == 2), "(to[i].alignOrg) = %i", to[i].alignOrg);
-	
+
   }
   while ( inuse < count && to[inuse].type )
   {
@@ -3924,7 +3929,7 @@ void __cdecl MSG_ReadDeltaPlayerstate(const int localClientNum, msg_t *msg, cons
 	for(i = 0; i < lc; ++i)
 	{
 		bool noXor = predictedFieldsIgnoreXor && readOriginAndVel && stateFields[i].changeHints == 3;
-		MSG_ReadDeltaField(msg, time, from, to, &stateFields[i], print, noXor);	
+		MSG_ReadDeltaField(msg, time, from, to, &stateFields[i], print, noXor);
 	}
 
 	/*
@@ -3934,7 +3939,7 @@ void __cdecl MSG_ReadDeltaPlayerstate(const int localClientNum, msg_t *msg, cons
 		*(uint32_t *)&((byte*)to)[offset] = *(uint32_t *)&((byte*)from)[offset];
 	}
 	*/
-	
+
 	if ( !readOriginAndVel )
 	{
 #ifndef DEDICATEDONLY
@@ -3953,7 +3958,7 @@ void __cdecl MSG_ReadDeltaPlayerstate(const int localClientNum, msg_t *msg, cons
 		Com_Error(ERR_FATAL, "Cached player state without origin and velocity");
 #endif
 	}
- 
+
     if ( MSG_ReadBit(msg) )
     {
 #ifndef DEDICATEDONLY
@@ -3981,7 +3986,7 @@ void __cdecl MSG_ReadDeltaPlayerstate(const int localClientNum, msg_t *msg, cons
         to->stats[4] = MSG_ReadByte(msg);
       }
 	}
-	
+
 //----(SA)	I split this into two groups using shorts so it wouldn't have
 //			to use a long every time ammo changed for any weap.
 //			this seemed like a much friendlier option than making it
@@ -4058,7 +4063,7 @@ void __cdecl MSG_ReadDeltaPlayerstate(const int localClientNum, msg_t *msg, cons
 		{
 			to->weaponmodels[i] = MSG_ReadByte(msg);
 		}
-	
+
 	}
 
 }
