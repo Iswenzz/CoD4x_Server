@@ -340,9 +340,6 @@ qboolean Netchan_TransmitNextFragment( netchan_t *chan ) {
 	return sendsucc;
 }
 
-
-
-
 /*
 ===============
 Netchan_Transmit

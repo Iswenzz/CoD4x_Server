@@ -1,0 +1,43 @@
+cmake_minimum_required(VERSION 3.16.0)
+project(SR VERSION 1.0.0 LANGUAGES CXX)
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_FLAGS "-m32 -Wall -msse2 -mfpmath=sse -fno-omit-frame-pointer -fno-pie -O1")
+
+# NASM
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+	set(CMAKE_ASM_NASM_FLAGS "-dWin32 --prefix _")
+	set(CMAKE_ASM_NASM_OBJECT_FORMAT "win32")
+else()
+	set(CMAKE_ASM_NASM_OBJECT_FORMAT "elf32")
+endif()
+enable_language(ASM_NASM)
+
+# CPack
+set(CPACK_PROJECT_NAME ${PROJECT_NAME})
+set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
+set(CPACK_GENERATOR 7Z)
+include(CPack)
+
+# Conan
+include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+conan_basic_setup()
+
+# Tests
+if(ENABLE_TESTING)
+	include(CTest)
+	add_executable(SR.Tests)
+	target_link_libraries(SR.Tests PUBLIC ${CONAN_LIBS} SR)
+	add_test(NAME Tests COMMAND SR.Tests)
+endif()
+
+# Build
+add_subdirectory(src)
+
+set_target_properties(SR PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ../../../../lib)
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${SOURCES})
+
+# Pack
+install(TARGETS SR LIBRARY DESTINATION lib)
+install(DIRECTORY src/ DESTINATION lib/include/SR
+    FILES_MATCHING PATTERN "*.hpp" PATTERN "__test__" EXCLUDE)
