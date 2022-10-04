@@ -32,9 +32,15 @@ if(ENABLE_TESTING)
 endif()
 
 # Build
-add_subdirectory(src)
+add_library(SR)
 
-set_target_properties(SR PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ../../../../lib)
+add_subdirectory(pmove)
+
+target_sources(SR PUBLIC sr.hpp)
+target_include_directories(SR PUBLIC . ..)
+
+get_target_property(SOURCES SR SOURCES)
+set_target_properties(SR PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ../../../lib)
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${SOURCES})
 
 # Pack
