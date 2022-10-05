@@ -24,6 +24,7 @@ typedef struct
 extern sr_t sr;
 
 void SR_Init();
+void SR_Initialize();
 void PlayerCmd_SurfaceFlags(scr_entref_t num);
 void PlayerCmd_GetViewHeightLerpDown(scr_entref_t num);
 void PlayerCmd_GetViewHeightLerpTarget(scr_entref_t num);

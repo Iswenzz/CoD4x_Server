@@ -5,10 +5,6 @@
 #include "q_shared.h"
 #include "server.h"
 
-extern "C" {
-	#include "sr.h"
-}
-
 #define PMF_JUMPING 0x4000
 #define PMF_LADDER 0x8
 #define JUMP_LAND_SLOWDOWN_TIME 1800
@@ -20,7 +16,7 @@ cvar_t* jump_ladderPushVel;
 cvar_t* jump_spreadAdd;
 
 extern "C" float Dirty_GetJumpHeight(unsigned int num);
-
+extern "C" void Jump_UpdateSurface(playerState_t* ps, pml_t* pml);
 
 
 __cdecl __optimize3 float Jump_GetHeight( playerState_t *ps) {
@@ -269,7 +265,7 @@ qboolean __cdecl Jump_Check(pmove_t *pm, pml_t *pml)
   ps = pm->ps;
   assert(ps);
 
-  sr.clients[ps->clientNum].surfaceFlags = pml->groundTrace.sflags;
+  Jump_UpdateSurface(ps, pml);
 
   if ( ps->pm_flags & 0x80000 )
   {

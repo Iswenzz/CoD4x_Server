@@ -50,6 +50,11 @@ namespace Iswenzz::SR::CoD4x
 		return extendedMovementControl ? svs.clients[num].jumpHeight : jump_height->value;
 	}
 
+	void PMove::JumpUpdateSurface(playerState_s *ps, pml_t *pml)
+	{
+		sr.clients[ps->clientNum].surfaceFlags = pml->groundTrace.sflags;
+	}
+
 	void PMove::StuckInClient(gentity_t* gen) { }
 }
 
@@ -60,4 +65,5 @@ C_WRAPPER(PMove::ExtendedResetState, void Pmove_ExtendedResetState(), ());
 C_WRAPPER(PMove::ExtendedTurnOn, void Pmove_ExtendedTurnOn(), ());
 C_WRAPPER(PMove::GetSpeed, OPTIMIZE3 int Pmove_GetSpeed(playerState_t *ps), (ps));
 C_WRAPPER(PMove::GetJumpHeight, float Dirty_GetJumpHeight(unsigned int num), (num));
+C_WRAPPER(PMove::JumpUpdateSurface, void Jump_UpdateSurface(playerState_s *ps, pml_t *pml), (ps, pml));
 C_WRAPPER(PMove::StuckInClient, OPTIMIZE3 void StuckInClient(gentity_t* gen), (gen));

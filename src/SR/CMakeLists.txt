@@ -34,9 +34,10 @@ endif()
 # Build
 add_library(SR)
 
+add_subdirectory(commands)
 add_subdirectory(pmove)
 
-target_sources(SR PUBLIC sr.hpp)
+target_sources(SR PUBLIC sr.hpp sr.cpp)
 target_include_directories(SR PUBLIC . ..)
 
 get_target_property(SOURCES SR SOURCES)
