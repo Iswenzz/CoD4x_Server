@@ -1,18 +1,16 @@
 #include "Player.hpp"
 #include <sr.h>
+#include <memory>
 
 namespace Iswenzz::SR::CoD4x
 {
-	PlayerCommands::PlayerCommands()
+	void PlayerCommands::Register()
 	{
-		// auto a = std::function(SurfaceFlags);
-		auto a = std::mem_fn(SurfaceFlags);
-		struct std::_Mem_fn<void (Iswenzz::SR::CoD4x::PlayerCommands::*)(scr_entref_t num)> = a;
-		// Method("surfaceflags", std::bind(SurfaceFlags), false);
-		// Method("getviewheightlerpdown", GetViewHeightLerpDown, false);
-		// Method("getviewheightlerptarget", GetViewHeightLerpTarget, false);
-		// Method("getviewheightlerptime", GetViewHeightLerpTime, false);
-		// Method("getdamagetimer", GetDamageTimer, false);
+		Scr_AddMethod("surfaceflags", SurfaceFlags, qfalse);
+		Scr_AddMethod("getviewheightlerpdown", GetViewHeightLerpDown, qfalse);
+		Scr_AddMethod("getviewheightlerptarget", GetViewHeightLerpTarget, qfalse);
+		Scr_AddMethod("getviewheightlerptime", GetViewHeightLerpTime, qfalse);
+		Scr_AddMethod("getdamagetimer", GetDamageTimer, qfalse);
 	}
 
 	void PlayerCommands::SurfaceFlags(scr_entref_t num)

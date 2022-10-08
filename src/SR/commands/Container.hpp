@@ -1,9 +1,6 @@
 #pragma once
 #include "Command.hpp"
 
-#include <memory>
-#include <vector>
-
 namespace Iswenzz::SR::CoD4x
 {
 	/**
@@ -15,9 +12,6 @@ namespace Iswenzz::SR::CoD4x
 		/**
 		 * @brief Register commands.
 		 */
-		void Register();
-
-	private:
-		std::vector<std::unique_ptr<Command>> Commands{};
+		static void Register();
 	};
 }
