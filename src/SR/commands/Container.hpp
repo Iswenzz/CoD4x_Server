@@ -1,7 +1,7 @@
 #pragma once
 #include "Command.hpp"
 
-namespace Iswenzz::SR::CoD4x
+namespace Iswenzz::CoD4x
 {
 	/**
 	 * @brief Commands registration container.

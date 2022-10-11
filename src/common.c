@@ -60,7 +60,6 @@
 #include "tests.h"
 #include "null_client.h"
 #include "db_load.h"
-#include "sr.h"
 
 #include <string.h>
 #include <setjmp.h>
@@ -683,66 +682,51 @@ void Com_Init(char* commandLine){
 
 	mvabuf;
 
-    unsigned int	qport;
+    unsigned int qport;
 
     jmp_buf* abortframe = (jmp_buf*)Sys_GetValue(2);
 
-    if(setjmp(*abortframe)){
+    if (setjmp(*abortframe))
         Sys_Error(va("Error during Initialization:\n%s\n", com_errorMessage));
-    }
     if(com_errorEntered) Com_Error(ERR_FATAL,"Recursive error");
 
     Com_Printf(CON_CHANNEL_SYSTEM,"%s %s %s build %i %s\n", GAME_STRING,Q3_VERSION,PLATFORM_STRING, Sys_GetBuild(), __DATE__);
 
-
     Cbuf_Init();
-
     Cmd_Init();
-
     Com_InitEventQueue();
-
     Com_ParseCommandLine(commandLine);
     Com_StartupVariable(NULL);
-
     Com_InitCvars();
 
     Cvar_Init();
-
     Sec_Init();
-
 	Com_InitZoneMemory();
-
-	FS_InitCvars(); //Needed for autoupdate
-
+	FS_InitCvars(); // Needed for autoupdate
     Sys_Init();
 	NET_Init();
 
 	Com_DownloadAndExecGlobalConfig();
-
-    // Sec_Update( qfalse );
-
+    // Sec_Update(qfalse);
     FS_InitFilesystem();
-
     Win_InitLocalization();
 
-    if(FS_SV_FileExists("securemode"))
-    {
+    if (FS_SV_FileExists("securemode"))
         com_securemode = qtrue;
-    }
 
-    Cbuf_AddText( "exec default_mp.cfg\n");
-    Cbuf_Execute( ); // Always execute after exec to prevent text buffer overflowing
+    Cbuf_AddText("exec default_mp.cfg\n");
+    Cbuf_Execute(); // Always execute after exec to prevent text buffer overflowing
 
-/*
-    Good bye
-    With broken cvars we kinda also broke the query limiting which gets happy abused now.
-    The q3server_config.cfg contains now crap values. To fix this I decided to no longer execute it on startup.
-    If you need it add to commandline +exec q3server_config.cfg
-    However this file gets still written so you can still use it if needed when you exec it on commandline
+	/*
+		Good bye
+		With broken cvars we kinda also broke the query limiting which gets happy abused now.
+		The q3server_config.cfg contains now crap values. To fix this I decided to no longer execute it on startup.
+		If you need it add to commandline +exec q3server_config.cfg
+		However this file gets still written so you can still use it if needed when you exec it on commandline
 
-    Cbuf_AddText( "exec " Q3CONFIG_CFG "\n");
-    Cbuf_Execute( ); // Always execute after exec to prevent text buffer overflowing
-*/
+		Cbuf_AddText("exec " Q3CONFIG_CFG "\n");
+		Cbuf_Execute( ); // Always execute after exec to prevent text buffer overflowing
+	*/
     if(com_securemode)
     {
         Cvar_SetStringByName("sv_democompletedCmd", "");
@@ -753,9 +737,7 @@ void Com_Init(char* commandLine){
     }
 
     Com_StartupVariable(NULL);
-
     Cvar_RegisterString ("_CoD4 X Site", "http://cod4x.ovh", CVAR_ROM | CVAR_SERVERINFO , "");
-
     cvar_modifiedFlags &= ~CVAR_ARCHIVE;
 
     if (com_developer && com_developer->integer)
@@ -769,11 +751,10 @@ void Com_Init(char* commandLine){
     Cmd_AddCommand ("quit", Com_Quit_f);
     Cmd_AddCommand ("writeconfig", Com_WriteConfig_f );
 
-//    Com_AddLoggingCommands();
-//    HL2Rcon_AddSourceAdminCommands();
+	// Com_AddLoggingCommands();
+	// HL2Rcon_AddSourceAdminCommands();
 
     Com_UpdateRealtime();
-
     PMem_Init();
 
     Com_RandomBytes( (byte*)&qport, sizeof(int) );
@@ -781,65 +762,50 @@ void Com_Init(char* commandLine){
 	Huffman_InitMain();
 
     PHandler_Init();
-
     SV_Init();
 
     com_frameTime = Sys_Milliseconds();
 
     NV_LoadConfig();
     Cbuf_Execute( );
-
-
-
     HL2Rcon_Init( );
-/*
-    if(sv_webadmin->boolean)
-    {
-        HTTPServer_Init();
-    }
-*/
+	/*
+		if (sv_webadmin->boolean)
+			HTTPServer_Init();
+	*/
     Auth_Init( );
-
     AddRedirectLocations( );
-
 
     int msec = 0;
 
-//    XAssets_PatchLimits();  //Patch several asset-limits to higher values
     SL_Init();
     Swap_Init();
-
     CCS_InitConstantConfigStrings();
 
-    if(useFastFile->boolean){
-
+    if (useFastFile->boolean)
+	{
         PMem_Init();
-
         DB_SetInitializing( qtrue );
 
         Com_Printf(CON_CHANNEL_SYSTEM,"begin $init\n");
-
         msec = Sys_Milliseconds();
 
         PMem_BeginAlloc("$init", qtrue, TRACK_MISC);
         DB_InitThread();
     }
-//    Con_InitChannels();
+	// Con_InitChannels();
 
-    if(!useFastFile->boolean) SEH_UpdateLanguageInfo();
+    if (!useFastFile->boolean)
+		SEH_UpdateLanguageInfo();
 
     Com_InitHunkMemory();
-
     Hunk_InitDebugMemory();
-
     Scr_InitVariables();
-
-    Scr_Init(); //VM_Init
+    Scr_Init(); // VM_Init
 
     Scr_Settings(com_logfile->integer || com_developer->integer ,com_developer_script->integer, com_developer->integer);
 
     XAnimInit();
-
     DObjInit();
 
     PMem_EndAlloc("$init", qtrue);
@@ -855,32 +821,25 @@ void Com_Init(char* commandLine){
 
 #ifdef PUNKBUSTER
     Com_AddRedirect(PbCaptureConsoleOutput_wrapper);
-    if(!PbServerInitialize()){
+    if (!PbServerInitialize())
         Com_Printf(CON_CHANNEL_SYSTEM,"Unable to initialize PunkBuster.  PunkBuster is disabled.\n");
-    }
 #endif
-
 
     Com_Printf(CON_CHANNEL_SYSTEM,"--- Common Initialization Complete ---\n");
 
-
- HunkAvailMemDebug();
+	HunkAvailMemDebug();
     com_fullyInitialized = qtrue;
 
-    Com_AddStartupCommands( );
+    Com_AddStartupCommands();
 
     abortframe = (jmp_buf*)Sys_GetValue(2);
 
-    if(setjmp(*abortframe)){
+    if (setjmp(*abortframe))
         Sys_Error(va("Error during Initialization:\n%s\n", com_errorMessage));
-    }
     Tests_Init();
     CM_DebugInit();
 
-	SR_Init();
-
-
-//    Init_Watchdog();
+	SR_Initialize();
 }
 
 

@@ -1,15 +1,26 @@
 #pragma once
+#include "commands/Container.hpp"
+#include "player/Player.hpp"
 
-#define OPTIMIZE3 __optimize3
-#define CDECL __cdecl
-#define STDCALL __stdcall
-#define C_EXTERN extern "C"
+#include <array>
+#include <memory>
 
-#define C_WRAPPER(reference, definition, args) \
-C_EXTERN definition \
-{ \
-	return reference args; \
+namespace Iswenzz::CoD4x
+{
+	class Player;
+
+	class Server
+	{
+	public:
+		std::array<std::shared_ptr<Player>, MAX_CLIENTS> Players{};
+
+		/**
+		 * @brief Server module initialization.
+		 */
+		explicit Server();
+		~Server();
+	};
 }
 
-#define C_VARIABLE(definition) definition;
-
+using namespace Iswenzz::CoD4x;
+extern Server *SR;

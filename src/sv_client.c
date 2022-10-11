@@ -1242,11 +1242,11 @@ void SV_ClientEnterWorld( client_t *client, usercmd_t *cmd ) {
 		client->connectedTime = svs.time;
 	}
 	//Set gravity, speed... to system default
-	Pmove_ExtendedInitForClient(client);
+	// Pmove_ExtendedInitForClient(client);
 
 	HL2Rcon_EventClientEnterWorld( clientNum );
 	PHandler_Event(PLUGINS_ONCLIENTENTERWORLD, client);
-
+	InitializePlayer(client);
 }
 
 

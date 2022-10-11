@@ -37,7 +37,6 @@
 #include "cscr_stringlist.h"
 #include "bg.h"
 #include "client_dedicated.h"
-#include "sr.h"
 
 #include "sapi.h"
 #include <string.h>
@@ -622,7 +621,7 @@ void PlayerCmd_SetGravity(scr_entref_t arg)
         return;
     }
 
-    Pmove_ExtendedTurnOn();
+    // Pmove_ExtendedTurnOn();
 
     gentity->client->ps.gravity = gravity;
     SV_SendServerCommandNoLoss(&svs.clients[entityNum], va("v g_gravity \"%d\"", gravity));
@@ -744,7 +743,7 @@ void PlayerCmd_SetJumpHeight(scr_entref_t arg)
         return;
     }
 
-    Pmove_ExtendedTurnOn();
+    // Pmove_ExtendedTurnOn();
 
     svs.clients[entityNum].jumpHeight = height;
     SV_SendServerCommandNoLoss(&svs.clients[entityNum], va("v jump_height \"%d\"", height));
@@ -799,9 +798,8 @@ void PlayerCmd_SetMoveSpeed(scr_entref_t arg)
         return;
     }
 
-    Pmove_ExtendedTurnOn();
-
-    sr.clients[entityNum].playerMoveSpeed = speed;
+    // Pmove_ExtendedTurnOn();
+	Pmove_SetSpeed(entityNum, speed);
 }
 
 /*
@@ -1465,7 +1463,7 @@ Usage: float = pow(base <float>, exponent <float>);
 void GScr_Pow()
 {
     float base, exponent;
-    
+
     if (Scr_GetNumParam() != 2)
     {
         Scr_Error("Usage: pow(<float> ,<float>)");
@@ -1474,7 +1472,7 @@ void GScr_Pow()
 
     base = Scr_GetFloat(0);
     exponent = Scr_GetFloat(1);
-    
+
     Scr_AddFloat(powf(base, exponent));
 }
 
@@ -2011,13 +2009,13 @@ Usage: entity = AddTestClient()
 void GScr_SpawnBot()
 {
 	gentity_t *clEnt;
-	
+
 	if ( Scr_GetNumParam() == 1 )
         {
        	 	char *string = Scr_GetString( 0 );
 		char name[36];
 		int i, j;
-		
+
 		for( i = 0, j = 0; string[i] && j < sizeof(name) - 1; ++i )
 		{
 			if( (byte)string[i] >= 0x20 )
@@ -2027,12 +2025,12 @@ void GScr_SpawnBot()
 			}
 		}
 		name[j] = '\0';
-		
+
 		if ( strlen( name ) < 3 )
 		{
 			Scr_Error( "AddTestClient(): Name must be atleast 3 characters long\n" );
 		}
-		
+
 		clEnt = (gentity_t *)SV_AddBotClient( name );
         }
 	else
@@ -2231,7 +2229,7 @@ void HECmd_SetText(scr_entref_t entnum)
     game_hudelem_t *element = &g_hudelems[entnum.entnum];
 
     int cs_index = element->elem.text;
-	
+
     HudElem_ClearTypeSettings(element);
 
     /* Must be set to 0 before calling Scr_CanFreeLocalizedConfigString() */
@@ -3034,37 +3032,37 @@ qboolean GScr_UpdateTagInternal2(gentity_t *ent, unsigned int tagName, cached_ta
 void PlayerCmd_GetSpectatorClient(scr_entref_t arg)
 {
     gentity_t *gentity = NULL;
-    int entityNum = 0;		
-    mvabuf;		
-		
-    if (arg.classnum)		
-    {		
-        Scr_ObjectError("Not an entity");		
-    }		
-    else		
-    {		
+    int entityNum = 0;
+    mvabuf;
+
+    if (arg.classnum)
+    {
+        Scr_ObjectError("Not an entity");
+    }
+    else
+    {
         entityNum = arg.entnum;
-        gentity = &g_entities[entityNum];		
-		
-        if (!gentity->client)		
-        {		
-            Scr_ObjectError(va("Entity: %i is not a player", entityNum));		
-        }		
-    }		
-    if (Scr_GetNumParam())		
-    {		
-        Scr_Error("Usage: self getSpectatorClient()\n");		
-    }		
-		
-    // Player isn't spectating anyone.		
-    if (gentity->client->spectatorClient == -1)		
-    {		
-        Scr_AddUndefined();		
-    }		
-    else		
-    {		
-        Scr_AddEntity(&g_entities[gentity->client->spectatorClient]);		
-    }		
+        gentity = &g_entities[entityNum];
+
+        if (!gentity->client)
+        {
+            Scr_ObjectError(va("Entity: %i is not a player", entityNum));
+        }
+    }
+    if (Scr_GetNumParam())
+    {
+        Scr_Error("Usage: self getSpectatorClient()\n");
+    }
+
+    // Player isn't spectating anyone.
+    if (gentity->client->spectatorClient == -1)
+    {
+        Scr_AddUndefined();
+    }
+    else
+    {
+        Scr_AddEntity(&g_entities[gentity->client->spectatorClient]);
+    }
 }
 
 void PlayerCmd_SetVelocity(scr_entref_t arg)
@@ -3433,7 +3431,7 @@ void GScr_StrCtrlStrip()
 
 	char *string = Scr_GetString( 0 );
 	char buffer[ 1024 ];
-	
+
 	int i, j;
 	for( i = 0, j = 0; string[ i ]; ++i )
 	{
@@ -3444,7 +3442,7 @@ void GScr_StrCtrlStrip()
 		}
 	}
 	buffer[ j ] = '\0';
-	
+
 	Scr_AddString( buffer );
 }
 
@@ -3457,7 +3455,7 @@ void GScr_ToUpper()
 
 	char *string = Scr_GetString( 0 );
 	char buffer[ 1024 ];
-	
+
 	int i;
 	for( i = 0; string[ i ]; ++i )
 	{
@@ -3467,7 +3465,7 @@ void GScr_ToUpper()
 			buffer[ i ] = string[ i ];
 	}
 	buffer[ i ] = '\0';
-	
+
 	Scr_AddString( buffer );
 }
 

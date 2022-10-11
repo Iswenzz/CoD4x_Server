@@ -1,7 +1,7 @@
 #include "Container.hpp"
 #include "Player.hpp"
 
-namespace Iswenzz::SR::CoD4x
+namespace Iswenzz::CoD4x
 {
 	void CommandsContainer::Register()
 	{

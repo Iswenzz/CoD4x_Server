@@ -165,7 +165,7 @@ struct client_s
 	uint64_t		clanidPending;
 	uint64_t		playerid;
 	int			steamstatus;
-	int			isMember; //Steam group membership. 
+	int			isMember; //Steam group membership.
 	//If sv_steamgroup is set up this variable will be 0 if membership status is still unknown.
 	//It will be -1 if he is not a member or 1 if he is a member or 2 if he is an officer
 	int			mutelevel; //1 = voice blocked; 2 = chat and voice blocked
@@ -180,7 +180,7 @@ struct client_s
 	int			predictedOriginServerTime;
 
 	const char*		delayDropMsg;
-	char			userinfo[MAX_INFO_STRING];		// name, etc 
+	char			userinfo[MAX_INFO_STRING];		// name, etc
 	reliableCommands_t	reliableCommands[MAX_RELIABLE_COMMANDS];
 	int			reliableSequence;	// last added reliable message, not necesarily sent or acknowledged yet
 	int			reliableAcknowledge;	// last acknowledged reliable message
@@ -208,18 +208,18 @@ struct client_s
 	int			downloadSendTime;	// time we last got an ack from the client
 	char			wwwDownloadURL[MAX_OSPATH]; // URL from where the client should download the current file
 
-	qboolean		wwwDownload;		
-	qboolean		wwwDownloadStarted;	
-	qboolean		wwwDlAck;		
+	qboolean		wwwDownload;
+	qboolean		wwwDownloadStarted;
+	qboolean		wwwDlAck;
 	qboolean		wwwDl_failed;
 	int			nextReliableTime;	//  svs.time when another reliable command will be allowed
-	int			floodprotect;		
+	int			floodprotect;
 	int			lastPacketTime;		// svs.time when packet was last received
 	int			lastConnectTime;	// svs.time when connection started
 	int			nextSnapshotTime;	// send another snapshot when svs.time >= nextSnapshotTime
 	int			timeoutCount;
 	clientSnapshot_t	frames[PACKET_BACKUP];	//updates can be delta'd from here
-	int			ping;		
+	int			ping;
 	int			rate;		// bytes / second
 	int			snapshotMsec;	// requests a snapshot every snapshotMsec unless rate choked
 	int			unknown6;
@@ -452,7 +452,7 @@ typedef struct{//13F18F80
     int			nextSnapshotClients;
     entityState_t	*snapshotEntities;
     clientState_t	*snapshotClients;
-    svEntity_t		*svEntities;	
+    svEntity_t		*svEntities;
 
     vec3_t mapCenter;
     archivedEntity_t *cachedSnapshotEntities;
@@ -616,6 +616,8 @@ extern cvar_t* sv_maxDownloadRate;
 #ifdef __cplusplus
 extern "C"{
 #endif
+
+void InitializePlayer(client_t *cl);
 
 gentity_t *SV_GentityNum( int num );
 int SV_NumForGentity( gentity_t *ent );

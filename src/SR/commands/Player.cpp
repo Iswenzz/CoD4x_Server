@@ -1,8 +1,7 @@
 #include "Player.hpp"
-#include <sr.h>
-#include <memory>
+#include "SR.hpp"
 
-namespace Iswenzz::SR::CoD4x
+namespace Iswenzz::CoD4x
 {
 	void PlayerCommands::Register()
 	{
@@ -22,7 +21,7 @@ namespace Iswenzz::SR::CoD4x
 			Scr_ObjectError("not a client\n");
 			return;
 		}
-		Scr_AddInt(sr.clients[ent->client->ps.clientNum].surfaceFlags);
+		Scr_AddInt(SR->Players[ent->client->ps.clientNum]->surfaceFlags);
 	}
 
 	void PlayerCommands::GetViewHeightLerpDown(scr_entref_t num)

@@ -1,14 +1,26 @@
-#include "sr.hpp"
-#include "commands/Container.hpp"
+#include "SR.hpp"
 
-using namespace Iswenzz::SR::CoD4x;
+namespace Iswenzz::CoD4x
+{
+	Server::Server()
+	{
+		CommandsContainer::Register();
+	}
+
+	Server::~Server()
+	{
+
+	}
+}
+
+Server *SR;
 
 C_EXTERN void SR_Initialize()
 {
-	CommandsContainer::Register();
+	SR = new Server();
 }
 
 C_EXTERN void SR_Shutdown()
 {
-
+	SR->~Server();
 }
