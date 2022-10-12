@@ -8,7 +8,7 @@ C_EXTERN
 
 namespace Iswenzz::CoD4x
 {
-	class Player : public std::enable_shared_from_this<Player>
+	class Player
 	{
 	public:
 		std::unique_ptr<client_t> cl;

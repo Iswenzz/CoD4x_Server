@@ -4,7 +4,7 @@
 
 namespace Iswenzz::CoD4x
 {
-	PMove::PMove(std::shared_ptr<Player> player)
+	PMove::PMove(Player *player)
 	{
 		this->player = player;
 
@@ -50,13 +50,12 @@ C_EXTERN OPTIMIZE3 int Pmove_GetSpeed(playerState_t *ps)
 
 C_EXTERN void Jump_UpdateSurface(playerState_s *ps, pml_t *pml)
 {
-	// SR->Players[ps->clientNum]->pmove->JumpUpdateSurface(pml);
+	SR->Players[ps->clientNum]->pmove->JumpUpdateSurface(pml);
 }
 
 C_EXTERN float Dirty_GetJumpHeight(unsigned int num)
 {
-	// return SR->Players[num]->pmove->GetJumpHeight();
-	return 39;
+	return SR->Players[num]->pmove->GetJumpHeight();
 }
 
 C_EXTERN OPTIMIZE3 void StuckInClient(gentity_t* gen) { }

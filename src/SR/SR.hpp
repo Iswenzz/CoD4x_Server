@@ -7,8 +7,6 @@
 
 namespace Iswenzz::CoD4x
 {
-	class Player;
-
 	class Server
 	{
 	public:

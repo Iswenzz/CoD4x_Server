@@ -19,13 +19,13 @@ namespace Iswenzz::CoD4x
 	class PMove
 	{
 	public:
-		std::shared_ptr<Player> player;
+		Player *player;
 
 		/**
 		 * @brief Initialier a new PMove.
 		 * @param player - The player.
 		 */
-		PMove(std::shared_ptr<Player> player);
+		PMove(Player *player);
 		virtual ~PMove() = default;
 
 		/**

@@ -11,9 +11,7 @@ namespace Iswenzz::CoD4x
 
 	void Player::Initialize()
 	{
-		this->pmove = std::make_unique<PMove>(shared_from_this());
-
-		fprintf(stderr, "Player: %p\n", this);
+		this->pmove = std::make_unique<PMove>(this);
 
 		this->fps = 0;
 		this->frames = 0;
