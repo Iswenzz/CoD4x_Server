@@ -679,6 +679,7 @@ void SV_InitCvarsOnce( void );
 void SV_Init( void );
 
 __optimize2 __regparm1 qboolean SV_Frame( unsigned int usec );
+void SR_Frame();
 
 unsigned int SV_FrameUsec( void );
 

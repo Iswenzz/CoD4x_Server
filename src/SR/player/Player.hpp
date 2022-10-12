@@ -8,6 +8,9 @@ C_EXTERN
 
 namespace Iswenzz::CoD4x
 {
+	/**
+	 * @brief Player class.
+	 */
 	class Player
 	{
 	public:

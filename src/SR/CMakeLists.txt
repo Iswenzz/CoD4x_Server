@@ -35,6 +35,7 @@ endif()
 add_library(SR)
 
 add_subdirectory(commands)
+add_subdirectory(game)
 add_subdirectory(player)
 
 target_sources(SR PUBLIC SR.hpp SR.cpp Macros.hpp)

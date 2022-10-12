@@ -629,9 +629,10 @@ void Com_Quit_f( void ) {
 		NET_Shutdown();
 	}
 
-//	Sys_LeaveCriticalSection( CRITSECT_COM_ERROR );
+	SR_Shutdown();
 
-	Sys_Quit ();
+    // Sys_LeaveCriticalSection( CRITSECT_COM_ERROR );
+	Sys_Quit();
 }
 
 static void Com_InitCvars( void ){

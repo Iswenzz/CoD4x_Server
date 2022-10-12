@@ -1,4 +1,7 @@
 #pragma once
+#include "Macros.hpp"
+
+#include "game/Render.hpp"
 #include "commands/Container.hpp"
 #include "player/Player.hpp"
 
@@ -10,12 +13,13 @@ namespace Iswenzz::CoD4x
 	class Server
 	{
 	public:
+		std::unique_ptr<Render> Render;
 		std::array<std::shared_ptr<Player>, MAX_CLIENTS> Players{};
 
 		/**
 		 * @brief Server module initialization.
 		 */
-		explicit Server();
+		Server();
 		~Server();
 	};
 }
