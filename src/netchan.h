@@ -65,7 +65,7 @@ typedef struct {
 	unsigned short			upperqport;
 	// incoming fragment assembly buffer
 	int			fragmentSequence;
-	int			fragmentLength;	
+	int			fragmentLength;
 	byte		*fragmentBuffer; // Old: (0x30)
 	int			fragmentBufferSize;
 
@@ -97,6 +97,8 @@ qboolean NET_SendData( int sock, msg_t* msg);
 int NET_TcpReceiveData( int sock, msg_t* msg);
 void NET_CookieInit();
 int NET_CookieHash(netadr_t*);
+
+void NetchanDebugSize(int size);
 
 #ifdef __cplusplus
 }

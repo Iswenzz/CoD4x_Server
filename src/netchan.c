@@ -353,11 +353,7 @@ qboolean Netchan_Transmit( netchan_t *chan, int length, const byte *data ) {
 	qboolean sendsucc;
 	byte send_buf[MAX_PACKETLEN];
 
-	// @todo SR
-	// if (length >= 1050)
-	// 	fprintf(stderr, "YELLOW: %d\n", length);
-	// else if (length >= 200)
-	// 	fprintf(stderr, "PACKET: %d\n", length);
+	NetchanDebugSize(length);
 
 	if ( length > chan->unsentBufferSize ) {
 		Com_Error( ERR_DROP, "Netchan_Transmit: length = %i", length );

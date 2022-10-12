@@ -1,9 +1,11 @@
 #pragma once
 #include "Macros.hpp"
 
+#include "game/Debug.hpp"
 #include "game/Render.hpp"
 #include "commands/Container.hpp"
 #include "player/Player.hpp"
+#include "utils/Log.hpp"
 
 #include <array>
 #include <memory>

@@ -20,12 +20,13 @@ namespace Iswenzz::CoD4x
 	}
 }
 
-using namespace Iswenzz::CoD4x;
-
-C_EXTERN void InitializePlayer(client_t *cl)
+C_EXTERN
 {
-	auto player = std::make_shared<Player>(cl);
-	player->Initialize();
+	void InitializePlayer(client_t *cl)
+	{
+		auto player = std::make_shared<Player>(cl);
+		player->Initialize();
 
-	SR->Players[cl->gentity->client->ps.clientNum] = player;
+		SR->Players[cl->gentity->client->ps.clientNum] = player;
+	}
 }

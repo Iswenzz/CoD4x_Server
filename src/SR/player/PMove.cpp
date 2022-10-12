@@ -36,26 +36,27 @@ namespace Iswenzz::CoD4x
 	void PMove::StuckInClient() { }
 }
 
-using namespace Iswenzz::CoD4x;
-
-C_EXTERN void Pmove_SetSpeed(unsigned int num, int speed)
+C_EXTERN
 {
-	SR->Players[num]->speed = speed;
-}
+	void Pmove_SetSpeed(unsigned int num, int speed)
+	{
+		SR->Players[num]->speed = speed;
+	}
 
-C_EXTERN OPTIMIZE3 int Pmove_GetSpeed(playerState_t *ps)
-{
-	return SR->Players[ps->clientNum]->speed;
-}
+	OPTIMIZE3 int Pmove_GetSpeed(playerState_t *ps)
+	{
+		return SR->Players[ps->clientNum]->speed;
+	}
 
-C_EXTERN void Jump_UpdateSurface(playerState_s *ps, pml_t *pml)
-{
-	SR->Players[ps->clientNum]->pmove->JumpUpdateSurface(pml);
-}
+	void Jump_UpdateSurface(playerState_s *ps, pml_t *pml)
+	{
+		SR->Players[ps->clientNum]->pmove->JumpUpdateSurface(pml);
+	}
 
-C_EXTERN float Dirty_GetJumpHeight(unsigned int num)
-{
-	return SR->Players[num]->pmove->GetJumpHeight();
-}
+	float Dirty_GetJumpHeight(unsigned int num)
+	{
+		return SR->Players[num]->pmove->GetJumpHeight();
+	}
 
-C_EXTERN OPTIMIZE3 void StuckInClient(gentity_t* gen) { }
+	OPTIMIZE3 void StuckInClient(gentity_t* gen) { }
+}

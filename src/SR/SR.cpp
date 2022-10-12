@@ -6,6 +6,7 @@ namespace Iswenzz::CoD4x
 	{
 		Render = std::make_unique<class Render>();
 		CommandsContainer::Register();
+		Debug::Initialize();
 	}
 
 	Server::~Server()
