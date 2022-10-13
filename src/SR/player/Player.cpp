@@ -18,6 +18,11 @@ namespace Iswenzz::CoD4x
 		this->speed = 0;
 		this->surfaceFlags = 0;
 	}
+
+	void Player::Frame()
+	{
+
+	}
 }
 
 C_EXTERN

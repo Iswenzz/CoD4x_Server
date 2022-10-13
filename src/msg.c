@@ -2716,10 +2716,6 @@ qboolean MSG_WithinAllowedPredictionError(float dist, playerState_t *to)
     return qfalse;
 }
 
-// @TODO SR
-extern hudelem_color_t vegasColor;
-extern int vegasMaterial;
-
 void MSG_WriteDeltaPlayerstate(struct snapshotInfo_s *snapInfo, msg_t *msg, const int time, playerState_t *from, playerState_t *to)
 {
 	qboolean forceSend;
@@ -2741,9 +2737,10 @@ void MSG_WriteDeltaPlayerstate(struct snapshotInfo_s *snapInfo, msg_t *msg, cons
 		memset(&dummy, 0, sizeof(dummy));
 	}
 
-	to->hud.current[0].color = vegasColor;
-	if (vegasMaterial >= 0)
-		to->hud.current[0].materialIndex = vegasMaterial;
+	// @todo SR
+	// to->hud.current[0].color = vegasColor;
+	// if (vegasMaterial >= 0)
+	// 	to->hud.current[0].materialIndex = vegasMaterial;
 
 	if ( snapInfo->archived )
 	{

@@ -35,6 +35,7 @@
 #include "scr_vm.h"
 #include "sys_main.h"
 #include "sys_thread.h"
+#include "cscr_stringlist.h"
 
 botlib_export_t *botlib_export;
 
@@ -140,7 +141,7 @@ char *__cdecl SV_AllocSkelMemory(unsigned int size)
   static int warnCount_2;
   char *result;
 
-  assert(size > 0); 
+  assert(size > 0);
 
   size = (size + 15) & 0xFFFFFFF0;
 
@@ -903,4 +904,12 @@ int SV_NumForSvEntity( svEntity_t *svEnt ) {
 
 	num = svEnt - sv.svEntities;
 	return num;
+}
+
+int SV_FindMaterial(const char* name)
+{
+	int stringIndex = SL_FindString(name);
+	if (stringIndex > 0)
+		return G_MaterialIndex(name);
+	return -1;
 }

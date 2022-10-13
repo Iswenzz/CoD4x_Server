@@ -5,6 +5,8 @@ namespace Iswenzz::CoD4x
 	Server::Server()
 	{
 		Render = std::make_unique<class Render>();
+		Vegas = std::make_unique<class Vegas>();
+
 		CommandsContainer::Register();
 		Debug::Initialize();
 	}

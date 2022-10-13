@@ -26,6 +26,7 @@ unsigned int __cdecl SL_ConvertFromString(const char *str);
 unsigned int __cdecl SL_GetString_(const char *str, unsigned int user, int type);
 void SL_SetScriptCompile(bool active);
 void __cdecl SL_ShutdownSystem(unsigned int user);
+int G_MaterialIndex(char const* name);
 
 #ifdef __cplusplus
 };

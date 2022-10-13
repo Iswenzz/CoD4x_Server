@@ -36,6 +36,7 @@ add_library(SR)
 
 add_subdirectory(commands)
 add_subdirectory(game)
+add_subdirectory(net)
 add_subdirectory(player)
 add_subdirectory(utils)
 

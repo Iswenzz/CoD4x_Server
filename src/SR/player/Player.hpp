@@ -34,5 +34,10 @@ namespace Iswenzz::CoD4x
 		 * @brief Initialize the player.
 		 */
 		void Initialize();
+
+		/**
+		 * @brief Player render frame.
+		 */
+		void Frame();
 	};
 }
