@@ -2737,11 +2737,6 @@ void MSG_WriteDeltaPlayerstate(struct snapshotInfo_s *snapInfo, msg_t *msg, cons
 		memset(&dummy, 0, sizeof(dummy));
 	}
 
-	// @todo SR
-	// to->hud.current[0].color = vegasColor;
-	// if (vegasMaterial >= 0)
-	// 	to->hud.current[0].materialIndex = vegasMaterial;
-
 	if ( snapInfo->archived )
 	{
 	    sendOriginAndVel = 1;

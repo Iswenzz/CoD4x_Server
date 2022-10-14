@@ -39,5 +39,11 @@ namespace Iswenzz::CoD4x
 		 * @brief Player render frame.
 		 */
 		void Frame();
+
+		/**
+		 * @brief Get the last player frame.
+		 * @return clientSnapshot_t*
+		 */
+		clientSnapshot_t *GetFrame();
 	};
 }

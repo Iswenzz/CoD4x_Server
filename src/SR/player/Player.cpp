@@ -21,7 +21,12 @@ namespace Iswenzz::CoD4x
 
 	void Player::Frame()
 	{
+		SR->Vegas->Frame(this);
+	}
 
+	clientSnapshot_t *Player::GetFrame()
+	{
+		return &cl->frames[cl->netchan.outgoingSequence & PACKET_MASK];
 	}
 }
 

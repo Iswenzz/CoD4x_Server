@@ -6,24 +6,21 @@ namespace Iswenzz::CoD4x
 	Vegas::Vegas() : TCP(200)
 	{
 		NET_TCPAddEventType(OnMessage, OnConnect, OnDisconnect, ServiceID);
+		IsEnabled = Cvar_RegisterBool("vegas", qfalse, 0, "Allow vegas rendering.");
 	}
 
 	qboolean Vegas::Connect(netadr_t *from, msg_t *msg)
 	{
-		Log::WriteLine("connected");
-
 		return qtrue;
 	}
 
 	void Vegas::Disconnect(netadr_t *from)
 	{
-		Log::WriteLine("disconnected");
+
 	}
 
 	int Vegas::Message(netadr_t *from, msg_t *msg)
 	{
-		Log::WriteLine("message");
-
 		MSG_BeginReading(msg);
 
 		char id[30];
@@ -48,6 +45,16 @@ namespace Iswenzz::CoD4x
 		Color.split = { r, g, b, a };
 		Material = SV_FindMaterial(name);
 		return 0;
+	}
+
+	void Vegas::Frame(Player *player)
+	{
+		if (!IsEnabled->boolean) return;
+
+		clientSnapshot_t *frame = player->GetFrame();
+
+		frame->ps.hud.current[0].color = Color;
+		frame->ps.hud.current[0].materialIndex = Material;
 	}
 }
 

@@ -6,7 +6,10 @@ namespace Iswenzz::CoD4x
 	void Render::Frame()
 	{
 		for (const auto &player : SR->Players)
-			player->Frame();
+		{
+			if (player)
+				player->Frame();
+		}
 	}
 }
 

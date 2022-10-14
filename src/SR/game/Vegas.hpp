@@ -1,5 +1,11 @@
 #pragma once
 #include "net/TCP.hpp"
+#include "player/Player.hpp"
+
+C_EXTERN
+{
+	#include <cvar.h>
+}
 
 namespace Iswenzz::CoD4x
 {
@@ -9,6 +15,8 @@ namespace Iswenzz::CoD4x
 	class Vegas : public TCP
 	{
 	public:
+		inline static cvar_t* IsEnabled;
+
 		hudelem_color_t Color = { 0 };
 		int Material = 0;
 
@@ -39,6 +47,12 @@ namespace Iswenzz::CoD4x
 		 * @return int
 		 */
 		int Message(netadr_t *from, msg_t *msg) override;
+
+		/**
+		 * @brief Render vegas to the player.
+		 * @param player - The player.
+		 */
+		void Frame(Player *player);
 	};
 
 	C_EXTERN
