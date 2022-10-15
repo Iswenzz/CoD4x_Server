@@ -1,4 +1,5 @@
 [requires]
+CoD4DM1/1.0.1
 boost/1.78.0
 
 [options]
