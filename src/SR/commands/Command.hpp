@@ -8,8 +8,6 @@ C_EXTERN
 
 namespace Iswenzz::CoD4x
 {
-	/**
-	 * @brief Command abstract class.
-	 */
+	/// @brief Command abstract class.
 	class Command { };
 }

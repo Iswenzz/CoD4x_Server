@@ -53,9 +53,6 @@ CoD4x_Server.includes
 build_win32_PE_nopause.cmd
 build_linux32_ELF_nopause.sh
 
-#fraggy: ignore .vscode
-.vscode/
-
 #T-Max: I don't want to have this plugin inside main project.
 plugins/mysql
 

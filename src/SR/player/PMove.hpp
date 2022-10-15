@@ -13,46 +13,32 @@ namespace Iswenzz::CoD4x
 {
 	class Player;
 
-	/**
-	 * @brief Player movement.
-	 */
+	/// @brief Player movement.
 	class PMove
 	{
 	public:
 		Player *player;
 
-		/**
-		 * @brief Initialier a new PMove.
-		 * @param player - The player.
-		 */
+		/// @brief Initialier a new PMove.
+		/// @param player - The player.
 		PMove(Player *player);
 		virtual ~PMove() = default;
 
-		/**
-		 * @brief Set the player speed.
-		 * @param speed - The speed.
-		 */
+		/// @brief Set the player speed.
+		/// @param speed - The speed.
 		void SetSpeed(int speed);
 
-		/**
-		 * @brief Get the player speed.
-		 */
+		/// @brief Get the player speed.
 		int GetSpeed();
 
-		/**
-		 * @brief Get the player jump height.
-		 */
+		/// @brief Get the player jump height.
 		float GetJumpHeight();
 
-		/**
-		 * @brief Update the player surface type on jump.
-		 * @param pml - The player movement.
-		 */
+		/// @brief Update the player surface type on jump.
+		/// @param pml - The player movement.
 		void JumpUpdateSurface(pml_t *pml);
 
-		/**
-		 * @brief Entity stuck in client.
-		 */
+		/// @brief Entity stuck in client.
 		void StuckInClient();
 	};
 }

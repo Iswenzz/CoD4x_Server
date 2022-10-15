@@ -22,9 +22,7 @@ namespace Iswenzz::CoD4x
 		std::unique_ptr<Vegas> Vegas;
 		std::unique_ptr<Demo> Speedrun;
 
-		/**
-		 * @brief Server module initialization.
-		 */
+		/// @brief Server module initialization.
 		Server();
 		~Server();
 	};

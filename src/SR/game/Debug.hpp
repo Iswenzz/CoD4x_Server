@@ -13,15 +13,11 @@ namespace Iswenzz::CoD4x
 	public:
 		inline static cvar_t* PacketSize;
 
-		/**
-		 * @brief Initialize debug.
-		 */
+		/// @brief Initialize debug.
 		static void Initialize();
 
-		/**
-		 * @brief Debug packet size.
-		 * @param size - The packet size.
-		 */
+		/// @brief Debug packet size.
+		/// @param size - The packet size.
 		static void NetchanPacketSize(int size);
 	};
 }

@@ -8,9 +8,7 @@ C_EXTERN
 
 namespace Iswenzz::CoD4x
 {
-	/**
-	 * @brief Player class.
-	 */
+	/// @brief Player class.
 	class Player
 	{
 	public:
@@ -23,27 +21,19 @@ namespace Iswenzz::CoD4x
 		int speed = 0;
 		int surfaceFlags = 0;
 
-		/**
-		 * @brief Initialize a new player.
-		 * @param cl - The client.
-		 */
+		/// @brief Initialize a new player.
+		/// @param cl - The client.
 		Player(client_t *cl);
 		~Player() { }
 
-		/**
-		 * @brief Initialize the player.
-		 */
+		/// @brief Initialize the player.
 		void Initialize();
 
-		/**
-		 * @brief Player render frame.
-		 */
+		/// @brief Player render frame.
 		void Frame();
 
-		/**
-		 * @brief Get the last player frame.
-		 * @return clientSnapshot_t*
-		 */
+		/// @brief Get the last player frame.
+		/// @return clientSnapshot_t*
 		clientSnapshot_t *GetFrame();
 	};
 }

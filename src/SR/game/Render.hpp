@@ -2,21 +2,15 @@
 
 namespace Iswenzz::CoD4x
 {
-	/**
-	 * @brief Server render frame.
-	 */
+	/// @brief Server render frame.
 	class Render
 	{
 	public:
-		/**
-		 * @brief Construct a new Render object.
-		 */
+		/// @brief Construct a new Render object.
 		Render() = default;
 		~Render() = default;
 
-		/**
-		 * @brief The render frame.
-		 */
+		/// @brief The render frame.
 		void Frame();
 	};
 }

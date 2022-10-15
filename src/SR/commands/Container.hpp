@@ -3,15 +3,11 @@
 
 namespace Iswenzz::CoD4x
 {
-	/**
-	 * @brief Commands registration container.
-	 */
+	/// @brief Commands registration container.
 	class CommandsContainer
 	{
 	public:
-		/**
-		 * @brief Register commands.
-		 */
+		/// @brief Register commands.
 		static void Register();
 	};
 }

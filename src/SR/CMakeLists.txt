@@ -41,6 +41,7 @@ add_subdirectory(player)
 add_subdirectory(utils)
 
 target_sources(SR PUBLIC SR.hpp SR.cpp Macros.hpp)
+target_link_libraries(SR PUBLIC ${CONAN_LIBS})
 target_include_directories(SR PUBLIC . ..)
 
 get_target_property(SOURCES SR SOURCES)

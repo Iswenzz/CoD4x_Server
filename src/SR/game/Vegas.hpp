@@ -9,9 +9,7 @@ C_EXTERN
 
 namespace Iswenzz::CoD4x
 {
-	/**
-	 * @brief TCP link betweeen Vegas and the server.
-	 */
+	/// @brief TCP link betweeen Vegas and the server.
 	class Vegas : public TCP
 	{
 	public:
@@ -20,38 +18,28 @@ namespace Iswenzz::CoD4x
 		hudelem_color_t Color = { 0 };
 		int Material = 0;
 
-		/**
-		 * @brief Initialize a new Vegas TCP link.
-		 */
+		/// @brief Initialize a new Vegas TCP link.
 		Vegas();
 		~Vegas() = default;
 
-		/**
-		 * @brief User connection.
-		 * @param from - The address.
-		 * @param msg - The message.
-		 * @return qboolean
-		 */
+		/// @brief User connection.
+		/// @param from - The address.
+		/// @param msg - The message.
+		/// @return qboolean
 		qboolean Connect(netadr_t *from, msg_t *msg) override;
 
-		/**
-		 * @brief Disconnect user.
-		 * @param from - The address.
-		 */
+		/// @brief Disconnect user.
+		/// @param from - The address.
 		void Disconnect(netadr_t *from) override;
 
-		/**
-		 * @brief Received message.
-		 * @param from - The address.
-		 * @param msg - The message.
-		 * @return int
-		 */
+		/// @brief Received message.
+		/// @param from - The address.
+		/// @param msg - The message.
+		/// @return int
 		int Message(netadr_t *from, msg_t *msg) override;
 
-		/**
-		 * @brief Render vegas to the player.
-		 * @param player - The player.
-		 */
+		/// @brief Render vegas to the player.
+		/// @param player
 		void Frame(Player *player);
 	};
 
