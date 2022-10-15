@@ -680,6 +680,7 @@ void SV_Init( void );
 
 __optimize2 __regparm1 qboolean SV_Frame( unsigned int usec );
 void SR_Frame();
+void SR_Packet(netadr_t *from, client_t* cl, msg_t *msg);
 
 unsigned int SV_FrameUsec( void );
 
@@ -847,7 +848,6 @@ void SV_ScreenshotClient(client_t* cl, const char* name);
 void SV_ScreenshotArrived(client_t* cl, const char* filename);
 void SV_ModuleArrived(client_t* cl, const char* filename, long checksum);
 void SV_AddBanForSteamIDGUID(uint64_t id, const char* guid, const char* name, int bantime, const char* banreason);
-void SV_ClientCalcFramerate();
 int SV_GetPredictedOriginAndTimeForClientNum(int clientNum, float *origin);
 void SV_SetMapCenterInSVSHeader(float* center);
 void SV_GetMapCenterFromSVSHeader(float* center);

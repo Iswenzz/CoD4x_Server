@@ -1,5 +1,6 @@
 #include "Player.hpp"
 #include "SR.hpp"
+#include "utils/Utils.hpp"
 
 namespace Iswenzz::CoD4x
 {
@@ -13,14 +14,32 @@ namespace Iswenzz::CoD4x
 	{
 		this->pmove = std::make_unique<PMove>(this);
 
-		this->fps = 0;
-		this->frames = 0;
 		this->speed = 0;
 		this->surfaceFlags = 0;
 	}
 
+	void Player::CalculateFPS()
+	{
+		if (frameTimes.empty())
+			return;
+
+		cl->clFPS = Utils::VectorAverageMode(frameTimes);
+		frameTimes.clear();
+	}
+
+	void Player::Packet(msg_t *msg)
+	{
+		if (ps->commandTime > currentFrameTime)
+		{
+			previousFrameTime = currentFrameTime;
+			currentFrameTime = ps->commandTime;
+			frameTimes.push_back(1000 / (currentFrameTime - previousFrameTime));
+		}
+	}
+
 	void Player::Frame()
 	{
+		CalculateFPS();
 		SR->Vegas->Frame(this);
 	}
 

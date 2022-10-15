@@ -1,3 +1,4 @@
 target_sources(SR PUBLIC
 	Log.hpp
-	Log.cpp)
+	Log.cpp
+	Utils.hpp)

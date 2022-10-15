@@ -4,6 +4,7 @@ namespace Iswenzz::CoD4x
 {
 	Server::Server()
 	{
+		Netchan = std::make_unique<class Netchan>();
 		Render = std::make_unique<class Render>();
 		Vegas = std::make_unique<class Vegas>();
 		Speedrun = std::make_unique<class Demo>();

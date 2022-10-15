@@ -106,7 +106,7 @@
 
 	#ifndef IPV6_V6ONLY
 		#define IPV6_V6ONLY           27 // Treat wildcard bind as AF_INET6-only.
-	#endif 
+	#endif
 
 	int inet_pton(int af, const char *src, void *dst)
 	{
@@ -115,7 +115,7 @@
 		char address[256];
 		strncpy(address, src, sizeof(address));
 
-		int rc = WSAStringToAddressA( address, af, NULL, (SOCKADDR*)&sin, &addrSize ); 
+		int rc = WSAStringToAddressA( address, af, NULL, (SOCKADDR*)&sin, &addrSize );
 		if(rc != 0)
 		{
 			return -1;
@@ -516,7 +516,7 @@ static qboolean Sys_StringToSockaddrNoDNS(const char* s, struct sockaddr *sadr, 
 	struct sockaddr_in6 *sin6 = (struct sockaddr_in6 *)&sadrstore;
 	memset(sadr, '\0', sadr_len);
 	memset(&sadrstore, '\0', sizeof(sadrstore));
-	
+
 	sa_family_t ptonfamily = family;
 
 	Q_strncpyz(addressstring, s, sizeof(addressstring));
@@ -562,7 +562,7 @@ static qboolean Sys_StringToSockaddrNoDNS(const char* s, struct sockaddr *sadr, 
 #endif
 			}
 		}else if(ptonfamily == AF_INET){
-			memcpy(&sin->sin_addr, ptonaddr, sizeof(sin->sin_addr)); 
+			memcpy(&sin->sin_addr, ptonaddr, sizeof(sin->sin_addr));
 			sin->sin_family = AF_INET;
 		}
 		if(sadr_len > sizeof(sadrstore))
@@ -580,7 +580,7 @@ static qboolean Sys_StringToSockaddrNoDNS(const char* s, struct sockaddr *sadr, 
 typedef struct
 {
 	struct in_addr sin_addr;
-	struct in6_addr sin6_addr; 
+	struct in6_addr sin6_addr;
 	uint32_t crc;
 	char last15[16];
 	unsigned long lastupdate;
@@ -711,7 +711,7 @@ static qboolean NET_DnsCacheQuery(const char* name, struct sockaddr_storage *out
 	}else{
 		Q_strncpyz(last15, namei + len - 15, sizeof(last15));
 	}
-	
+
 	Q_strlwr(namei);
 	uint32_t crc = DNS_crc32(namei);
 	for(i = 0; i < sizeof(dnscachelist) / sizeof(dnscachelist[0]); ++i)
@@ -856,7 +856,7 @@ static qboolean Sys_StringToSockaddr(const char *s, struct sockaddr *sadr, int s
 		}else if(family == AF_INET){
 			ptonaddr[0] = 127;
 			ptonaddr[3] = 1;
-			memcpy(&sin->sin_addr, ptonaddr, sizeof(sin->sin_addr)); 
+			memcpy(&sin->sin_addr, ptonaddr, sizeof(sin->sin_addr));
 			sin->sin_family = AF_INET;
 
 		}else if(family == AF_UNSPEC){
@@ -870,7 +870,7 @@ static qboolean Sys_StringToSockaddr(const char *s, struct sockaddr *sadr, int s
 			{
 				ptonaddr[0] = 127;
 				ptonaddr[3] = 1;
-				memcpy(&sin->sin_addr, ptonaddr, sizeof(sin->sin_addr)); 
+				memcpy(&sin->sin_addr, ptonaddr, sizeof(sin->sin_addr));
 				sin->sin_family = AF_INET;
 			}
 		}else{
@@ -2312,7 +2312,7 @@ qboolean IsStaticIP6Addr(nip_localaddr_t* localaddr)
 {
 	int z;
 	struct sockaddr_in6* t6;
-				
+
 	if(localaddr->type != NA_IP6)
 	{
 		return qfalse;
@@ -2359,7 +2359,7 @@ qboolean IsStaticIP6Addr(nip_localaddr_t* localaddr)
 		struct sockaddr_in6* probe6 = (struct sockaddr_in6*)&localIP[z].addr;
 		byte* probebaddr6 = (byte*)probe6->sin6_addr.s6_addr;
 
-		if(probebaddr6[0] == 0xfe && probebaddr6[1] == 0x80 && 
+		if(probebaddr6[0] == 0xfe && probebaddr6[1] == 0x80 &&
 		   probebaddr6[2] == 0x00 && probebaddr6[3] == 0x00 &&
 		   probebaddr6[4] == 0x00 && probebaddr6[5] == 0x00 &&
 		   probebaddr6[6] == 0x00 && probebaddr6[7] == 0x00)
@@ -2367,10 +2367,10 @@ qboolean IsStaticIP6Addr(nip_localaddr_t* localaddr)
 			//Link local address
 			if(memcmp(probebaddr6 + 8, baddr6 + 8, 8) == 0)
 			{
-				//Found a link local address where the interface identifier does match to this IP 
+				//Found a link local address where the interface identifier does match to this IP
 				return qtrue;
 			}
-		}		
+		}
 	}
 	return qfalse;
 }
@@ -2511,7 +2511,7 @@ static void NET_GetLocalAddress( void ) {
 		{
 			NET_AddLocalAddress("localhost", (struct sockaddr *) &localhostadr, (struct sockaddr *) &mask6);
 		}
-		
+
 		int i;
 
 		if(has_ip6)
@@ -2659,7 +2659,7 @@ void NET_OpenIP( void ) {
 					continue;
 				}
 				tcp_socket = NET_IP4Socket( net_ip->string, port, &err, qtrue);
-				
+
 				if(tcp_socket != INVALID_SOCKET)
 				{
 					Cvar_SetInt(net_port, port);
@@ -3292,7 +3292,7 @@ __optimize3 __regparm3 qboolean NET_TcpServerConnectRequest(netadr_t* net_from, 
 			return qfalse;
 		}
 #endif
-		
+
 		if( ioctlsocket( socket, FIONBIO, &_true ) == SOCKET_ERROR ) {
 			Com_PrintWarning(CON_CHANNEL_NETWORK, "NET_TcpServerConnectRequest: ioctl FIONBIO: %s\n", NET_ErrorStringMT(errstr, sizeof(errstr)) );
 			conerr = socketError;
@@ -3301,7 +3301,7 @@ __optimize3 __regparm3 qboolean NET_TcpServerConnectRequest(netadr_t* net_from, 
 		}
 		SockadrToNetadr( (struct sockaddr *) &from, net_from, qtrue, socket);
 		return qtrue;
-		
+
 	}
 
 	if(tcp6_socket != INVALID_SOCKET && FD_ISSET(tcp6_socket, fdr))

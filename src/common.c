@@ -1022,7 +1022,7 @@ __optimize3 void Com_Frame( void ) {
 	Com_TimedEventLoop();
 	Cbuf_Execute ( );
 	NET_Sleep(0);
-	NET_TcpServerPacketEventLoop(); // @todo SR
+	NET_TcpServerPacketEventLoop();
 	Sys_RunThreadCallbacks();
   Plugin_RunThreadCallbacks();
 	Cbuf_Execute ( );

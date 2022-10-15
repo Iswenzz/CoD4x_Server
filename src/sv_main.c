@@ -2034,6 +2034,8 @@ __optimize3 __regparm2 void SV_PacketEvent( netadr_t *from, msg_t *msg ) {
     cl->lastPacketTime = svs.time;  // don't timeout
 
     SV_ExecuteClientMessage( cl, msg );
+
+	SR_Packet(from, cl, msg);
 }
 
 
@@ -4111,8 +4113,6 @@ void SV_PreFrame()
     SV_SetConfig(20, 128, 256);
     cvar_modifiedFlags &= ~256;
   }
-  SV_ClientCalcFramerate();
-
 }
 
 
