@@ -1,5 +1,5 @@
 @ECHO OFF
-set PATH=C:\Dev\MinGW\bin;%PATH%
+set PATH=C:\Dev\mingw8\bin;%PATH%
 
 echo. & echo [+] Compile & echo.
 mingw32-make
