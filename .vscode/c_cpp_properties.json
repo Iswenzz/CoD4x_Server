@@ -1,0 +1,20 @@
+{
+    "configurations": [
+        {
+            "name": "gcc",
+            "defines": [
+                "COD4X18UPDATE"
+            ],
+            "includePath": [
+				"C:\\.conan\\a62c02\\1\\include",
+				"~/.conan/data/**",
+                "src",
+                "src/SR"
+            ],
+            "intelliSenseMode": "gcc-x86",
+            "cStandard": "c11",
+            "cppStandard": "c++20"
+        }
+    ],
+    "version": 4
+}
