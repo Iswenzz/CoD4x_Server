@@ -54,9 +54,9 @@ DCFLAGS=-fno-pie -O1 -DNDEBUG
 endif
 
 WIN_LFLAGS=-m32 -g -Wl,--nxcompat,--stack,0x800000 -mwindows -static-libgcc -static -lm
-WIN_LLIBS=tomcrypt mbedtls mbedcrypto mbedx509 ws2_32 wsock32 iphlpapi gdi32 winmm crypt32 stdc++ SR
+WIN_LLIBS=tomcrypt mbedtls mbedcrypto mbedx509 ws2_32 wsock32 iphlpapi gdi32 winmm crypt32 stdc++ SR CoD4DM1
 LINUX_LFLAGS=-m32 -g -static-libgcc -rdynamic -Wl,-rpath=./
-LINUX_LLIBS=tomcrypt mbedtls mbedcrypto mbedx509 dl pthread m stdc++ SR
+LINUX_LLIBS=tomcrypt mbedtls mbedcrypto mbedx509 dl pthread m stdc++ SR CoD4DM1
 BSD_LLIBS=tomcrypt mbedtls mbedcrypto mbedx509 pthread m execinfo stdc++
 COD4X_DEFINES=COD4X18UPDATE BUILD_NUMBER=$(BUILD_NUMBER) BUILD_BRANCH=$(BUILD_BRANCH) BUILD_REVISION=$(BUILD_REVISION)
 
@@ -211,9 +211,9 @@ endif
 ###############################
 # A rule to link server binary.
 $(TARGET): $(OS_OBJ) $(C_OBJ) $(CPP_OBJ) $(ZLIB_OBJ) $(ASSETS_OBJ) $(ASM_OBJ) obj/version.o
-	@echo   $(CC) $(TARGET)
+	@echo   $(CXX) $(TARGET)
 # CFLAGS for compiler, LFLAGS for linker.
-	@$(CC) $(LFLAGS) -o $@ $^ $(RESOURCE_FILE) $(LLIBS)
+	@$(CXX) $(LFLAGS) -o $@ $^ $(RESOURCE_FILE) $(LLIBS)
 
 ################################
 # A rule to make version module.
