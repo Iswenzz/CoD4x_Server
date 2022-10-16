@@ -17,10 +17,13 @@ namespace Iswenzz::CoD4x
 		std::unique_ptr<Iswenzz::CoD4::DM1::DemoReader> Reader;
 
 		/// @brief Initialize a new Demo.
-		Demo();
+		Demo() = default;
 		~Demo();
 
-		/// @brief Play the demo on a bot.
+		/// @brief Load the demo.
+		void Load();
+
+		/// @brief Play the demo.
 		void PlayDemo();
 	};
 }

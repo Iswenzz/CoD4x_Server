@@ -3,7 +3,7 @@ target_sources(SR PUBLIC
 	Debug.cpp
 	Demo.hpp
 	Demo.cpp
-	Render.hpp
-	Render.cpp
+	Server.hpp
+	Server.cpp
 	Vegas.hpp
 	Vegas.cpp)

@@ -40,7 +40,7 @@ namespace Iswenzz::CoD4x
 	void Player::Frame()
 	{
 		CalculateFPS();
-		SR->Vegas->Frame(this);
+		SR->Server->Vegas->Frame(this);
 	}
 
 	clientSnapshot_t *Player::GetFrame()

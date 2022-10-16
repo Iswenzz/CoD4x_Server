@@ -3572,6 +3572,7 @@ void SV_LoadLevel(const char* levelname)
 
     SV_CalculateChecksums();
     SV_PostLevelLoad();
+	SR_LoadMap();
 }
 
 

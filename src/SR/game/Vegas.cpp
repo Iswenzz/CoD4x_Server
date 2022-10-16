@@ -62,16 +62,16 @@ C_EXTERN
 {
 	qboolean OnConnect(netadr_t *from, msg_t *msg, int *connectionId)
 	{
-		return SR->Vegas->Connect(from, msg);
+		return SR->Server->Vegas->Connect(from, msg);
 	}
 
 	void OnDisconnect(netadr_t *from, int connectionId)
 	{
-		SR->Vegas->Disconnect(from);
+		SR->Server->Vegas->Disconnect(from);
 	}
 
 	int OnMessage(netadr_t *from, msg_t *msg, int connectionId)
 	{
-		return SR->Vegas->Message(from, msg);
+		return SR->Server->Vegas->Message(from, msg);
 	}
 }
