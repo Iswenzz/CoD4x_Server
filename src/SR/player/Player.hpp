@@ -1,5 +1,6 @@
 #pragma once
 #include "PMove.hpp"
+#include "game/Demo.hpp"
 #include <vector>
 
 C_EXTERN
@@ -13,9 +14,10 @@ namespace Iswenzz::CoD4x
 	class Player
 	{
 	public:
-		std::unique_ptr<client_t> cl;
-		std::unique_ptr<playerState_t> ps;
+		client_t* cl;
+		playerState_t* ps;
 		std::unique_ptr<PMove> pmove;
+		std::unique_ptr<Demo> demo;
 
 		int speed = 0;
 		int surfaceFlags = 0;

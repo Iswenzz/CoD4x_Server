@@ -6,8 +6,10 @@ namespace Iswenzz::CoD4x
 {
 	Player::Player(client_t *cl)
 	{
-		this->cl = std::unique_ptr<client_t>(cl);
-		this->ps = std::unique_ptr<playerState_t>(&cl->gentity->client->ps);
+		this->cl = cl;
+		this->ps = &cl->gentity->client->ps;
+
+		this->demo = std::make_unique<class Demo>();
 	}
 
 	void Player::Initialize()
@@ -35,12 +37,15 @@ namespace Iswenzz::CoD4x
 			currentFrameTime = ps->commandTime;
 			frameTimes.push_back(1000 / (currentFrameTime - previousFrameTime));
 		}
+		demo->Frame(this);
 	}
 
 	void Player::Frame()
 	{
 		CalculateFPS();
+
 		SR->Server->Vegas->Frame(this);
+		demo->PlayerFrame(this);
 	}
 
 	clientSnapshot_t *Player::GetFrame()

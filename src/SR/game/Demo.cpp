@@ -1,4 +1,5 @@
 #include "Demo.hpp"
+#include "SR.hpp"
 
 namespace Iswenzz::CoD4x
 {
@@ -7,17 +8,25 @@ namespace Iswenzz::CoD4x
 		Reader->Close();
 	}
 
-	void Demo::Load()
+	void Demo::Frame(Player *player)
 	{
-		std::string path = R"(D:\Vids\CoD4\izengine\mp_dr_darmuhv2.dm_1)";
-		Reader = std::make_unique<Iswenzz::CoD4::DM1::DemoReader>();
-		auto a = Reader->IsOpen();
+		if (!Reader || !Reader->IsOpen())
+			return;
 
-		SV_AddBotClient("Speedrun BOT");
+		if ((player->currentFrameTime - StartTime) > Reader->GetTimeMilliseconds())
+			Reader->DemoFile->Next();
 	}
 
-	void Demo::PlayDemo()
+	void Demo::PlayerFrame(Player *player)
 	{
+		if (!Reader || !Reader->IsOpen())
+			return;
 
+		auto demoSnapshot = Reader->GetCurrentSnapshot();
+		auto demoFrame = Reader->GetCurrentFrame();
+		auto frame = player->GetFrame();
+
+		VectorCopy(demoFrame.origin, frame->ps.origin);
+		VectorCopy(demoFrame.angles, frame->ps.viewangles);
 	}
 }

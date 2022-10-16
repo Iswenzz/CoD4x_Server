@@ -4,6 +4,8 @@ namespace Iswenzz::CoD4x
 {
 	Game::Game()
 	{
+		Iswenzz::CoD4::DM1::Huffman::InitMain();
+
 		Server = std::make_unique<class Server>();
 		Netchan = std::make_unique<class Netchan>();
 

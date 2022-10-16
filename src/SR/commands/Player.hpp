@@ -1,5 +1,6 @@
 #pragma once
 #include "Command.hpp"
+#include "game/Demo.hpp"
 
 namespace Iswenzz::CoD4x
 {
@@ -23,5 +24,9 @@ namespace Iswenzz::CoD4x
 
 		/// @brief Get the damage timer.
 		static void GetDamageTimer(scr_entref_t num);
+
+		/// @brief Play a demo on a client.
+		/// @param num - The client num.
+		static void PlayDemo(scr_entref_t num);
 	};
 }

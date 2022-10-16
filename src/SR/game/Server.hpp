@@ -1,6 +1,5 @@
 #pragma once
 #include "game/Vegas.hpp"
-#include "game/Demo.hpp"
 
 namespace Iswenzz::CoD4x
 {
@@ -9,7 +8,6 @@ namespace Iswenzz::CoD4x
 	{
 	public:
 		std::unique_ptr<Vegas> Vegas;
-		std::unique_ptr<Demo> Demo;
 
 		/// @brief Construct a new Server object.
 		Server();

@@ -6,12 +6,11 @@ namespace Iswenzz::CoD4x
 	Server::Server()
 	{
 		Vegas = std::make_unique<class Vegas>();
-		Demo = std::make_unique<class Demo>();
 	}
 
 	void Server::LoadMap()
 	{
-		Demo->Load();
+
 	}
 
 	void Server::Frame()
