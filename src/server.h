@@ -617,7 +617,8 @@ extern cvar_t* sv_maxDownloadRate;
 extern "C"{
 #endif
 
-void InitializePlayer(client_t *cl);
+void SR_InitializePlayer(client_t *cl);
+void SR_FreeClient(client_t *cl);
 
 gentity_t *SV_GentityNum( int num );
 int SV_NumForGentity( gentity_t *ent );
@@ -677,6 +678,8 @@ void SV_SendClientVoiceData(client_t *client);
 void SV_InitCvarsOnce( void );
 
 void SV_Init( void );
+void SR_Initialize();
+void SR_Shutdown();
 
 __optimize2 __regparm1 qboolean SV_Frame( unsigned int usec );
 void SR_Frame();

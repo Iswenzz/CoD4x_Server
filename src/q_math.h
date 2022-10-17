@@ -122,6 +122,7 @@ extern vec4_t colorBlackBlank;
 #define VectorNormalize Vec3Normalize
 
 /* Using 'vec*_t' types causes errors. */
+#define Vector2Copy(to, from) vec2_copy(from, to)
 #define vec2_copy(to, from) (to)[0] = (from)[0]; (to)[1] = (from)[1]
 #define vec2_add(to, from) (to)[0] += (from)[0]; (to)[1] += (from)[1]
 #define vec2_substract(to, from) (to)[0] -= (from)[0]; (to)[1] -= (from)[1]

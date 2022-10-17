@@ -1211,7 +1211,7 @@ void SV_ClientEnterWorld( client_t *client, usercmd_t *cmd ) {
 
 	HL2Rcon_EventClientEnterWorld( clientNum );
 	PHandler_Event(PLUGINS_ONCLIENTENTERWORLD, client);
-	InitializePlayer(client);
+	SR_InitializePlayer(client);
 }
 
 
@@ -2977,6 +2977,7 @@ void __cdecl SV_FreeClient(client_t *cl)
   assert(cl->state >= CS_CONNECTED);
 
 //  BG_EvalVehicleName();
+  SR_FreeClient(cl);
   SV_CloseDownload(cl);
   if ( SV_Loaded() )
   {

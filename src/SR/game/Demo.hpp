@@ -18,19 +18,22 @@ namespace Iswenzz::CoD4x
 	class Demo
 	{
 	public:
+		Player *player;
 		std::unique_ptr<Iswenzz::CoD4::DM1::DemoReader> Reader;
 		int StartTime = 0;
 
 		/// @brief Initialize a new Demo.
-		Demo() = default;
+		Demo(Player *player);
 		~Demo();
 
+		/// @brief Open a demo.
+		/// @param path - The demo path.
+		void Open(std::string path);
+
 		/// @brief Demo render frame.
-		/// @param player - The player.
-		void Frame(Player *player);
+		void Frame();
 
 		/// @brief Demo player frame.
-		/// @param player - The player.
-		void PlayerFrame(Player* player);
+		void PlayerFrame();
 	};
 }

@@ -796,8 +796,5 @@ typedef unsigned int clipHandle_t;
 #include "q_shared.h"
 #include "sys_cod4defs.h"
 
-void SR_Initialize();
-void SR_Shutdown();
-
 #endif
 
