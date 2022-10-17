@@ -21,6 +21,17 @@ namespace Iswenzz::CoD4x
 				player->Frame();
 		}
 	}
+
+	void Server::Sleep(int ms)
+	{
+		NET_Sleep(ms * 1000);
+	}
+
+
+	void Server::WaitFrame(int amount)
+	{
+		Sleep(50 * amount);
+	}
 }
 
 C_EXTERN

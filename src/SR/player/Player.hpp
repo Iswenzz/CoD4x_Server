@@ -16,15 +16,16 @@ namespace Iswenzz::CoD4x
 	public:
 		client_t* cl;
 		playerState_t* ps;
-		std::unique_ptr<PMove> pmove;
-		std::unique_ptr<Demo> demo;
 
-		int speed = 0;
-		int surfaceFlags = 0;
+		std::unique_ptr<PMove> PMove;
+		std::unique_ptr<Demo> Demo;
 
-		int currentFrameTime = 0;
-		int previousFrameTime = 0;
-		std::vector<int> frameTimes{ };
+		int Speed = 0;
+		int SurfaceFlags = 0;
+
+		int CurrentFrameTime = 0;
+		int PreviousFrameTime = 0;
+		std::vector<int> FrameTimes{ };
 
 		/// @brief Initialize a new player.
 		/// @param cl - The client.

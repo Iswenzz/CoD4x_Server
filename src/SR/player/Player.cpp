@@ -9,35 +9,35 @@ namespace Iswenzz::CoD4x
 		this->cl = cl;
 		this->ps = &cl->gentity->client->ps;
 
-		this->demo = std::make_unique<class Demo>(this);
+		this->Demo = std::make_unique<class Demo>(this);
 	}
 
 	void Player::Initialize()
 	{
-		this->pmove = std::make_unique<PMove>(this);
+		this->PMove = std::make_unique<class PMove>(this);
 
-		this->speed = 0;
-		this->surfaceFlags = 0;
+		this->Speed = 0;
+		this->SurfaceFlags = 0;
 	}
 
 	void Player::CalculateFPS()
 	{
-		if (frameTimes.empty())
+		if (FrameTimes.empty())
 			return;
 
-		cl->clFPS = Utils::VectorAverageMode(frameTimes);
-		frameTimes.clear();
+		cl->clFPS = Utils::VectorAverageMode(FrameTimes);
+		FrameTimes.clear();
 	}
 
 	void Player::Packet(msg_t *msg)
 	{
-		if (ps->commandTime > currentFrameTime)
+		if (ps->commandTime > CurrentFrameTime)
 		{
-			previousFrameTime = currentFrameTime;
-			currentFrameTime = ps->commandTime;
-			frameTimes.push_back(1000 / (currentFrameTime - previousFrameTime));
+			PreviousFrameTime = CurrentFrameTime;
+			CurrentFrameTime = ps->commandTime;
+			FrameTimes.push_back(1000 / (CurrentFrameTime - PreviousFrameTime));
 		}
-		demo->Frame();
+		Demo->Frame();
 	}
 
 	void Player::Frame()
@@ -45,7 +45,7 @@ namespace Iswenzz::CoD4x
 		CalculateFPS();
 
 		SR->Server->Vegas->Frame(this);
-		demo->PlayerFrame();
+		Demo->PlayerFrame();
 	}
 
 	clientSnapshot_t *Player::GetFrame()

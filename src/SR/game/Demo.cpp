@@ -3,9 +3,9 @@
 
 namespace Iswenzz::CoD4x
 {
-	Demo::Demo(Player *player)
+	Demo::Demo(class Player *player)
 	{
-		this->player = player;
+		this->Player = player;
 	}
 
 	Demo::~Demo()
@@ -16,7 +16,11 @@ namespace Iswenzz::CoD4x
 	void Demo::Open(std::string path)
 	{
 		Reader = std::make_unique<Iswenzz::CoD4::DM1::DemoReader>(path);
-		StartTime = player->currentFrameTime;
+		StartTime = Player->CurrentFrameTime;
+
+		Entity = G_Spawn();
+    	Scr_SetString(&Entity->classname, scr_const.script_origin);
+		G_CallSpawnEntity(Entity);
 	}
 
 	void Demo::Frame()
@@ -24,7 +28,7 @@ namespace Iswenzz::CoD4x
 		if (!Reader || !Reader->IsOpen())
 			return;
 
-		if ((player->currentFrameTime - StartTime) > Reader->GetTimeMilliseconds())
+		if ((Player->CurrentFrameTime - StartTime) > Reader->GetTimeMilliseconds())
 			Reader->DemoFile->Next();
 	}
 
@@ -35,7 +39,7 @@ namespace Iswenzz::CoD4x
 
 		auto demoSnapshot = Reader->GetCurrentSnapshot();
 		auto demoFrame = Reader->GetCurrentFrame();
-		auto frame = player->GetFrame();
+		auto frame = Player->GetFrame();
 		auto originalFrame = *frame;
 
 		// State
@@ -55,6 +59,6 @@ namespace Iswenzz::CoD4x
 
 		// Origin & Angles
 		VectorCopy(demoFrame.origin, frame->ps.origin);
-		SetClientViewAngle(player->cl->gentity, demoFrame.angles);
+		SetClientViewAngle(Player->cl->gentity, demoFrame.angles);
 	}
 }

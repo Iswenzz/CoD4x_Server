@@ -18,12 +18,14 @@ namespace Iswenzz::CoD4x
 	class Demo
 	{
 	public:
-		Player *player;
+		Player *Player;
+		gentity_t *Entity;
+
 		std::unique_ptr<Iswenzz::CoD4::DM1::DemoReader> Reader;
 		int StartTime = 0;
 
 		/// @brief Initialize a new Demo.
-		Demo(Player *player);
+		Demo(class Player *player);
 		~Demo();
 
 		/// @brief Open a demo.

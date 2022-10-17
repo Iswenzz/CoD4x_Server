@@ -4,33 +4,33 @@
 
 namespace Iswenzz::CoD4x
 {
-	PMove::PMove(Player *player)
+	PMove::PMove(class Player *Player)
 	{
-		this->player = player;
+		this->Player = Player;
 
-		player->ps->gravity = g_gravity ? (int)g_gravity->value : 800;
-		player->speed = g_speed ? g_speed->integer : 190;
-		player->cl->jumpHeight = jump_height ? jump_height->value : 39;
+		Player->Speed = g_speed ? g_speed->integer : 190;
+		Player->ps->gravity = g_gravity ? (int)g_gravity->value : 800;
+		Player->cl->jumpHeight = jump_height ? jump_height->value : 39;
 	}
 
 	void PMove::SetSpeed(int speed)
 	{
-		player->speed = speed;
+		Player->Speed = speed;
 	}
 
 	int PMove::GetSpeed()
 	{
-		return player->speed;
+		return Player->Speed;
 	}
 
 	float PMove::GetJumpHeight()
 	{
-		return player->cl->jumpHeight;
+		return Player->cl->jumpHeight;
 	}
 
 	void PMove::JumpUpdateSurface(pml_t *pml)
 	{
-		player->surfaceFlags = pml->groundTrace.sflags;
+		Player->SurfaceFlags = pml->groundTrace.sflags;
 	}
 
 	void PMove::StuckInClient() { }
@@ -40,22 +40,22 @@ C_EXTERN
 {
 	void Pmove_SetSpeed(unsigned int num, int speed)
 	{
-		SR->Players[num]->speed = speed;
+		SR->Players[num]->Speed = speed;
 	}
 
 	OPTIMIZE3 int Pmove_GetSpeed(playerState_t *ps)
 	{
-		return SR->Players[ps->clientNum]->speed;
+		return SR->Players[ps->clientNum]->Speed;
 	}
 
 	void Jump_UpdateSurface(playerState_s *ps, pml_t *pml)
 	{
-		SR->Players[ps->clientNum]->pmove->JumpUpdateSurface(pml);
+		SR->Players[ps->clientNum]->PMove->JumpUpdateSurface(pml);
 	}
 
 	float Dirty_GetJumpHeight(unsigned int num)
 	{
-		return SR->Players[num]->pmove->GetJumpHeight();
+		return SR->Players[num]->PMove->GetJumpHeight();
 	}
 
 	OPTIMIZE3 void StuckInClient(gentity_t* gen) { }

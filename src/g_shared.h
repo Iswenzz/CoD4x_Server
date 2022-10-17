@@ -607,6 +607,7 @@ int __cdecl G_ClientCanSpectateTeamOrLocalPlayer(gclient_t *client, clientState_
 void __cdecl G_GetPlayerViewOrigin(playerState_t *ps, float *origin);
 void __cdecl BG_GetPlayerViewDirection(playerState_t *ps, float *forward, float *right, float *up);
 void __cdecl G_SetOrigin(gentity_t *ent, const float *origin);
+int __cdecl G_EntLinkTo(gentity_s *ent, gentity_s *parent, unsigned int tagName);
 void __cdecl SetClientViewAngle(gentity_t *ent, const float *angle);
 qboolean GetFollowPlayerState(int clientNum, playerState_t *ps);
 void CalculateRanks();

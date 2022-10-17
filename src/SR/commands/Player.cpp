@@ -22,7 +22,7 @@ namespace Iswenzz::CoD4x
 			Scr_ObjectError("not a client\n");
 			return;
 		}
-		Scr_AddInt(SR->Players[ent->client->ps.clientNum]->surfaceFlags);
+		Scr_AddInt(SR->Players[ent->client->ps.clientNum]->SurfaceFlags);
 	}
 
 	void PlayerCommands::GetViewHeightLerpDown(scr_entref_t num)
@@ -83,6 +83,8 @@ namespace Iswenzz::CoD4x
 			return;
 		}
 		std::string path = R"(D:\Vids\CoD4\izengine\mp_dr_darmuhv2.dm_1)";
-		SR->Players[num.entnum]->demo->Open(path);
+		auto player = SR->Players[num.entnum];
+		player->Demo->Open(path);
+		Scr_AddEntity(player->Demo->Entity);
 	}
 }

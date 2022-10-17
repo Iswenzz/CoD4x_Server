@@ -17,11 +17,11 @@ namespace Iswenzz::CoD4x
 	class PMove
 	{
 	public:
-		Player *player;
+		Player *Player;
 
 		/// @brief Initialier a new PMove.
 		/// @param player - The player.
-		PMove(Player *player);
+		PMove(class Player *player);
 		virtual ~PMove() = default;
 
 		/// @brief Set the player speed.
