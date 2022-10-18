@@ -46,12 +46,13 @@ namespace Iswenzz::CoD4x
 		memcpy(&frame->ps.sprintState, &demoSnapshot.ps.sprintState, sizeof(frame->ps.sprintState));
 		memcpy(&frame->ps.mantleState, &demoSnapshot.ps.mantleState, sizeof(frame->ps.mantleState));
 		memcpy(&frame->ps.actionSlotParam, &demoSnapshot.ps.actionSlotParam, sizeof(frame->ps.actionSlotParam));
+		frame->ps.spreadOverride = demoSnapshot.ps.spreadOverride;
 		frame->ps.spreadOverrideState = demoSnapshot.ps.spreadOverrideState;
+		frame->ps.bobCycle = demoSnapshot.ps.bobCycle;
+		frame->ps.otherFlags = demoSnapshot.ps.otherFlags;
+		frame->ps.foliageSoundTime = demoSnapshot.ps.foliageSoundTime;
 		frame->ps.pm_flags = demoSnapshot.ps.pm_flags;
 		frame->ps.pm_time = demoSnapshot.ps.pm_time;
-		frame->ps.weapFlags = demoSnapshot.ps.weapFlags;
-		frame->ps.weapAnim = demoSnapshot.ps.weapAnim;
-		frame->ps.weaponTime = demoSnapshot.ps.weaponTime;
 		frame->ps.aimSpreadScale = demoSnapshot.ps.aimSpreadScale;
 		frame->ps.adsDelayTime = demoSnapshot.ps.adsDelayTime;
 		frame->ps.legsAnim = demoSnapshot.ps.legsAnim;
@@ -59,11 +60,24 @@ namespace Iswenzz::CoD4x
 		frame->ps.torsoAnim = demoSnapshot.ps.torsoAnim;
 		frame->ps.torsoAnimDuration = demoSnapshot.ps.torsoAnimDuration;
 		frame->ps.flinchYawAnim = demoSnapshot.ps.flinchYawAnim;
+		frame->ps.groundEntityNum = demoSnapshot.ps.groundEntityNum;
 
-		// Origin & Angles & Velocity
+		// Weapon
+		frame->ps.weapFlags = demoSnapshot.ps.weapFlags;
+		frame->ps.weapAnim = demoSnapshot.ps.weapAnim;
+		frame->ps.weaponTime = demoSnapshot.ps.weaponTime;
+
+		// Movement
+		frame->ps.leanf = demoSnapshot.ps.leanf;
+		frame->ps.gravity = demoSnapshot.ps.gravity;
+		frame->ps.speed = demoSnapshot.ps.speed;
+		frame->ps.moveSpeedScaleMultiplier = demoSnapshot.ps.moveSpeedScaleMultiplier;
+		frame->ps.jumpOriginZ = demoSnapshot.ps.jumpOriginZ;
+		frame->ps.jumpTime = demoSnapshot.ps.jumpTime;
 		VectorCopy(demoFrame.origin, frame->ps.origin);
 		Vector2Copy(demoSnapshot.ps.oldVelocity, frame->ps.oldVelocity);
 		VectorCopy(demoSnapshot.ps.velocity, frame->ps.velocity);
+		VectorCopy(demoFrame.angles, Entity->r.currentAngles);
 		SetClientViewAngle(Player->cl->gentity, demoFrame.angles);
 	}
 }

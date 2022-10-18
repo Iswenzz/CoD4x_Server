@@ -8,19 +8,19 @@ namespace Iswenzz::CoD4x
 	{
 		this->Player = Player;
 
-		Player->Speed = g_speed ? g_speed->integer : 190;
+		Player->ps->speed = g_speed ? g_speed->integer : 190;
 		Player->ps->gravity = g_gravity ? (int)g_gravity->value : 800;
 		Player->cl->jumpHeight = jump_height ? jump_height->value : 39;
 	}
 
 	void PMove::SetSpeed(int speed)
 	{
-		Player->Speed = speed;
+		Player->ps->speed = speed;
 	}
 
 	int PMove::GetSpeed()
 	{
-		return Player->Speed;
+		return Player->ps->speed;
 	}
 
 	float PMove::GetJumpHeight()
@@ -40,12 +40,12 @@ C_EXTERN
 {
 	void Pmove_SetSpeed(unsigned int num, int speed)
 	{
-		SR->Players[num]->Speed = speed;
+		SR->Players[num]->ps->speed = speed;
 	}
 
 	OPTIMIZE3 int Pmove_GetSpeed(playerState_t *ps)
 	{
-		return SR->Players[ps->clientNum]->Speed;
+		return SR->Players[ps->clientNum]->ps->speed;
 	}
 
 	void Jump_UpdateSurface(playerState_s *ps, pml_t *pml)

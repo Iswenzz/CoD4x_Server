@@ -15,8 +15,6 @@ namespace Iswenzz::CoD4x
 	void Player::Initialize()
 	{
 		this->PMove = std::make_unique<class PMove>(this);
-
-		this->Speed = 0;
 		this->SurfaceFlags = 0;
 	}
 
