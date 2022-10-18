@@ -82,7 +82,7 @@ namespace Iswenzz::CoD4x
 			Scr_ObjectError("not a client\n");
 			return;
 		}
-		std::string path = R"(D:\Vids\CoD4\izengine\mp_dr_darmuhv2.dm_1)";
+		std::string path = R"(D:\Vids\CoD4\izengine\mp_dr_clifside.dm_1)";
 		auto player = SR->Players[num.entnum];
 		player->Demo->Open(path);
 		Scr_AddEntity(player->Demo->Entity);

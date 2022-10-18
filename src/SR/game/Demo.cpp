@@ -50,6 +50,7 @@ namespace Iswenzz::CoD4x
 		frame->ps.commandTime = originalFrame.ps.commandTime;
 		frame->ps.eFlags = originalFrame.ps.eFlags;
 		frame->ps.pm_type = originalFrame.ps.pm_type;
+		frame->ps.otherFlags = originalFrame.ps.otherFlags;
 		frame->ps.viewlocked = originalFrame.ps.viewlocked;
 		frame->ps.viewlocked_entNum = originalFrame.ps.viewlocked_entNum;
 		frame->ps.viewHeightCurrent = originalFrame.ps.viewHeightCurrent;
