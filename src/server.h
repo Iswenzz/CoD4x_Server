@@ -720,6 +720,7 @@ qboolean SV_FFAPlayerCanBlock(void);
 const char* SV_GetMessageOfTheDay(void);
 const char* SV_GetNextMap(void);
 void QDECL SV_EnterLeaveLog( const char *fmt, ... );
+void SV_LinkEntity( gentity_t *gEnt );
 
 
 qboolean SV_ClientCommand( client_t *cl, msg_t *msg, qboolean inDl);

@@ -49,16 +49,21 @@ namespace Iswenzz::CoD4x
 		frame->ps.spreadOverrideState = demoSnapshot.ps.spreadOverrideState;
 		frame->ps.pm_flags = demoSnapshot.ps.pm_flags;
 		frame->ps.pm_time = demoSnapshot.ps.pm_time;
-		frame->ps.pm_type = demoSnapshot.ps.pm_type;
 		frame->ps.weapFlags = demoSnapshot.ps.weapFlags;
 		frame->ps.weapAnim = demoSnapshot.ps.weapAnim;
 		frame->ps.weaponTime = demoSnapshot.ps.weaponTime;
 		frame->ps.aimSpreadScale = demoSnapshot.ps.aimSpreadScale;
+		frame->ps.adsDelayTime = demoSnapshot.ps.adsDelayTime;
 		frame->ps.legsAnim = demoSnapshot.ps.legsAnim;
-		frame->ps.eFlags = demoSnapshot.ps.eFlags;
+		frame->ps.legsAnimDuration = demoSnapshot.ps.legsAnimDuration;
+		frame->ps.torsoAnim = demoSnapshot.ps.torsoAnim;
+		frame->ps.torsoAnimDuration = demoSnapshot.ps.torsoAnimDuration;
+		frame->ps.flinchYawAnim = demoSnapshot.ps.flinchYawAnim;
 
-		// Origin & Angles
+		// Origin & Angles & Velocity
 		VectorCopy(demoFrame.origin, frame->ps.origin);
+		Vector2Copy(demoSnapshot.ps.oldVelocity, frame->ps.oldVelocity);
+		VectorCopy(demoSnapshot.ps.velocity, frame->ps.velocity);
 		SetClientViewAngle(Player->cl->gentity, demoFrame.angles);
 	}
 }

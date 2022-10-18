@@ -206,6 +206,7 @@ void AddPointToBounds( const vec3_t v, vec3_t mins, vec3_t maxs );
 void ClearBounds(vec3_t mins, vec3_t maxs);
 void CreateRotationMatrix( const vec3_t angles, vec3_t matrix[3] );
 void RotatePoint( vec3_t point, const vec3_t matrix[3] );
+float AngleNormalize180 ( float angle );
 
 #include <xmmintrin.h>
 

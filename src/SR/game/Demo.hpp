@@ -8,6 +8,7 @@
 C_EXTERN
 {
 	#include <scr_vm.h>
+	#include <q_math.h>
 }
 
 namespace Iswenzz::CoD4x
