@@ -6,5 +6,4 @@ export CLIENT="client.sh"
 
 cd "$GAME/$WORKDIR"
 
-start $CLIENT
 ./$SERVER
