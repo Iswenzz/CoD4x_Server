@@ -15,6 +15,14 @@ namespace Iswenzz::CoD4x
 {
 	class Player;
 
+	struct DemoFrame
+	{
+		playerState_t ps;
+		int time;
+		int fps;
+		std::string playerName;
+	};
+
 	/// @brief Game demo.
 	class Demo
 	{
@@ -23,6 +31,8 @@ namespace Iswenzz::CoD4x
 		gentity_t *Entity;
 
 		std::unique_ptr<Iswenzz::CoD4::DM1::DemoReader> Reader;
+		std::vector<DemoFrame> Frames;
+		int FrameIndex = 0;
 		int StartTime = 0;
 
 		/// @brief Initialize a new Demo.
@@ -32,6 +42,10 @@ namespace Iswenzz::CoD4x
 		/// @brief Open a demo.
 		/// @param path - The demo path.
 		void Open(std::string path);
+
+		/// @brief Get the current demo frame.
+		/// @return
+		DemoFrame GetFrame();
 
 		/// @brief Demo render frame.
 		void Frame();
