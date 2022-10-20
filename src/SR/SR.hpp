@@ -1,6 +1,7 @@
 #pragma once
 #include "Macros.hpp"
 
+#include "game/demo/DemoContainer.hpp"
 #include "game/Debug.hpp"
 #include "game/Server.hpp"
 #include "net/Netchan.hpp"
@@ -8,16 +9,15 @@
 #include "player/Player.hpp"
 #include "utils/Log.hpp"
 
-#include <array>
-#include <memory>
-
 namespace Iswenzz::CoD4x
 {
+	/// @brief Game server.
 	class Game
 	{
 	public:
 		std::unique_ptr<Server> Server;
 		std::unique_ptr<Netchan> Netchan;
+		std::unique_ptr<DemoContainer> DemoContainer;
 
 		std::array<std::shared_ptr<Player>, MAX_CLIENTS> Players{};
 

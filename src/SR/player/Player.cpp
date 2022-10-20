@@ -9,7 +9,7 @@ namespace Iswenzz::CoD4x
 		this->cl = cl;
 		this->ps = &cl->gentity->client->ps;
 
-		this->Demo = std::make_unique<class Demo>(this);
+		this->DemoPlayer = std::make_unique<class DemoPlayer>(this);
 	}
 
 	void Player::Initialize()
@@ -35,7 +35,6 @@ namespace Iswenzz::CoD4x
 			CurrentFrameTime = ps->commandTime;
 			FrameTimes.push_back(1000 / (CurrentFrameTime - PreviousFrameTime));
 		}
-		Demo->Frame();
 	}
 
 	void Player::Frame()
@@ -43,7 +42,7 @@ namespace Iswenzz::CoD4x
 		CalculateFPS();
 
 		SR->Server->Vegas->Frame(this);
-		Demo->PlayerFrame();
+		DemoPlayer->Frame();
 	}
 
 	clientSnapshot_t *Player::GetFrame()
@@ -56,14 +55,14 @@ C_EXTERN
 {
 	void SR_InitializePlayer(client_t *cl)
 	{
-		auto player = std::make_shared<Player>(cl);
-		player->Initialize();
+		// auto player = std::make_shared<Player>(cl);
+		// player->Initialize();
 
-		SR->Players[cl->gentity->client->ps.clientNum] = player;
+		// SR->Players[cl->gentity->client->ps.clientNum] = player;
 	}
 
 	void SR_FreeClient(client_t *cl)
 	{
-		SR->Players[cl->gentity->client->ps.clientNum].reset();
+		// SR->Players[cl->gentity->client->ps.clientNum].reset();
 	}
 }

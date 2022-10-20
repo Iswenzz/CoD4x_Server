@@ -8,6 +8,7 @@ namespace Iswenzz::CoD4x
 
 		Server = std::make_unique<class Server>();
 		Netchan = std::make_unique<class Netchan>();
+		DemoContainer = std::make_unique<class DemoContainer>();
 
 		CommandsContainer::Register();
 		Debug::Initialize();

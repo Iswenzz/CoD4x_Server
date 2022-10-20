@@ -13,4 +13,9 @@ C_EXTERN definition \
 
 #define C_VARIABLE(definition) definition;
 
-#define MAX_CLIENTS 64
+#define CHECK_PARAMS(count, message)	\
+if (Scr_GetNumParam() != count)			\
+{										\
+	Scr_Error(message);					\
+	return;								\
+}

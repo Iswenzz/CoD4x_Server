@@ -1,7 +1,6 @@
 #pragma once
 #include "PMove.hpp"
-#include "game/Demo.hpp"
-#include <vector>
+#include "game/demo/DemoPlayer.hpp"
 
 C_EXTERN
 {
@@ -18,7 +17,7 @@ namespace Iswenzz::CoD4x
 		playerState_t* ps;
 
 		std::unique_ptr<PMove> PMove;
-		std::unique_ptr<Demo> Demo;
+		std::unique_ptr<DemoPlayer> DemoPlayer;
 
 		int Speed = 0;
 		int SurfaceFlags = 0;
