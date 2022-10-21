@@ -1,5 +1,6 @@
 #include "DemoPlayer.hpp"
 #include "player/Player.hpp"
+#include "utils/Log.hpp"
 
 namespace Iswenzz::CoD4x
 {
@@ -10,6 +11,7 @@ namespace Iswenzz::CoD4x
 
 	void DemoPlayer::Play(const std::shared_ptr<class Demo>& demo)
 	{
+		Demo = demo;
 		FrameIndex = 0;
 		StartTime = Player->CurrentFrameTime;
 

@@ -55,14 +55,9 @@ C_EXTERN
 {
 	void SR_InitializePlayer(client_t *cl)
 	{
-		// auto player = std::make_shared<Player>(cl);
-		// player->Initialize();
+		auto player = std::make_shared<Player>(cl);
+		player->Initialize();
 
-		// SR->Players[cl->gentity->client->ps.clientNum] = player;
-	}
-
-	void SR_FreeClient(client_t *cl)
-	{
-		// SR->Players[cl->gentity->client->ps.clientNum].reset();
+		SR->Players[cl->gentity->client->ps.clientNum] = player;
 	}
 }

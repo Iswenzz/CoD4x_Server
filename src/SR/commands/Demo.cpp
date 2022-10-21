@@ -38,15 +38,16 @@ namespace Iswenzz::CoD4x
 
 		auto player = SR->Players[num.entnum];
 
-		Log::WriteLine("[lmao] " + std::to_string(SR->DemoContainer->Demos.size()));
+		Log::WriteLine("[Debug] %d", SR->DemoContainer->Demos.size());
 
-		auto demo = SR->DemoContainer->Demos.at(mode + "-" + way);
+		auto demo = std::find_if(SR->DemoContainer->Demos.cbegin(), SR->DemoContainer->Demos.cend(),
+			[&](const std::shared_ptr<Demo> &item) { return item->ID == mode + "-" + way; });
 
-		if (demo)
+		if (demo != std::end(SR->DemoContainer->Demos))
 		{
-			Log::WriteLine("[DemoPlayer] Playing demo");
+			Log::WriteLine("[DemoPlayer] Playing demo %p", (*demo).get());
 
-			player->DemoPlayer->Play(demo);
+			player->DemoPlayer->Play(*demo);
 			Scr_AddEntity(player->DemoPlayer->Entity);
 		}
 	}

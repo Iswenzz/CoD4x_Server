@@ -30,7 +30,7 @@ namespace Iswenzz::CoD4x
 
 	void PMove::JumpUpdateSurface(pml_t *pml)
 	{
-		// Player->SurfaceFlags = pml->groundTrace.sflags;
+		Player->SurfaceFlags = pml->groundTrace.sflags;
 	}
 
 	void PMove::StuckInClient() { }
@@ -40,24 +40,24 @@ C_EXTERN
 {
 	void Pmove_SetSpeed(unsigned int num, int speed)
 	{
-		// SR->Players[num]->ps->speed = speed;
+		SR->Players[num]->ps->speed = speed;
 	}
 
 	OPTIMIZE3 int Pmove_GetSpeed(playerState_t *ps)
 	{
-		// return SR->Players[ps->clientNum]->ps->speed;
-		return 210;
+		return SR->Players[ps->clientNum]->ps->speed;
+		// return 210;
 	}
 
 	void Jump_UpdateSurface(playerState_s *ps, pml_t *pml)
 	{
-		// SR->Players[ps->clientNum]->PMove->JumpUpdateSurface(pml);
+		SR->Players[ps->clientNum]->PMove->JumpUpdateSurface(pml);
 	}
 
 	float Dirty_GetJumpHeight(unsigned int num)
 	{
-		// return SR->Players[num]->PMove->GetJumpHeight();
-		return 39;
+		return SR->Players[num]->PMove->GetJumpHeight();
+		// return 39;
 	}
 
 	OPTIMIZE3 void StuckInClient(gentity_t* gen) { }

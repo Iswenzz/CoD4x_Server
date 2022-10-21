@@ -1,6 +1,13 @@
 #pragma once
+#include "Macros.hpp"
+
 #include <iostream>
 #include <string>
+
+C_EXTERN
+{
+	#include <q_shared.h>
+}
 
 namespace Iswenzz::CoD4x
 {
@@ -9,11 +16,13 @@ namespace Iswenzz::CoD4x
 	{
 	public:
 		/// @brief Write a line to the console.
-		/// @param message - The message.
-		static void WriteLine(std::string message);
+		/// @param fmt - The format.
+		/// @param ... - Format arguments.
+		static void WriteLine(const char *fmt, ...);
 
-		/// @brief Write to the console
-		/// @param message - The message.
-		static void Write(std::string message);
+		/// @brief Write to the console.
+		/// @param fmt - The format.
+		/// @param ... - Format arguments.
+		static void Write(const char *fmt, ...);
 	};
 }

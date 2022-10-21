@@ -2977,7 +2977,6 @@ void __cdecl SV_FreeClient(client_t *cl)
   assert(cl->state >= CS_CONNECTED);
 
 //  BG_EvalVehicleName();
-  SR_FreeClient(cl);
   SV_CloseDownload(cl);
   if ( SV_Loaded() )
   {

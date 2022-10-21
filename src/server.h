@@ -618,7 +618,6 @@ extern "C"{
 #endif
 
 void SR_InitializePlayer(client_t *cl);
-void SR_FreeClient(client_t *cl);
 
 gentity_t *SV_GentityNum( int num );
 int SV_NumForGentity( gentity_t *ent );

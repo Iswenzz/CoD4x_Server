@@ -35,10 +35,9 @@ namespace Iswenzz::CoD4x
 		if (demos.size())
 		{
 			std::string id = mode + "-" + way;
-			Demos.insert({ id, std::make_shared<Demo>(demos.at(0)) });
+			Demos.push_back(std::make_shared<Demo>(id, demos.at(0)));
 
-			Log::WriteLine("[DemoContainer] Register demo " + id);
-			Log::WriteLine("[DemoContainer]  " + std::to_string(Demos.size()));
+			Log::WriteLine("[DemoContainer] Register demo %s", id.c_str());
 		}
 	}
 }

@@ -2,9 +2,11 @@
 
 namespace Iswenzz::CoD4x
 {
-	Demo::Demo(std::string path)
+	Demo::Demo(std::string id, std::string path)
 	{
+		ID = id;
 		Reader = std::make_unique<Iswenzz::CoD4::DM1::DemoReader>(path);
+
 		Open();
 	}
 

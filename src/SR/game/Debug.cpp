@@ -14,9 +14,9 @@ namespace Iswenzz::CoD4x
 			return;
 
 		if (size >= 1050)
-			Log::WriteLine("YELLOW: " + std::to_string(size));
+			Log::WriteLine("YELLOW: %d", size);
 		else if (size >= 200)
-			Log::WriteLine("PACKET: " + std::to_string(size));
+			Log::WriteLine("PACKET: %d", size);
 	}
 }
 

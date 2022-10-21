@@ -25,12 +25,14 @@ namespace Iswenzz::CoD4x
 	class Demo
 	{
 	public:
+		std::string ID;
 		std::unique_ptr<Iswenzz::CoD4::DM1::DemoReader> Reader;
 		std::vector<DemoFrame> Frames;
 
 		/// @brief Initialize a new Demo.
+		/// @param id - The demo id.
 		/// @param path - The demo path.
-		Demo(std::string path);
+		Demo(std::string id, std::string path);
 		~Demo();
 
 		/// @brief Open a demo.

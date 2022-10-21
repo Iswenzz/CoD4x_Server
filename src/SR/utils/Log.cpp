@@ -1,14 +1,29 @@
 #include "Log.hpp"
+#include <stdarg.h>
 
 namespace Iswenzz::CoD4x
 {
-	void Log::WriteLine(std::string message)
+	void Log::WriteLine(const char *fmt, ...)
 	{
-		fprintf(stderr, "%s\n", message.c_str());
+		va_list	argptr;
+		char msg[4096];
+
+		va_start(argptr, fmt);
+		Q_vsnprintf(msg, sizeof(msg), fmt, argptr);
+		va_end(argptr);
+
+		fprintf(stderr, "%s\n", msg);
 	}
 
-	void Log::Write(std::string message)
+	void Log::Write(const char *fmt, ...)
 	{
-		fprintf(stderr, "%s", message.c_str());
+		va_list	argptr;
+		char msg[4096];
+
+		va_start(argptr, fmt);
+		Q_vsnprintf(msg, sizeof(msg), fmt, argptr);
+		va_end(argptr);
+
+		fprintf(stderr, "%s", msg);
 	}
 }

@@ -19,3 +19,8 @@ if (Scr_GetNumParam() != count)			\
 	Scr_Error(message);					\
 	return;								\
 }
+
+C_EXTERN
+{
+	char *fmt(char *format, ...);
+}
