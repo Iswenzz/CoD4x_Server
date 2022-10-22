@@ -26,7 +26,7 @@ namespace Iswenzz::CoD4x
 
 	void DemoCommands::PlayDemo(scr_entref_t num)
 	{
-		CHECK_PARAMS(2, "Usage: PlayDemo(<mode>, <way>)");
+		CHECK_PARAMS(1, "Usage: PlayDemo(<id>)");
 
 		gentity_t *ent = VM_GetGEntityForNum(num);
 
@@ -35,13 +35,11 @@ namespace Iswenzz::CoD4x
 			Scr_ObjectError("not a client\n");
 			return;
 		}
-		std::string mode = Scr_GetString(0);
-		std::string way = Scr_GetString(1);
+		std::string id = Scr_GetString(0);
 
 		auto player = SR->Players[num.entnum];
-
 		auto demo = std::find_if(SR->DemoContainer->Demos.cbegin(), SR->DemoContainer->Demos.cend(),
-			[&](const std::shared_ptr<Demo> &item) { return item->ID == mode + "-" + way; });
+			[&](const std::shared_ptr<Demo> &item) { return item->ID == id; });
 
 		if (demo != std::end(SR->DemoContainer->Demos))
 		{
