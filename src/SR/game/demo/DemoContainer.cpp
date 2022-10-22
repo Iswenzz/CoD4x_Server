@@ -15,7 +15,7 @@ namespace Iswenzz::CoD4x
 		Directories.push_back(path);
 	}
 
-	void DemoContainer::RegisterSpeedrunDemo(const std::string &map,
+	qboolean DemoContainer::RegisterSpeedrunDemo(const std::string &map,
 		const std::string &playerId, const std::string &run, const std::string &mode, const std::string &way)
 	{
 		std::vector<std::string> demos{ };
@@ -39,5 +39,6 @@ namespace Iswenzz::CoD4x
 
 			Log::WriteLine("[DemoContainer] Register demo %s", id.c_str());
 		}
+		return static_cast<qboolean>(demos.size());
 	}
 }

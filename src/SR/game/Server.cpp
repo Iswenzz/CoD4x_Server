@@ -10,7 +10,7 @@ namespace Iswenzz::CoD4x
 
 	void Server::LoadMap()
 	{
-
+		SR->DemoContainer->Demos.clear();
 	}
 
 	void Server::Frame()

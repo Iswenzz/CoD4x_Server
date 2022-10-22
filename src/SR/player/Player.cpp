@@ -1,6 +1,7 @@
 #include "Player.hpp"
 #include "SR.hpp"
 #include "utils/Utils.hpp"
+#include "utils/Log.hpp"
 
 namespace Iswenzz::CoD4x
 {
@@ -55,9 +56,18 @@ C_EXTERN
 {
 	void SR_InitializePlayer(client_t *cl)
 	{
+		if (!cl) return;
+
 		auto player = std::make_shared<Player>(cl);
 		player->Initialize();
 
 		SR->Players[cl->gentity->client->ps.clientNum] = player;
+	}
+
+	void SR_FreePlayer(client_t *cl)
+	{
+		if (!cl) return;
+
+		SR->Players[cl->gentity->client->ps.clientNum].reset();
 	}
 }

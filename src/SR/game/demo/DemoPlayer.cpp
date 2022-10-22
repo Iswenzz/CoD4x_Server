@@ -20,12 +20,22 @@ namespace Iswenzz::CoD4x
 		G_CallSpawnEntity(Entity);
 	}
 
+	void DemoPlayer::Stop()
+	{
+		Demo.reset();
+	}
+
 	DemoFrame DemoPlayer::GetFrame()
 	{
 		// Controls
 		FrameIndex += Player->cl->lastUsercmd.forwardmove < 0 ? -1 : 1;
 
-		return FrameIndex < Demo->Frames.size() ? Demo->Frames.at(FrameIndex) : DemoFrame{ 0 };
+		if (FrameIndex >= Demo->Frames.size())
+		{
+			Demo.reset();
+			return DemoFrame{ 0 };
+		}
+		return Demo->Frames.at(FrameIndex);
 	}
 
 	void DemoPlayer::Frame()

@@ -39,5 +39,6 @@ namespace Iswenzz::CoD4x
 			Frames.push_back(frame);
 			previousFrame = frame;
 		}
+		Reader->Close();
 	}
 }

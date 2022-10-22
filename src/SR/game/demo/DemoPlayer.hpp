@@ -25,6 +25,9 @@ namespace Iswenzz::CoD4x
 		/// @param demo - The demo.
 		void Play(const std::shared_ptr<class Demo>& demo);
 
+		/// @brief Stop the demo.
+		void Stop();
+
 		/// @brief Get the current demo frame.
 		/// @return
 		DemoFrame GetFrame();

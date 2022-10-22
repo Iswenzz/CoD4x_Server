@@ -15,5 +15,13 @@ namespace Iswenzz::CoD4x
 		/// @brief Play a demo on a client.
 		/// @param num - The client num.
 		static void PlayDemo(scr_entref_t num);
+
+		/// @brief Check if a demo is playing on a client.
+		/// @param num - The client num.
+		static void IsDemoPlaying(scr_entref_t num);
+
+		/// @brief Stop a demo on a client.
+		/// @param num - The client num.
+		static void StopDemo(scr_entref_t num);
 	};
 }

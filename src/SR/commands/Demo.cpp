@@ -7,6 +7,8 @@ namespace Iswenzz::CoD4x
 	{
 		Scr_AddFunction("registerspeedrundemo", RegisterSpeedrunDemo, qfalse);
 		Scr_AddMethod("playdemo", PlayDemo, qfalse);
+		Scr_AddMethod("isdemoplaying", IsDemoPlaying, qfalse);
+		Scr_AddMethod("stopdemo", StopDemo, qfalse);
 	}
 
 	void DemoCommands::RegisterSpeedrunDemo()
@@ -19,7 +21,7 @@ namespace Iswenzz::CoD4x
 		std::string mode = Scr_GetString(3);
 		std::string way = Scr_GetString(4);
 
-		SR->DemoContainer->RegisterSpeedrunDemo(map, playerId, runId, mode, way);
+		Scr_AddBool(SR->DemoContainer->RegisterSpeedrunDemo(map, playerId, runId, mode, way));
 	}
 
 	void DemoCommands::PlayDemo(scr_entref_t num)
@@ -38,17 +40,44 @@ namespace Iswenzz::CoD4x
 
 		auto player = SR->Players[num.entnum];
 
-		Log::WriteLine("[Debug] %d", SR->DemoContainer->Demos.size());
-
 		auto demo = std::find_if(SR->DemoContainer->Demos.cbegin(), SR->DemoContainer->Demos.cend(),
 			[&](const std::shared_ptr<Demo> &item) { return item->ID == mode + "-" + way; });
 
 		if (demo != std::end(SR->DemoContainer->Demos))
 		{
-			Log::WriteLine("[DemoPlayer] Playing demo %p", (*demo).get());
-
 			player->DemoPlayer->Play(*demo);
 			Scr_AddEntity(player->DemoPlayer->Entity);
 		}
+	}
+
+	void DemoCommands::IsDemoPlaying(scr_entref_t num)
+	{
+		CHECK_PARAMS(0, "Usage: IsDemoPlaying()");
+
+		gentity_t *ent = VM_GetGEntityForNum(num);
+
+		if (!ent || !ent->client)
+		{
+			Scr_ObjectError("not a client\n");
+			return;
+		}
+		auto player = SR->Players[num.entnum];
+		Scr_AddBool(static_cast<qboolean>(!!player->DemoPlayer->Demo.get()));
+	}
+
+	void DemoCommands::StopDemo(scr_entref_t num)
+	{
+		CHECK_PARAMS(0, "Usage: StopDemo()");
+
+		gentity_t *ent = VM_GetGEntityForNum(num);
+
+		if (!ent || !ent->client)
+		{
+			Scr_ObjectError("not a client\n");
+			return;
+		}
+		auto player = SR->Players[num.entnum];
+
+		player->DemoPlayer->Stop();
 	}
 }

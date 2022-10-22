@@ -2978,6 +2978,7 @@ void __cdecl SV_FreeClient(client_t *cl)
 
 //  BG_EvalVehicleName();
   SV_CloseDownload(cl);
+  SR_FreePlayer(cl);
   if ( SV_Loaded() )
   {
     ClientDisconnect(cl - svs.clients);
