@@ -17,6 +17,7 @@ namespace Iswenzz::CoD4x
 		int PreviousFrameIndex = 0;
 		int StartTime = 0;
 		int Velocity = 0;
+		std::string Weapon = "";
 
 		/// @brief Initialize the DemoPlayer.
 		/// @param player - The player.

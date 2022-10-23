@@ -10,6 +10,12 @@ namespace Iswenzz::CoD4x
 	class Utils
 	{
 	public:
+		/// @brief Split a string from a delimiter.
+		/// @param source - The string source.
+		/// @param delimiter - The split delimiter.
+		/// @return
+		static std::vector<std::string> SplitString(const std::string& source, char delimiter);
+
 		/// @brief Average mode a given vector.
 		/// @tparam T - The elemements type.
 		/// @param vec - The vector source.

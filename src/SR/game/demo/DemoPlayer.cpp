@@ -93,6 +93,8 @@ namespace Iswenzz::CoD4x
 		memcpy(&Player->ps->weaponold, &originalPS.weaponold, sizeof(Player->ps->weaponold));
 		memcpy(&Player->ps->weaponrechamber, &originalPS.weaponrechamber, sizeof(Player->ps->weaponrechamber));
 		memcpy(&Player->ps->weaponmodels, &originalPS.weaponmodels, sizeof(Player->ps->weaponmodels));
+		int weaponId = demoFrame.ps.weapon - 1;
+		Weapon = weaponId < Demo->Weapons.size() && weaponId >= 0 ? Demo->Weapons[weaponId] : "";
 
 		// Movement
 		VectorCopy(originalPS.delta_angles, Player->ps->delta_angles);

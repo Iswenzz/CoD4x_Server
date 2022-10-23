@@ -1,4 +1,5 @@
 #include "Demo.hpp"
+#include "Utils/Utils.hpp"
 
 namespace Iswenzz::CoD4x
 {
@@ -39,6 +40,8 @@ namespace Iswenzz::CoD4x
 			Frames.push_back(frame);
 			previousFrame = frame;
 		}
+		ConfigStrings = Reader->DemoFile->ConfigStrings;
+		Weapons = Utils::SplitString(Reader->GetConfigString("defaultweapon_mp"), ' ');
 		Reader->Close();
 	}
 }

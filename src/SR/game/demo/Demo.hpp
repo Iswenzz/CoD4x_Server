@@ -27,7 +27,9 @@ namespace Iswenzz::CoD4x
 	public:
 		std::string ID;
 		std::unique_ptr<Iswenzz::CoD4::DM1::DemoReader> Reader;
-		std::vector<DemoFrame> Frames;
+		std::vector<DemoFrame> Frames{ };
+		std::array<std::string, MAX_CONFIGSTRINGS + 1> ConfigStrings{ };
+		std::vector<std::string> Weapons{ };
 
 		/// @brief Initialize a new Demo.
 		/// @param id - The demo id.
