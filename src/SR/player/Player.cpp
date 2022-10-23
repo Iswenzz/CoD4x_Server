@@ -36,6 +36,7 @@ namespace Iswenzz::CoD4x
 			CurrentFrameTime = ps->commandTime;
 			FrameTimes.push_back(1000 / (CurrentFrameTime - PreviousFrameTime));
 		}
+		DemoPlayer->Packet();
 	}
 
 	void Player::Frame()

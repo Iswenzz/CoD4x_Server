@@ -4,6 +4,8 @@ namespace Iswenzz::CoD4x
 {
 	Game::Game()
 	{
+		Log::WriteLine("[SR] Initialize");
+
 		Iswenzz::CoD4::DM1::Huffman::InitMain();
 
 		Server = std::make_unique<class Server>();
@@ -16,7 +18,7 @@ namespace Iswenzz::CoD4x
 
 	Game::~Game()
 	{
-
+		Log::WriteLine("[SR] Shutdown");
 	}
 }
 

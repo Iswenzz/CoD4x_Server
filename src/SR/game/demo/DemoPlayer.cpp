@@ -1,6 +1,7 @@
 #include "DemoPlayer.hpp"
 #include "player/Player.hpp"
 #include "utils/Log.hpp"
+#include "utils/Utils.hpp"
 
 namespace Iswenzz::CoD4x
 {
@@ -25,26 +26,11 @@ namespace Iswenzz::CoD4x
 		Demo.reset();
 	}
 
-	DemoFrame DemoPlayer::GetFrame()
-	{
-		// Controls
-		FrameIndex += Player->cl->lastUsercmd.forwardmove < 0 ? -1 : 1;
-
-		if (FrameIndex >= Demo->Frames.size())
-		{
-			Demo.reset();
-			return DemoFrame{ 0 };
-		}
-		return Demo->Frames.at(FrameIndex);
-	}
-
 	void DemoPlayer::RetrieveSpeedrunVelocity(const DemoFrame &frame)
 	{
+		int frameVelocity = 0;
 		if (frame.ps.velocity[0] != 0 || frame.ps.velocity[1] != 0 || frame.ps.velocity[2] != 0)
-		{
-			Velocity = sqrtl((frame.ps.velocity[0] * frame.ps.velocity[0]) + (frame.ps.velocity[1] * frame.ps.velocity[1]));
-			return;
-		}
+			frameVelocity = sqrtl((frame.ps.velocity[0] * frame.ps.velocity[0]) + (frame.ps.velocity[1] * frame.ps.velocity[1]));
 
 		hudelem_t velocityHud;
 		for (int i = 0; i < MAX_HUDELEMENTS; i++)
@@ -55,55 +41,85 @@ namespace Iswenzz::CoD4x
 				break;
 			}
 		}
-		Velocity = velocityHud.value;
+		Velocity = frameVelocity >= velocityHud.value ? frameVelocity : velocityHud.value;
+	}
+
+	DemoFrame DemoPlayer::GetFrame()
+	{
+		if (FrameIndex >= Demo->Frames.size())
+		{
+			Demo.reset();
+			return DemoFrame{ 0 };
+		}
+		return Demo->Frames.at(FrameIndex);
+	}
+
+	void DemoPlayer::Packet()
+	{
+		if (!Demo || FrameIndex == PreviousFrameIndex) return;
+
+		DemoFrame demoFrame = GetFrame();
+		playerState_t originalPS = *Player->ps;
+
+		// Copy the demo frame to the player frame without huds.
+		memcpy(Player->ps, &demoFrame.ps, sizeof(playerState_t) - sizeof(demoFrame.ps.hud));
+		Player->cl->clFPS = demoFrame.fps;
+
+		// State
+		Player->ps->clientNum = originalPS.clientNum;
+		Player->ps->commandTime = originalPS.commandTime;
+		Player->ps->viewlocked = originalPS.viewlocked;
+		Player->ps->viewlocked_entNum = originalPS.viewlocked_entNum;
+		Player->ps->viewHeightCurrent = originalPS.viewHeightCurrent;
+		Player->ps->viewHeightLerpDown = originalPS.viewHeightLerpDown;
+		Player->ps->viewHeightLerpTarget = originalPS.viewHeightLerpTarget;
+		Player->ps->viewHeightLerpTime = originalPS.viewHeightLerpTime;
+		Player->ps->viewHeightTarget = originalPS.viewHeightTarget;
+		Player->ps->pm_type = originalPS.pm_type;
+		Player->ps->eFlags = originalPS.eFlags;
+		Player->ps->otherFlags = originalPS.otherFlags;
+		Player->ps->weaponstate = originalPS.weaponstate;
+		Vector2Copy(originalPS.viewAngleClampBase, Player->ps->viewAngleClampBase);
+		Vector2Copy(originalPS.viewAngleClampRange, Player->ps->viewAngleClampRange);
+		Player->ps->killCamEntity = originalPS.killCamEntity;
+		memcpy(&Player->ps->stats, &originalPS.stats, sizeof(Player->ps->stats));
+
+		// Weapon
+		Player->ps->viewmodelIndex = originalPS.viewmodelIndex;
+		Player->ps->weapon = originalPS.weapon;
+		memcpy(&Player->ps->weapons, &originalPS.weapons, sizeof(Player->ps->weapons));
+		memcpy(&Player->ps->weaponold, &originalPS.weaponold, sizeof(Player->ps->weaponold));
+		memcpy(&Player->ps->weaponrechamber, &originalPS.weaponrechamber, sizeof(Player->ps->weaponrechamber));
+		memcpy(&Player->ps->weaponmodels, &originalPS.weaponmodels, sizeof(Player->ps->weaponmodels));
+
+		// Movement
+		VectorCopy(originalPS.delta_angles, Player->ps->delta_angles);
+		VectorCopy(demoFrame.ps.origin, Entity->r.currentOrigin);
+		VectorCopy(demoFrame.ps.viewangles, Entity->r.currentAngles);
+		VectorCopy(demoFrame.ps.origin, Player->ps->origin);
+		SetClientViewAngle(Player->cl->gentity, demoFrame.ps.viewangles);
 	}
 
 	void DemoPlayer::Frame()
 	{
-		if (!Demo)
+		if (!Demo) return;
+
+		// Controls
+		PreviousFrameIndex = FrameIndex;
+		FrameIndex += Player->cl->lastUsercmd.forwardmove < 0 ? -1 : 1;
+
+		// EOF
+		if (FrameIndex >= Demo->Frames.size())
+		{
+			Demo.reset();
 			return;
+		}
 
-		auto demoFrame = GetFrame();
-		auto frame = Player->GetFrame();
-		auto originalFrame = *frame;
-
-		// Copy the demo frame to the player frame without huds.
-		memcpy(&frame->ps, &demoFrame.ps, sizeof(playerState_t) - sizeof(frame->ps.hud));
-		Player->cl->clFPS = demoFrame.fps;
-
-		// State
-		frame->ps.clientNum = originalFrame.ps.clientNum;
-		frame->ps.commandTime = originalFrame.ps.commandTime;
-		frame->ps.eFlags = originalFrame.ps.eFlags;
-		frame->ps.pm_type = originalFrame.ps.pm_type;
-		frame->ps.otherFlags = originalFrame.ps.otherFlags;
-		frame->ps.viewlocked = originalFrame.ps.viewlocked;
-		frame->ps.viewlocked_entNum = originalFrame.ps.viewlocked_entNum;
-		frame->ps.viewHeightCurrent = originalFrame.ps.viewHeightCurrent;
-		frame->ps.viewHeightLerpDown = originalFrame.ps.viewHeightLerpDown;
-		frame->ps.viewHeightLerpTarget = originalFrame.ps.viewHeightLerpTarget;
-		frame->ps.viewHeightLerpTime = originalFrame.ps.viewHeightLerpTime;
-		frame->ps.viewHeightTarget = originalFrame.ps.viewHeightTarget;
-		frame->ps.weaponstate = originalFrame.ps.weaponstate;
-		frame->ps.groundEntityNum = originalFrame.ps.groundEntityNum;
-		Vector2Copy(originalFrame.ps.viewAngleClampBase, frame->ps.viewAngleClampBase);
-		Vector2Copy(originalFrame.ps.viewAngleClampRange, frame->ps.viewAngleClampRange);
-		frame->ps.killCamEntity = originalFrame.ps.killCamEntity;
-		memcpy(&frame->ps.stats, &originalFrame.ps.stats, sizeof(frame->ps.stats));
-
-		// Weapon
-		frame->ps.viewmodelIndex = originalFrame.ps.viewmodelIndex;
-		frame->ps.weapon = originalFrame.ps.weapon;
-		memcpy(&frame->ps.weapons, &originalFrame.ps.weapons, sizeof(frame->ps.weapons));
-		memcpy(&frame->ps.weaponold, &originalFrame.ps.weaponold, sizeof(frame->ps.weaponold));
-		memcpy(&frame->ps.weaponrechamber, &originalFrame.ps.weaponrechamber, sizeof(frame->ps.weaponrechamber));
-		memcpy(&frame->ps.weaponmodels, &originalFrame.ps.weaponmodels, sizeof(frame->ps.weaponmodels));
+		DemoFrame demoFrame = GetFrame();
+		clientSnapshot_t *frame = Player->GetFrame();
 
 		// Movement
-		VectorCopy(originalFrame.ps.delta_angles, frame->ps.delta_angles);
 		VectorCopy(demoFrame.ps.origin, frame->ps.origin);
-		VectorCopy(demoFrame.ps.viewangles, Entity->r.currentAngles);
 		RetrieveSpeedrunVelocity(demoFrame);
-		SetClientViewAngle(Player->cl->gentity, demoFrame.ps.viewangles);
 	}
 }

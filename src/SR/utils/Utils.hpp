@@ -2,6 +2,8 @@
 #include <string>
 #include <vector>
 
+#define HasFlag(var, flag) (var & flag) == flag
+
 namespace Iswenzz::CoD4x
 {
 	/// @brief Utility class.
