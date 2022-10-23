@@ -40,7 +40,7 @@ namespace Iswenzz::CoD4x
 
 	void DemoPlayer::RetrieveSpeedrunVelocity(const DemoFrame &frame)
 	{
-		if (frame.ps.velocity[0] == 0 || frame.ps.velocity[1] == 0 || frame.ps.velocity[2] == 0)
+		if (frame.ps.velocity[0] != 0 || frame.ps.velocity[1] != 0 || frame.ps.velocity[2] != 0)
 		{
 			Velocity = sqrtl((frame.ps.velocity[0] * frame.ps.velocity[0]) + (frame.ps.velocity[1] * frame.ps.velocity[1]));
 			return;
@@ -49,9 +49,7 @@ namespace Iswenzz::CoD4x
 		hudelem_t velocityHud;
 		for (int i = 0; i < MAX_HUDELEMENTS; i++)
 		{
-			Log::WriteLine("scale: %f", frame.ps.hud.current[i].fontScale);
-
-			if (frame.ps.hud.current[i].fontScale >= 1.55)
+			if (std::abs(frame.ps.hud.current[i].fontScale - 1.6) <= 0.05)
 			{
 				velocityHud = frame.ps.hud.current[i];
 				break;
