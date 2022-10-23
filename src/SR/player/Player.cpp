@@ -58,6 +58,8 @@ C_EXTERN
 	{
 		if (!cl) return;
 
+		Log::WriteLine("[Player] Connected %d", cl->gentity->client->ps.clientNum);
+
 		auto player = std::make_shared<Player>(cl);
 		player->Initialize();
 
@@ -67,6 +69,8 @@ C_EXTERN
 	void SR_FreePlayer(client_t *cl)
 	{
 		if (!cl) return;
+
+		Log::WriteLine("[Player] Disconnected %d", cl->gentity->client->ps.clientNum);
 
 		SR->Players[cl->gentity->client->ps.clientNum].reset();
 	}

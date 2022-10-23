@@ -684,7 +684,7 @@ void SR_Shutdown();
 __optimize2 __regparm1 qboolean SV_Frame( unsigned int usec );
 void SR_Frame();
 void SR_Packet(netadr_t *from, client_t* cl, msg_t *msg);
-void SR_LoadMap();
+void SR_SpawnServer(const char *levelname);
 
 unsigned int SV_FrameUsec( void );
 

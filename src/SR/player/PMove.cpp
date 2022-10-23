@@ -46,7 +46,6 @@ C_EXTERN
 	OPTIMIZE3 int Pmove_GetSpeed(playerState_t *ps)
 	{
 		return SR->Players[ps->clientNum]->ps->speed;
-		// return 210;
 	}
 
 	void Jump_UpdateSurface(playerState_s *ps, pml_t *pml)
@@ -57,7 +56,6 @@ C_EXTERN
 	float Dirty_GetJumpHeight(unsigned int num)
 	{
 		return SR->Players[num]->PMove->GetJumpHeight();
-		// return 39;
 	}
 
 	OPTIMIZE3 void StuckInClient(gentity_t* gen) { }

@@ -15,6 +15,7 @@ namespace Iswenzz::CoD4x
 		gentity_t *Entity;
 		int FrameIndex = 0;
 		int StartTime = 0;
+		int Velocity = 0;
 
 		/// @brief Initialize the DemoPlayer.
 		/// @param player - The player.
@@ -27,6 +28,10 @@ namespace Iswenzz::CoD4x
 
 		/// @brief Stop the demo.
 		void Stop();
+
+		/// @brief Retrieve the speedrun velocity.
+		/// @param frame - The demo frame.
+		void RetrieveSpeedrunVelocity(const DemoFrame &frame);
 
 		/// @brief Get the current demo frame.
 		/// @return

@@ -8,6 +8,7 @@ namespace Iswenzz::CoD4x
 		Scr_AddFunction("registerspeedrundemo", RegisterSpeedrunDemo, qfalse);
 		Scr_AddMethod("playdemo", PlayDemo, qfalse);
 		Scr_AddMethod("isdemoplaying", IsDemoPlaying, qfalse);
+		Scr_AddMethod("getspeedrunvelocity", GetSpeedrunVelocity, qfalse);
 		Scr_AddMethod("stopdemo", StopDemo, qfalse);
 	}
 
@@ -61,6 +62,22 @@ namespace Iswenzz::CoD4x
 		}
 		auto player = SR->Players[num.entnum];
 		Scr_AddBool(static_cast<qboolean>(!!player->DemoPlayer->Demo.get()));
+	}
+
+	void DemoCommands::GetSpeedrunVelocity(scr_entref_t num)
+	{
+		CHECK_PARAMS(0, "Usage: GetSpeedrunVelocity()");
+
+		gentity_t *ent = VM_GetGEntityForNum(num);
+
+		if (!ent || !ent->client)
+		{
+			Scr_ObjectError("not a client\n");
+			return;
+		}
+		auto player = SR->Players[num.entnum];
+
+		Scr_AddInt(player->DemoPlayer->Velocity);
 	}
 
 	void DemoCommands::StopDemo(scr_entref_t num)

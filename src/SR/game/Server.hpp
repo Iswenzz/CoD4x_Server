@@ -18,8 +18,9 @@ namespace Iswenzz::CoD4x
 		Server();
 		~Server() = default;
 
-		/// @brief Load the map.
-		void LoadMap();
+		/// @brief Spawn the server.
+		/// @param levelName - The level name.
+		void Spawn(std::string levelName);
 
 		/// @brief The server render frame.
 		void Frame();

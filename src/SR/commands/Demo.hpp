@@ -20,6 +20,10 @@ namespace Iswenzz::CoD4x
 		/// @param num - The client num.
 		static void IsDemoPlaying(scr_entref_t num);
 
+		/// @brief Get the speedrun velocity.
+		/// @param num - The client num.
+		static void GetSpeedrunVelocity(scr_entref_t num);
+
 		/// @brief Stop a demo on a client.
 		/// @param num - The client num.
 		static void StopDemo(scr_entref_t num);

@@ -38,6 +38,28 @@ namespace Iswenzz::CoD4x
 		return Demo->Frames.at(FrameIndex);
 	}
 
+	void DemoPlayer::RetrieveSpeedrunVelocity(const DemoFrame &frame)
+	{
+		if (frame.ps.velocity[0] == 0 || frame.ps.velocity[1] == 0 || frame.ps.velocity[2] == 0)
+		{
+			Velocity = sqrtl((frame.ps.velocity[0] * frame.ps.velocity[0]) + (frame.ps.velocity[1] * frame.ps.velocity[1]));
+			return;
+		}
+
+		hudelem_t velocityHud;
+		for (int i = 0; i < MAX_HUDELEMENTS; i++)
+		{
+			Log::WriteLine("scale: %f", frame.ps.hud.current[i].fontScale);
+
+			if (frame.ps.hud.current[i].fontScale >= 1.55)
+			{
+				velocityHud = frame.ps.hud.current[i];
+				break;
+			}
+		}
+		Velocity = velocityHud.value;
+	}
+
 	void DemoPlayer::Frame()
 	{
 		if (!Demo)
@@ -65,6 +87,7 @@ namespace Iswenzz::CoD4x
 		frame->ps.viewHeightLerpTime = originalFrame.ps.viewHeightLerpTime;
 		frame->ps.viewHeightTarget = originalFrame.ps.viewHeightTarget;
 		frame->ps.weaponstate = originalFrame.ps.weaponstate;
+		frame->ps.groundEntityNum = originalFrame.ps.groundEntityNum;
 		Vector2Copy(originalFrame.ps.viewAngleClampBase, frame->ps.viewAngleClampBase);
 		Vector2Copy(originalFrame.ps.viewAngleClampRange, frame->ps.viewAngleClampRange);
 		frame->ps.killCamEntity = originalFrame.ps.killCamEntity;
@@ -81,9 +104,8 @@ namespace Iswenzz::CoD4x
 		// Movement
 		VectorCopy(originalFrame.ps.delta_angles, frame->ps.delta_angles);
 		VectorCopy(demoFrame.ps.origin, frame->ps.origin);
-		Vector2Copy(demoFrame.ps.oldVelocity, frame->ps.oldVelocity);
-		VectorCopy(demoFrame.ps.velocity, frame->ps.velocity);
 		VectorCopy(demoFrame.ps.viewangles, Entity->r.currentAngles);
+		RetrieveSpeedrunVelocity(demoFrame);
 		SetClientViewAngle(Player->cl->gentity, demoFrame.ps.viewangles);
 	}
 }

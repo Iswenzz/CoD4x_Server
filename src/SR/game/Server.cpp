@@ -8,8 +8,10 @@ namespace Iswenzz::CoD4x
 		Vegas = std::make_unique<class Vegas>();
 	}
 
-	void Server::LoadMap()
+	void Server::Spawn(std::string levelName)
 	{
+		Log::WriteLine("[Server] Spawn server");
+		SR->Players = { };
 		SR->DemoContainer->Demos.clear();
 	}
 
@@ -30,8 +32,8 @@ C_EXTERN
 		SR->Server->Frame();
 	}
 
-	void SR_LoadMap()
+	void SR_SpawnServer(const char *levelname)
 	{
-		SR->Server->LoadMap();
+		SR->Server->Spawn(levelname);
 	}
 }
