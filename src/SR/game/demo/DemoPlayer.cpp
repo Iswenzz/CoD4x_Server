@@ -35,7 +35,9 @@ namespace Iswenzz::CoD4x
 		hudelem_t velocityHud;
 		for (int i = 0; i < MAX_HUDELEMENTS; i++)
 		{
-			if (std::abs(frame.ps.hud.current[i].fontScale - 1.6) <= 0.05)
+			if ((std::abs(frame.ps.hud.current[i].fontScale - 1.6) <= 0.05 ||
+				std::abs(frame.ps.hud.current[i].fontScale - 1.8) <= 0.05) &&
+				frame.ps.hud.current[i].value > 0)
 			{
 				velocityHud = frame.ps.hud.current[i];
 				break;
@@ -61,7 +63,7 @@ namespace Iswenzz::CoD4x
 		DemoFrame demoFrame = GetFrame();
 		playerState_t originalPS = *Player->ps;
 
-		// Copy the demo frame to the player frame without huds.
+		// Copy the demo frame to the player without huds.
 		memcpy(Player->ps, &demoFrame.ps, sizeof(playerState_t) - sizeof(demoFrame.ps.hud));
 		Player->cl->clFPS = demoFrame.fps;
 
