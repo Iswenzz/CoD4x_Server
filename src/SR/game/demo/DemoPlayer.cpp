@@ -81,8 +81,8 @@ namespace Iswenzz::CoD4x
 		Player->ps->eFlags = originalPS.eFlags;
 		Player->ps->otherFlags = originalPS.otherFlags;
 		Player->ps->weaponstate = originalPS.weaponstate;
-		Player->ps->pm_flags = originalPS.pm_flags;
-		Player->ps->pm_flags &= ~PMF_CROUCHING; // Remove crouching
+		Player->ps->pm_flags &= ~0x1;
+		Player->ps->pm_flags &= ~0x2;
 		Vector2Copy(originalPS.viewAngleClampBase, Player->ps->viewAngleClampBase);
 		Vector2Copy(originalPS.viewAngleClampRange, Player->ps->viewAngleClampRange);
 		Player->ps->killCamEntity = originalPS.killCamEntity;

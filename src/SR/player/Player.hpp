@@ -2,7 +2,8 @@
 #include "PMove.hpp"
 #include "game/demo/DemoPlayer.hpp"
 
-#define PMF_CROUCHING 0x8000
+#define PMF_PRONING 0x1
+#define PMF_CROUCHING 0x2
 
 C_EXTERN
 {
