@@ -95,8 +95,7 @@ namespace Iswenzz::CoD4x
 		auto player = SR->Players[num.entnum];
 		auto weapon = player->DemoPlayer->Weapon;
 
-		if (!weapon.empty())
-			Scr_AddString(weapon.c_str());
+		Scr_AddString(weapon.c_str());
 	}
 
 	void DemoCommands::StopDemo(scr_entref_t num)

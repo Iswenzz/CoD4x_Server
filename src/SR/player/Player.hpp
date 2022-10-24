@@ -2,6 +2,8 @@
 #include "PMove.hpp"
 #include "game/demo/DemoPlayer.hpp"
 
+#define PMF_CROUCHING 0x8000
+
 C_EXTERN
 {
 	#include <server.h>

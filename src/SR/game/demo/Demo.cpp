@@ -18,7 +18,6 @@ namespace Iswenzz::CoD4x
 
 	void Demo::Open()
 	{
-		DemoFrame previousFrame = { 0 };
 		while (Reader->DemoFile->Next())
 		{
 			DemoFrame frame = { 0 };
@@ -38,7 +37,6 @@ namespace Iswenzz::CoD4x
 			frame.playerName = Reader->GetPlayerName().netname;
 
 			Frames.push_back(frame);
-			previousFrame = frame;
 		}
 		ConfigStrings = Reader->DemoFile->ConfigStrings;
 		Weapons = Utils::SplitString(Reader->GetConfigString("defaultweapon_mp"), ' ');

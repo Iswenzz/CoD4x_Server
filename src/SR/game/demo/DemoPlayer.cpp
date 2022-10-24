@@ -81,6 +81,8 @@ namespace Iswenzz::CoD4x
 		Player->ps->eFlags = originalPS.eFlags;
 		Player->ps->otherFlags = originalPS.otherFlags;
 		Player->ps->weaponstate = originalPS.weaponstate;
+		Player->ps->pm_flags = originalPS.pm_flags;
+		Player->ps->pm_flags &= ~PMF_CROUCHING; // Remove crouching
 		Vector2Copy(originalPS.viewAngleClampBase, Player->ps->viewAngleClampBase);
 		Vector2Copy(originalPS.viewAngleClampRange, Player->ps->viewAngleClampRange);
 		Player->ps->killCamEntity = originalPS.killCamEntity;
@@ -98,7 +100,6 @@ namespace Iswenzz::CoD4x
 
 		// Movement
 		VectorCopy(originalPS.delta_angles, Player->ps->delta_angles);
-		VectorCopy(demoFrame.ps.origin, Entity->r.currentOrigin);
 		VectorCopy(demoFrame.ps.viewangles, Entity->r.currentAngles);
 		VectorCopy(demoFrame.ps.origin, Player->ps->origin);
 		SetClientViewAngle(Player->cl->gentity, demoFrame.ps.viewangles);
