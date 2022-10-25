@@ -80,9 +80,8 @@ namespace Iswenzz::CoD4x
 		Player->ps->pm_type = originalPS.pm_type;
 		Player->ps->eFlags = originalPS.eFlags;
 		Player->ps->otherFlags = originalPS.otherFlags;
-		Player->ps->weaponstate = originalPS.weaponstate;
-		Player->ps->pm_flags &= ~0x1;
-		Player->ps->pm_flags &= ~0x2;
+		Player->ps->pm_flags &= ~PMF_PRONING;
+		Player->ps->pm_flags &= ~PMF_CROUCHING;
 		Vector2Copy(originalPS.viewAngleClampBase, Player->ps->viewAngleClampBase);
 		Vector2Copy(originalPS.viewAngleClampRange, Player->ps->viewAngleClampRange);
 		Player->ps->killCamEntity = originalPS.killCamEntity;
@@ -91,6 +90,9 @@ namespace Iswenzz::CoD4x
 		// Weapon
 		Player->ps->viewmodelIndex = originalPS.viewmodelIndex;
 		Player->ps->weapon = originalPS.weapon;
+		Player->ps->weaponstate = originalPS.weaponstate;
+		memcpy(&Player->ps->ammo, &originalPS.ammo, sizeof(Player->ps->ammo));
+		memcpy(&Player->ps->ammoclip, &originalPS.ammoclip, sizeof(Player->ps->ammoclip));
 		memcpy(&Player->ps->weapons, &originalPS.weapons, sizeof(Player->ps->weapons));
 		memcpy(&Player->ps->weaponold, &originalPS.weaponold, sizeof(Player->ps->weaponold));
 		memcpy(&Player->ps->weaponrechamber, &originalPS.weaponrechamber, sizeof(Player->ps->weaponrechamber));
