@@ -19,6 +19,7 @@ namespace Iswenzz::CoD4x
 		int time;
 		int fps;
 		std::string playerName;
+		std::vector<std::string> chat;
 	};
 
 	/// @brief Game demo.
@@ -39,5 +40,9 @@ namespace Iswenzz::CoD4x
 
 		/// @brief Open a demo.
 		void Open();
+
+		/// @brief Process chat messages.
+		/// @return
+		std::vector<std::string> ProcessChat();
 	};
 }

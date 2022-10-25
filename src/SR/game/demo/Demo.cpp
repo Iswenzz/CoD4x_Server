@@ -33,17 +33,34 @@ namespace Iswenzz::CoD4x
 				auto archive = Reader->GetCurrentFrame();
 				VectorCopy(archive.angles, ps.viewangles);
 
+				frame.chat = ProcessChat();
 				frame.time = Reader->GetTimeMilliseconds();
 				frame.fps = Reader->GetFPS();
 				frame.ps = *reinterpret_cast<playerState_t *>(&ps);
 				frame.playerName = Reader->GetPlayerName().netname;
 
+				Reader->PreviousCommandStrings = Reader->DemoFile->CommandStrings;
+
 				Frames.push_back(frame);
 			}
+
 			ConfigStrings = Reader->DemoFile->ConfigStrings;
 			Weapons = Utils::SplitString(Reader->GetConfigString("defaultweapon_mp"), ' ');
 			Reader->Close();
 		}
 		catch (...) { }
+	}
+
+	std::vector<std::string> Demo::ProcessChat()
+	{
+		std::vector<std::string> chat;
+		std::vector<std::string> commands = Reader->GetLastCommandStrings();
+
+		for (const std::string& command : commands)
+		{
+			if (command[0] == 'h')
+				chat.push_back(command.substr(3, command.size() - 4));
+		}
+		return chat;
 	}
 }

@@ -128,5 +128,9 @@ namespace Iswenzz::CoD4x
 		// Movement
 		VectorCopy(demoFrame.ps.origin, frame->ps.origin);
 		RetrieveSpeedrunVelocity(demoFrame);
+
+		// Commands
+		for (const std::string &message : demoFrame.chat)
+			SV_SendServerCommand(Player->cl, "h \"^5[Demo] ^7%s\"", message.c_str());
 	}
 }

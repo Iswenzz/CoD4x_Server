@@ -45,5 +45,29 @@ namespace Iswenzz::CoD4x
 			}
 			return mode;
 		}
+
+		/// @brief Get the difference between 2 containers.
+		/// @tparam T - The vector type.
+		/// @tparam Container - STL container class.
+		/// @tparam Predicate - The predicate function.
+		/// @param a - The first container.
+		/// @param b - The second container.
+		/// @param predicate - The predicate function.
+		/// @return
+		template <typename T, class Container, typename Predicate>
+		static std::vector<T> GetArrayDifference(const Container &a, const Container &b, Predicate predicate)
+		{
+			std::vector<T> difference;
+			typename Container::const_iterator itA = a.begin(), itB = b.begin();
+
+			while (itA != a.end() || itB != b.end())
+			{
+				if (!predicate(*itA, *itB))
+					difference.push_back(*itA);
+				itA++;
+				itB++;
+			}
+			return difference;
+		}
 	};
 }
