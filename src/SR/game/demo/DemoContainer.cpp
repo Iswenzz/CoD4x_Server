@@ -1,18 +1,19 @@
 #include "DemoContainer.hpp"
 #include "utils/Log.hpp"
-
-#include <filesystem>
+#include "utils/Environment.hpp"
 
 namespace Iswenzz::CoD4x
 {
 	DemoContainer::DemoContainer()
 	{
 		RegisterDemoFolder(R"(L:\migration\output)");
+		RegisterDemoFolder(R"(D:\Program Files (x86)\Activision\Cod4Mod\mods\sr_speedrun\demos)");
+		// RegisterDemoFolder(Environment::ModDirectory / "demos");
 	}
 
-	void DemoContainer::RegisterDemoFolder(const std::string &path)
+	void DemoContainer::RegisterDemoFolder(const std::filesystem::path &path)
 	{
-		Directories.push_back(path);
+		Directories.push_back(path.string());
 	}
 
 	qboolean DemoContainer::RegisterSpeedrunDemo(const std::string &map,

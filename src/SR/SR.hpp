@@ -8,6 +8,7 @@
 #include "commands/Container.hpp"
 #include "player/Player.hpp"
 #include "utils/Log.hpp"
+#include "utils/Environment.hpp"
 
 namespace Iswenzz::CoD4x
 {

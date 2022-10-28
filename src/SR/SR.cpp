@@ -7,6 +7,7 @@ namespace Iswenzz::CoD4x
 		Log::WriteLine("[SR] Initialize");
 
 		Iswenzz::CoD4::DM1::Huffman::InitMain();
+		Environment::Build();
 
 		Server = std::make_unique<class Server>();
 		Netchan = std::make_unique<class Netchan>();

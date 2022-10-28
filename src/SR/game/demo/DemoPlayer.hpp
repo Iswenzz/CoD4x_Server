@@ -13,6 +13,7 @@ namespace Iswenzz::CoD4x
 
 		Player *Player;
 		gentity_t *Entity;
+
 		int FrameIndex = 0;
 		int PreviousFrameIndex = 0;
 		int StartTime = 0;

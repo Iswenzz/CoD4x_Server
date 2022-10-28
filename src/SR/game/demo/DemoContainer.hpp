@@ -1,6 +1,6 @@
 #pragma once
 #include "Demo.hpp"
-#include <map>
+#include <filesystem>
 
 namespace Iswenzz::CoD4x
 {
@@ -17,7 +17,7 @@ namespace Iswenzz::CoD4x
 
 		/// @brief Register a demo folder.
 		/// @param path - The folder path.
-		void RegisterDemoFolder(const std::string &path);
+		void RegisterDemoFolder(const std::filesystem::path &path);
 
 		/// @brief Register a speedrun demo.
 		/// @param map - The map name.
