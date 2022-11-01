@@ -23,5 +23,8 @@ namespace Iswenzz::CoD4x
 
 		/// @brief Get the damage timer.
 		static void GetDamageTimer(scr_entref_t num);
+
+		/// @brief Get the weapon state.
+		static void GetWeaponState(scr_entref_t num);
 	};
 }
