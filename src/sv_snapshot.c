@@ -105,6 +105,8 @@ void SV_UpdateServerCommandsToClientRecover( client_t *client, msg_t *msg )
 	client->reliableSent = i - 1;
 }
 
+qboolean SR_DemoIsPlaying(client_t *cl);
+void SR_DemoUpdateEntity(client_t *cl, snapshotInfo_t *snapInfo, msg_t* msg, const int time, entityState_t* from, entityState_t* to, qboolean force);
 
 __cdecl void SV_WriteSnapshotToClient(client_t* client, msg_t* msg){
 
@@ -251,7 +253,10 @@ __cdecl void SV_WriteSnapshotToClient(client_t* client, msg_t* msg){
 			// because the force parm is qfalse, this will not result
 			// in any bytes being emited if the entity has not changed at all
 	//		Com_Printf(CON_CHANNEL_SERVER,"^2Delta Update Entity - New delta: %i Old delta: %i\n", newent->number, oldent->number);
-			MSG_WriteDeltaEntity( &snapInfo, msg, svsHeader.time, oldent, newent, qfalse );
+			if (SR_DemoIsPlaying(client))
+				SR_DemoUpdateEntity(client, &snapInfo, msg, svsHeader.time, oldent, newent, qfalse);
+			else
+				MSG_WriteDeltaEntity(&snapInfo, msg, svsHeader.time, oldent, newent, qfalse);
 			oldindex++;
 			newindex++;
 			continue;
@@ -261,7 +266,10 @@ __cdecl void SV_WriteSnapshotToClient(client_t* client, msg_t* msg){
 			// this is a new entity, send it from the baseline
 			snapInfo.fromBaseline = 1;
 	//		Com_Printf(CON_CHANNEL_SERVER,"Delta Add Entity: %i\n", newent->number);
-			MSG_WriteDeltaEntity( &snapInfo, msg, svsHeader.time, &svsHeader.svEntities[newnum].baseline.s, newent, qtrue );
+			if (SR_DemoIsPlaying(client))
+				SR_DemoUpdateEntity(client, &snapInfo, msg, svsHeader.time, &svsHeader.svEntities[newnum].baseline.s, newent, qtrue);
+			else
+				MSG_WriteDeltaEntity(&snapInfo, msg, svsHeader.time, &svsHeader.svEntities[newnum].baseline.s, newent, qtrue);
 			snapInfo.fromBaseline = 0;
 			newindex++;
 			continue;
@@ -270,7 +278,7 @@ __cdecl void SV_WriteSnapshotToClient(client_t* client, msg_t* msg){
 		if ( newnum > oldnum ) {
 			// the old entity isn't present in the new message
 	//		Com_Printf(CON_CHANNEL_SERVER,"Delta Remove Entity: %i\n", oldent->number);
-			MSG_WriteDeltaEntity( &snapInfo, msg, svsHeader.time, oldent, NULL, qtrue );
+			// MSG_WriteDeltaEntity( &snapInfo, msg, svsHeader.time, oldent, NULL, qtrue );
 			oldindex++;
 			continue;
 		}

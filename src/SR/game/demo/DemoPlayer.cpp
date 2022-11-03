@@ -46,6 +46,25 @@ namespace Iswenzz::CoD4x
 		Velocity = frameVelocity >= velocityHud.value ? frameVelocity : velocityHud.value;
 	}
 
+	void DemoPlayer::UpdateEntity(snapshotInfo_t *snapInfo, msg_t* msg, const int time, entityState_t* from, entityState_t* to, qboolean force)
+	{
+		DemoFrame demoFrame = GetFrame();
+
+		to->lerp.pos.trDuration = 50;
+
+		// for (const entityState_t &current : demoFrame.entities)
+		// {
+		// 	if (current.number == from->number)
+		// 	{
+		// 		to->lerp.pos.trTime = (svsHeader.time - StartTime) + (current.lerp.pos.trTime - Demo->Reader->DemoFile->StartFrameTime);
+		// 		VectorCopy(current.lerp.pos.trBase, to->lerp.pos.trBase);
+		// 		VectorCopy(current.lerp.pos.trDelta, to->lerp.pos.trDelta);
+		// 		break;
+		// 	}
+		// }
+		MSG_WriteDeltaEntity(snapInfo, msg, time, from, to, force);
+	}
+
 	DemoFrame DemoPlayer::GetFrame()
 	{
 		if (FrameIndex >= Demo->Frames.size())
@@ -132,5 +151,21 @@ namespace Iswenzz::CoD4x
 		// Commands
 		for (const std::string &message : demoFrame.chat)
 			SV_SendServerCommand(Player->cl, "h \"^5[Demo] ^7%s\"", message.c_str());
+	}
+}
+
+C_EXTERN
+{
+	qboolean SR_DemoIsPlaying(client_t *cl)
+	{
+		return static_cast<qboolean>(!!(cl && SR->Players[cl->gentity->client->ps.clientNum]->DemoPlayer->Demo));
+	}
+
+	void SR_DemoUpdateEntity(client_t *cl, snapshotInfo_t *snapInfo, msg_t* msg, const int time, entityState_t* from, entityState_t* to, qboolean force)
+	{
+		if (!cl) return;
+
+		auto player = SR->Players[cl->gentity->client->ps.clientNum];
+		player->DemoPlayer->UpdateEntity(snapInfo, msg, time, from, to, force);
 	}
 }

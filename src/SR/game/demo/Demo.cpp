@@ -31,12 +31,14 @@ namespace Iswenzz::CoD4x
 
 				auto ps = Reader->GetCurrentSnapshot().ps;
 				auto archive = Reader->GetCurrentFrame();
+				auto entities = Reader->GetLastUpdatedEntities();
 
 				frame.chat = ProcessChat();
 				frame.time = Reader->GetTimeMilliseconds();
 				frame.fps = Reader->GetFPS();
 				frame.ps = *reinterpret_cast<playerState_t *>(&ps);
 				frame.playerName = Reader->GetPlayerName().netname;
+				frame.entities = *reinterpret_cast<std::vector<entityState_t>*>(&entities);
 
 				Frames.push_back(frame);
 			}

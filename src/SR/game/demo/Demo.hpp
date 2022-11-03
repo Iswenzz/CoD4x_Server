@@ -20,6 +20,7 @@ namespace Iswenzz::CoD4x
 		int fps;
 		std::string playerName;
 		std::vector<std::string> chat;
+		std::vector<entityState_t> entities;
 	};
 
 	/// @brief Game demo.
