@@ -20,7 +20,7 @@ namespace Iswenzz::CoD4x
 	{
 		try
 		{
-			while (Reader->DemoFile->Next())
+			while (Reader->Next())
 			{
 				DemoFrame frame = { 0 };
 
@@ -31,15 +31,12 @@ namespace Iswenzz::CoD4x
 
 				auto ps = Reader->GetCurrentSnapshot().ps;
 				auto archive = Reader->GetCurrentFrame();
-				VectorCopy(archive.angles, ps.viewangles);
 
 				frame.chat = ProcessChat();
 				frame.time = Reader->GetTimeMilliseconds();
 				frame.fps = Reader->GetFPS();
 				frame.ps = *reinterpret_cast<playerState_t *>(&ps);
 				frame.playerName = Reader->GetPlayerName().netname;
-
-				Reader->PreviousCommandStrings = Reader->DemoFile->CommandStrings;
 
 				Frames.push_back(frame);
 			}
