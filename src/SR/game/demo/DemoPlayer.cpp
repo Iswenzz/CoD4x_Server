@@ -109,6 +109,8 @@ namespace Iswenzz::CoD4x
 			DemoFrame interpolateFrame = Demo->Frames.at(interpolateIndex);
 			float interpolate = static_cast<float>(SlowmoIndex) / 10;
 
+			frame.ps.commandTime = std::lerp(frame.ps.commandTime, interpolateFrame.ps.commandTime, interpolate);
+
 			frame.ps.origin[0] = std::lerp(frame.ps.origin[0], interpolateFrame.ps.origin[0], interpolate);
 			frame.ps.origin[1] = std::lerp(frame.ps.origin[1], interpolateFrame.ps.origin[1], interpolate);
 			frame.ps.origin[2] = std::lerp(frame.ps.origin[2], interpolateFrame.ps.origin[2], interpolate);
