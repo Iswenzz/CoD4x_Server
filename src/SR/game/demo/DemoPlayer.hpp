@@ -36,6 +36,13 @@ namespace Iswenzz::CoD4x
 		/// @param frame - The demo frame.
 		void RetrieveSpeedrunVelocity(const DemoFrame &frame);
 
+		/// @brief Update entities.
+		/// @param snapInfo - The snap info.
+		/// @param msg - The frame message.
+		/// @param time - The frame time.
+		/// @param from - From entity.
+		/// @param to - To entity.
+		/// @param force - Force fields.
 		void UpdateEntity(snapshotInfo_t *snapInfo, msg_t* msg, const int time, entityState_t* from, entityState_t* to, qboolean force);
 
 		/// @brief Get the current demo frame.

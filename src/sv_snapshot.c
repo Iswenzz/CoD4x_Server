@@ -32,6 +32,7 @@
 #include "g_sv_shared.h"
 #include "cm_public.h"
 #include "g_shared.h"
+#include "sv_snapshot.h"
 
 #include <stdint.h>
 #include <stdlib.h>
@@ -104,9 +105,6 @@ void SV_UpdateServerCommandsToClientRecover( client_t *client, msg_t *msg )
 	if ( i - 1 > client->reliableSent )
 	client->reliableSent = i - 1;
 }
-
-qboolean SR_DemoIsPlaying(client_t *cl);
-void SR_DemoUpdateEntity(client_t *cl, snapshotInfo_t *snapInfo, msg_t* msg, const int time, entityState_t* from, entityState_t* to, qboolean force);
 
 __cdecl void SV_WriteSnapshotToClient(client_t* client, msg_t* msg){
 
