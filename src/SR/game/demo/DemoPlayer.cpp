@@ -48,21 +48,36 @@ namespace Iswenzz::CoD4x
 
 	void DemoPlayer::UpdateEntity(snapshotInfo_t *snapInfo, msg_t* msg, const int time, entityState_t* from, entityState_t* to, qboolean force)
 	{
+		if (!to)
+		{
+			MSG_WriteDeltaEntity(snapInfo, msg, time, from, to, force);
+			return;
+		}
+
 		DemoFrame demoFrame = GetFrame();
+		entityState_t entity = *to;
 
-		to->lerp.pos.trDuration = 50;
+		auto it = demoFrame.entities.find(to->number);
+		if (it != demoFrame.entities.end())
+		{
+			entityState_t demoEntity = it->second;
+			vec3_t pos;
 
-		// for (const entityState_t &current : demoFrame.entities)
-		// {
-		// 	if (current.number == from->number)
-		// 	{
-		// 		to->lerp.pos.trTime = (svsHeader.time - StartTime) + (current.lerp.pos.trTime - Demo->Reader->DemoFile->StartFrameTime);
-		// 		VectorCopy(current.lerp.pos.trBase, to->lerp.pos.trBase);
-		// 		VectorCopy(current.lerp.pos.trDelta, to->lerp.pos.trDelta);
-		// 		break;
-		// 	}
-		// }
-		MSG_WriteDeltaEntity(snapInfo, msg, time, from, to, force);
+			entity.lerp.pos.trType = TR_STATIONARY;
+			entity.lerp.pos.trTime = 0;
+			entity.lerp.pos.trDuration = 0;
+			BG_EvaluateTrajectory(&demoEntity.lerp.pos, demoFrame.ps.commandTime, pos);
+			VectorCopy(demoEntity.lerp.pos.trDelta, entity.lerp.pos.trDelta);
+			VectorCopy(pos, entity.lerp.pos.trBase);
+
+			entity.lerp.apos.trType = TR_STATIONARY;
+			entity.lerp.apos.trTime = 0;
+			entity.lerp.apos.trDuration = 0;
+			BG_EvaluateTrajectory(&demoEntity.lerp.apos, demoFrame.ps.commandTime, pos);
+			VectorCopy(demoEntity.lerp.apos.trDelta, entity.lerp.apos.trDelta);
+			VectorCopy(pos, entity.lerp.apos.trBase);
+		}
+		MSG_WriteDeltaEntity(snapInfo, msg, time, from, &entity, force);
 	}
 
 	DemoFrame DemoPlayer::GetFrame()

@@ -20,6 +20,8 @@ namespace Iswenzz::CoD4x
 	{
 		try
 		{
+			DemoFrame previousFrame = { 0 };
+
 			while (Reader->Next())
 			{
 				DemoFrame frame = { 0 };
@@ -31,15 +33,21 @@ namespace Iswenzz::CoD4x
 
 				auto ps = Reader->GetCurrentSnapshot().ps;
 				auto archive = Reader->GetCurrentFrame();
-				auto entities = Reader->GetLastUpdatedEntities();
 
 				frame.chat = ProcessChat();
 				frame.time = Reader->GetTimeMilliseconds();
 				frame.fps = Reader->GetFPS();
 				frame.ps = *reinterpret_cast<playerState_t *>(&ps);
 				frame.playerName = Reader->GetPlayerName().netname;
-				frame.entities = *reinterpret_cast<std::vector<entityState_t>*>(&entities);
+				frame.entities = previousFrame.entities;
 
+				for (auto &ent : Reader->GetLastUpdatedEntities())
+				{
+					if (ent.eType == ET_SCRIPTMOVER)
+						frame.entities[ent.number] = *reinterpret_cast<entityState_t*>(&ent);
+				}
+
+				previousFrame = frame;
 				Frames.push_back(frame);
 			}
 

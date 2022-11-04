@@ -278,7 +278,10 @@ __cdecl void SV_WriteSnapshotToClient(client_t* client, msg_t* msg){
 		if ( newnum > oldnum ) {
 			// the old entity isn't present in the new message
 	//		Com_Printf(CON_CHANNEL_SERVER,"Delta Remove Entity: %i\n", oldent->number);
-			// MSG_WriteDeltaEntity( &snapInfo, msg, svsHeader.time, oldent, NULL, qtrue );
+			if (SR_DemoIsPlaying(client))
+				SR_DemoUpdateEntity(client, &snapInfo, msg, svsHeader.time, oldent, NULL, qtrue);
+			else
+				MSG_WriteDeltaEntity( &snapInfo, msg, svsHeader.time, oldent, NULL, qtrue );
 			oldindex++;
 			continue;
 		}
