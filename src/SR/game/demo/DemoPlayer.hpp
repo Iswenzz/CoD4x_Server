@@ -13,10 +13,14 @@ namespace Iswenzz::CoD4x
 
 		Player *Player;
 		gentity_t *Entity;
+		DemoFrame CurrentFrame;
 
+		int StartTime = 0;
 		int FrameIndex = 0;
 		int PreviousFrameIndex = 0;
-		int StartTime = 0;
+		bool Slowmo = false;
+		int SlowmoIndex = 0;
+
 		int Velocity = 0;
 		std::string Weapon = "";
 
@@ -34,7 +38,7 @@ namespace Iswenzz::CoD4x
 
 		/// @brief Retrieve the speedrun velocity.
 		/// @param frame - The demo frame.
-		void RetrieveSpeedrunVelocity(const DemoFrame &frame);
+		void RetrieveSpeedrunVelocity();
 
 		/// @brief Update entities.
 		/// @param snapInfo - The snap info.
@@ -45,8 +49,8 @@ namespace Iswenzz::CoD4x
 		/// @param force - Force fields.
 		void UpdateEntity(snapshotInfo_t *snapInfo, msg_t* msg, const int time, entityState_t* from, entityState_t* to, qboolean force);
 
-		/// @brief Get the current demo frame.
-		DemoFrame GetFrame();
+		/// @brief Compute the current demo frame.
+		bool ComputeFrame();
 
 		/// @brief Demo player packet.
 		void Packet();

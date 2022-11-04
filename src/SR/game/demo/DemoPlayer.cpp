@@ -26,20 +26,20 @@ namespace Iswenzz::CoD4x
 		Demo.reset();
 	}
 
-	void DemoPlayer::RetrieveSpeedrunVelocity(const DemoFrame &frame)
+	void DemoPlayer::RetrieveSpeedrunVelocity()
 	{
 		int frameVelocity = 0;
-		if (frame.ps.velocity[0] != 0 || frame.ps.velocity[1] != 0 || frame.ps.velocity[2] != 0)
-			frameVelocity = sqrtl((frame.ps.velocity[0] * frame.ps.velocity[0]) + (frame.ps.velocity[1] * frame.ps.velocity[1]));
+		if (CurrentFrame.ps.velocity[0] != 0 || CurrentFrame.ps.velocity[1] != 0 || CurrentFrame.ps.velocity[2] != 0)
+			frameVelocity = sqrtl((CurrentFrame.ps.velocity[0] * CurrentFrame.ps.velocity[0]) + (CurrentFrame.ps.velocity[1] * CurrentFrame.ps.velocity[1]));
 
 		hudelem_t velocityHud;
 		for (int i = 0; i < MAX_HUDELEMENTS; i++)
 		{
-			if ((std::abs(frame.ps.hud.current[i].fontScale - 1.6) <= 0.05 ||
-				std::abs(frame.ps.hud.current[i].fontScale - 1.8) <= 0.05) &&
-				frame.ps.hud.current[i].value > 0)
+			if ((std::abs(CurrentFrame.ps.hud.current[i].fontScale - 1.6) <= 0.05 ||
+				std::abs(CurrentFrame.ps.hud.current[i].fontScale - 1.8) <= 0.05) &&
+				CurrentFrame.ps.hud.current[i].value > 0)
 			{
-				velocityHud = frame.ps.hud.current[i];
+				velocityHud = CurrentFrame.ps.hud.current[i];
 				break;
 			}
 		}
@@ -53,12 +53,10 @@ namespace Iswenzz::CoD4x
 			MSG_WriteDeltaEntity(snapInfo, msg, time, from, to, force);
 			return;
 		}
-
-		DemoFrame demoFrame = GetFrame();
 		entityState_t entity = *to;
 
-		auto it = demoFrame.entities.find(to->number);
-		if (it != demoFrame.entities.end())
+		auto it = CurrentFrame.entities.find(to->number);
+		if (it != CurrentFrame.entities.end())
 		{
 			entityState_t demoEntity = it->second;
 			vec3_t pos;
@@ -66,40 +64,74 @@ namespace Iswenzz::CoD4x
 			entity.lerp.pos.trType = TR_STATIONARY;
 			entity.lerp.pos.trTime = 0;
 			entity.lerp.pos.trDuration = 0;
-			BG_EvaluateTrajectory(&demoEntity.lerp.pos, demoFrame.ps.commandTime, pos);
+			BG_EvaluateTrajectory(&demoEntity.lerp.pos, CurrentFrame.ps.commandTime, pos);
 			VectorCopy(demoEntity.lerp.pos.trDelta, entity.lerp.pos.trDelta);
 			VectorCopy(pos, entity.lerp.pos.trBase);
 
 			entity.lerp.apos.trType = TR_STATIONARY;
 			entity.lerp.apos.trTime = 0;
 			entity.lerp.apos.trDuration = 0;
-			BG_EvaluateTrajectory(&demoEntity.lerp.apos, demoFrame.ps.commandTime, pos);
+			BG_EvaluateTrajectory(&demoEntity.lerp.apos, CurrentFrame.ps.commandTime, pos);
 			VectorCopy(demoEntity.lerp.apos.trDelta, entity.lerp.apos.trDelta);
 			VectorCopy(pos, entity.lerp.apos.trBase);
 		}
 		MSG_WriteDeltaEntity(snapInfo, msg, time, from, &entity, force);
 	}
 
-	DemoFrame DemoPlayer::GetFrame()
+	bool DemoPlayer::ComputeFrame()
 	{
+		// Controls
+		int direction = Player->cl->lastUsercmd.forwardmove < 0 ? -1 : 1;
+		PreviousFrameIndex = FrameIndex;
+		Slowmo = Player->cl->lastUsercmd.buttons & KEY_MASK_JUMP;
+		FrameIndex += !Slowmo ? direction : 0;
+
+		// Slowmo
+		if (SlowmoIndex > 10 || SlowmoIndex < 0)
+		{
+			SlowmoIndex = 0;
+			FrameIndex += direction;
+		}
+		// EOF
 		if (FrameIndex >= Demo->Frames.size())
 		{
 			Demo.reset();
-			return DemoFrame{ 0 };
+			return false;
 		}
-		return Demo->Frames.at(FrameIndex);
+		DemoFrame frame = Demo->Frames.at(FrameIndex);
+
+		if (Slowmo)
+		{
+			int interpolateIndex = FrameIndex + direction;
+			if (interpolateIndex < 0 || interpolateIndex >= Demo->Frames.size())
+				return false;
+
+			DemoFrame interpolateFrame = Demo->Frames.at(interpolateIndex);
+			float interpolate = static_cast<float>(SlowmoIndex) / 10;
+
+			frame.ps.origin[0] = std::lerp(frame.ps.origin[0], interpolateFrame.ps.origin[0], interpolate);
+			frame.ps.origin[1] = std::lerp(frame.ps.origin[1], interpolateFrame.ps.origin[1], interpolate);
+			frame.ps.origin[2] = std::lerp(frame.ps.origin[2], interpolateFrame.ps.origin[2], interpolate);
+
+			frame.ps.viewangles[0] = std::lerp(frame.ps.viewangles[0], interpolateFrame.ps.viewangles[0], interpolate);
+			frame.ps.viewangles[1] = std::lerp(frame.ps.viewangles[1], interpolateFrame.ps.viewangles[1], interpolate);
+			frame.ps.viewangles[2] = std::lerp(frame.ps.viewangles[2], interpolateFrame.ps.viewangles[2], interpolate);
+
+			SlowmoIndex++;
+		}
+		CurrentFrame = frame;
+		return true;
 	}
 
 	void DemoPlayer::Packet()
 	{
 		if (!Demo || FrameIndex == PreviousFrameIndex) return;
 
-		DemoFrame demoFrame = GetFrame();
 		playerState_t originalPS = *Player->ps;
 
 		// Copy the demo frame to the player without huds.
-		memcpy(Player->ps, &demoFrame.ps, sizeof(playerState_t) - sizeof(demoFrame.ps.hud));
-		Player->cl->clFPS = demoFrame.fps;
+		memcpy(Player->ps, &CurrentFrame.ps, sizeof(playerState_t) - sizeof(CurrentFrame.ps.hud));
+		Player->cl->clFPS = CurrentFrame.fps;
 
 		// State
 		Player->ps->clientNum = originalPS.clientNum;
@@ -131,40 +163,28 @@ namespace Iswenzz::CoD4x
 		memcpy(&Player->ps->weaponold, &originalPS.weaponold, sizeof(Player->ps->weaponold));
 		memcpy(&Player->ps->weaponrechamber, &originalPS.weaponrechamber, sizeof(Player->ps->weaponrechamber));
 		memcpy(&Player->ps->weaponmodels, &originalPS.weaponmodels, sizeof(Player->ps->weaponmodels));
-		int weaponId = demoFrame.ps.weapon - 1;
+		int weaponId = CurrentFrame.ps.weapon - 1;
 		Weapon = weaponId < Demo->Weapons.size() && weaponId >= 0 ? Demo->Weapons[weaponId] : "";
 
 		// Movement
 		VectorCopy(originalPS.delta_angles, Player->ps->delta_angles);
-		VectorCopy(demoFrame.ps.viewangles, Entity->r.currentAngles);
-		VectorCopy(demoFrame.ps.origin, Player->ps->origin);
-		SetClientViewAngle(Player->cl->gentity, demoFrame.ps.viewangles);
+		VectorCopy(CurrentFrame.ps.viewangles, Entity->r.currentAngles);
+		VectorCopy(CurrentFrame.ps.origin, Player->ps->origin);
 	}
 
 	void DemoPlayer::Frame()
 	{
-		if (!Demo) return;
+		if (!Demo || !ComputeFrame()) return;
 
-		// Controls
-		PreviousFrameIndex = FrameIndex;
-		FrameIndex += Player->cl->lastUsercmd.forwardmove < 0 ? -1 : 1;
-
-		// EOF
-		if (FrameIndex >= Demo->Frames.size())
-		{
-			Demo.reset();
-			return;
-		}
-
-		DemoFrame demoFrame = GetFrame();
 		clientSnapshot_t *frame = Player->GetFrame();
 
 		// Movement
-		VectorCopy(demoFrame.ps.origin, frame->ps.origin);
-		RetrieveSpeedrunVelocity(demoFrame);
+		VectorCopy(CurrentFrame.ps.origin, frame->ps.origin);
+		SetClientViewAngle(Player->cl->gentity, CurrentFrame.ps.viewangles);
+		RetrieveSpeedrunVelocity();
 
 		// Commands
-		for (const std::string &message : demoFrame.chat)
+		for (const std::string &message : CurrentFrame.chat)
 			SV_SendServerCommand(Player->cl, "h \"^5[Demo] ^7%s\"", message.c_str());
 	}
 }
