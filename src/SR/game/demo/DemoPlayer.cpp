@@ -46,6 +46,40 @@ namespace Iswenzz::CoD4x
 		Velocity = frameVelocity >= velocityHud.value ? frameVelocity : velocityHud.value;
 	}
 
+	void DemoPlayer::UpdateEntity(snapshotInfo_t *snapInfo, msg_t* msg, const int time, entityState_t* from, entityState_t* to, qboolean force)
+	{
+		if (!to)
+		{
+			MSG_WriteDeltaEntity(snapInfo, msg, time, from, to, force);
+			return;
+		}
+
+		DemoFrame demoFrame = GetFrame();
+		entityState_t entity = *to;
+
+		auto it = demoFrame.entities.find(to->number);
+		if (it != demoFrame.entities.end())
+		{
+			entityState_t demoEntity = it->second;
+			vec3_t pos;
+
+			entity.lerp.pos.trType = TR_STATIONARY;
+			entity.lerp.pos.trTime = 0;
+			entity.lerp.pos.trDuration = 0;
+			BG_EvaluateTrajectory(&demoEntity.lerp.pos, demoFrame.ps.commandTime, pos);
+			VectorCopy(demoEntity.lerp.pos.trDelta, entity.lerp.pos.trDelta);
+			VectorCopy(pos, entity.lerp.pos.trBase);
+
+			entity.lerp.apos.trType = TR_STATIONARY;
+			entity.lerp.apos.trTime = 0;
+			entity.lerp.apos.trDuration = 0;
+			BG_EvaluateTrajectory(&demoEntity.lerp.apos, demoFrame.ps.commandTime, pos);
+			VectorCopy(demoEntity.lerp.apos.trDelta, entity.lerp.apos.trDelta);
+			VectorCopy(pos, entity.lerp.apos.trBase);
+		}
+		MSG_WriteDeltaEntity(snapInfo, msg, time, from, &entity, force);
+	}
+
 	DemoFrame DemoPlayer::GetFrame()
 	{
 		if (FrameIndex >= Demo->Frames.size())
@@ -132,5 +166,21 @@ namespace Iswenzz::CoD4x
 		// Commands
 		for (const std::string &message : demoFrame.chat)
 			SV_SendServerCommand(Player->cl, "h \"^5[Demo] ^7%s\"", message.c_str());
+	}
+}
+
+C_EXTERN
+{
+	qboolean SR_DemoIsPlaying(client_t *cl)
+	{
+		return static_cast<qboolean>(!!(cl && SR->Players[cl->gentity->client->ps.clientNum]->DemoPlayer->Demo));
+	}
+
+	void SR_DemoUpdateEntity(client_t *cl, snapshotInfo_t *snapInfo, msg_t* msg, const int time, entityState_t* from, entityState_t* to, qboolean force)
+	{
+		if (!cl) return;
+
+		auto player = SR->Players[cl->gentity->client->ps.clientNum];
+		player->DemoPlayer->UpdateEntity(snapInfo, msg, time, from, to, force);
 	}
 }

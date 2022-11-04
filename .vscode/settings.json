@@ -128,7 +128,8 @@
 		"regex": "cpp",
 		"shared_mutex": "cpp",
 		"span": "cpp",
-		"stack": "cpp"
+		"stack": "cpp",
+		"*.h++": "cpp"
 	},
 	"C_Cpp.errorSquiggles": "Disabled"
 }

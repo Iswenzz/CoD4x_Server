@@ -4,6 +4,7 @@
 #include <CoD4DM1/API/DemoReader.hpp>
 #include <CoD4DM1/Crypt/Huffman.hpp>
 #include <memory>
+#include <map>
 
 C_EXTERN
 {
@@ -20,6 +21,7 @@ namespace Iswenzz::CoD4x
 		int fps;
 		std::string playerName;
 		std::vector<std::string> chat;
+		std::map<int, entityState_t> entities;
 	};
 
 	/// @brief Game demo.
