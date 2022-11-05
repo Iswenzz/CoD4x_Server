@@ -10,6 +10,9 @@ namespace Iswenzz::CoD4x
 		Scr_AddMethod("isdemoplaying", IsDemoPlaying, qfalse);
 		Scr_AddMethod("getspeedrunvelocity", GetSpeedrunVelocity, qfalse);
 		Scr_AddMethod("getdemoweapon", GetDemoWeapon, qfalse);
+		Scr_AddMethod("getdemorightmove", GetDemoRightMove, qfalse);
+		Scr_AddMethod("getdemoforwardmove", GetDemoForwardMove, qfalse);
+		Scr_AddMethod("getdemobuttons", GetDemoButtons, qfalse);
 		Scr_AddMethod("stopdemo", StopDemo, qfalse);
 	}
 
@@ -96,6 +99,54 @@ namespace Iswenzz::CoD4x
 		auto weapon = player->DemoPlayer->Weapon;
 
 		Scr_AddString(weapon.c_str());
+	}
+
+	void DemoCommands::GetDemoRightMove(scr_entref_t num)
+	{
+		CHECK_PARAMS(0, "Usage: GetDemoRightMove()");
+
+		gentity_t *ent = VM_GetGEntityForNum(num);
+
+		if (!ent || !ent->client)
+		{
+			Scr_ObjectError("not a client\n");
+			return;
+		}
+		auto player = SR->Players[num.entnum];
+
+		Scr_AddInt(player->DemoPlayer->Demo ? player->DemoPlayer->CurrentFrame.rightmove : 0);
+	}
+
+	void DemoCommands::GetDemoForwardMove(scr_entref_t num)
+	{
+		CHECK_PARAMS(0, "Usage: GetDemoForwardMove()");
+
+		gentity_t *ent = VM_GetGEntityForNum(num);
+
+		if (!ent || !ent->client)
+		{
+			Scr_ObjectError("not a client\n");
+			return;
+		}
+		auto player = SR->Players[num.entnum];
+
+		Scr_AddInt(player->DemoPlayer->Demo ? player->DemoPlayer->CurrentFrame.forwardmove : 0);
+	}
+
+	void DemoCommands::GetDemoButtons(scr_entref_t num)
+	{
+		CHECK_PARAMS(0, "Usage: GetDemoButtons()");
+
+		gentity_t *ent = VM_GetGEntityForNum(num);
+
+		if (!ent || !ent->client)
+		{
+			Scr_ObjectError("not a client\n");
+			return;
+		}
+		auto player = SR->Players[num.entnum];
+
+		Scr_AddInt(player->DemoPlayer->Demo ? player->DemoPlayer->CurrentFrame.buttons : 0);
 	}
 
 	void DemoCommands::StopDemo(scr_entref_t num)

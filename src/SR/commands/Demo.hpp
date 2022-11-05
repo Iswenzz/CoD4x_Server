@@ -28,6 +28,18 @@ namespace Iswenzz::CoD4x
 		/// @param num - The client num.
 		static void GetDemoWeapon(scr_entref_t num);
 
+		/// @brief Get the demo right move.
+		/// @param num - The client num.
+		static void GetDemoRightMove(scr_entref_t num);
+
+		/// @brief Get the demo forward move.
+		/// @param num - The client num.
+		static void GetDemoForwardMove(scr_entref_t num);
+
+		/// @brief Get the demo buttons.
+		/// @param num - The client num.
+		static void GetDemoButtons(scr_entref_t num);
+
 		/// @brief Stop a demo on a client.
 		/// @param num - The client num.
 		static void StopDemo(scr_entref_t num);
