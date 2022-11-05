@@ -134,6 +134,9 @@ namespace Iswenzz::CoD4x
 		// Copy the demo frame to the player without huds.
 		memcpy(Player->ps, &CurrentFrame.ps, sizeof(playerState_t) - sizeof(CurrentFrame.ps.hud));
 		Player->cl->clFPS = CurrentFrame.fps;
+		Player->cl->lastUsercmd.forwardmove = CurrentFrame.forwardmove;
+		Player->cl->lastUsercmd.rightmove = CurrentFrame.rightmove;
+		Player->cl->lastUsercmd.buttons = CurrentFrame.buttons;
 
 		// State
 		Player->ps->clientNum = originalPS.clientNum;
@@ -185,6 +188,10 @@ namespace Iswenzz::CoD4x
 		SetClientViewAngle(Player->cl->gentity, CurrentFrame.ps.viewangles);
 		RetrieveSpeedrunVelocity();
 
+		Player->cl->lastUsercmd.forwardmove = CurrentFrame.forwardmove;
+		Player->cl->lastUsercmd.rightmove = CurrentFrame.rightmove;
+		Player->cl->lastUsercmd.buttons = CurrentFrame.buttons;
+
 		// Commands
 		for (const std::string &message : CurrentFrame.chat)
 			SV_SendServerCommand(Player->cl, "h \"^5[Demo] ^7%s\"", message.c_str());
@@ -204,5 +211,14 @@ C_EXTERN
 
 		auto player = SR->Players[cl->gentity->client->ps.clientNum];
 		player->DemoPlayer->UpdateEntity(snapInfo, msg, time, from, to, force);
+	}
+
+	void SR_DemoButton(client_t *cl, usercmd_t *cmd)
+	{
+		if (!cl) return;
+
+		cl->gentity->client->ps.dofNearStart = *(float *)&cmd->forwardmove;
+		cl->gentity->client->ps.dofNearEnd = *(float *)&cmd->rightmove;
+		cl->gentity->client->ps.dofFarStart = *(float *)&cmd->buttons;
 	}
 }

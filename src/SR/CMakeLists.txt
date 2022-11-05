@@ -44,7 +44,7 @@ add_subdirectory(utils)
 target_sources(SR PUBLIC SR.cpp Macros.hpp)
 target_link_libraries(SR PUBLIC ${CONAN_LIBS})
 target_include_directories(SR PUBLIC . ..)
-target_precompile_headers(SR PUBLIC SR.hpp)
+target_precompile_headers(SR PUBLIC SR.hpp SR.h)
 
 get_target_property(SOURCES SR SOURCES)
 set_target_properties(SR PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ../../../lib)

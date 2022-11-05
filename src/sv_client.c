@@ -3001,7 +3001,6 @@ void __cdecl SV_FreeClients()
   }
 }
 
-
 void __cdecl SV_ClientThink(client_t *cl, struct usercmd_s *cmd)
 {
 
@@ -3010,6 +3009,9 @@ void __cdecl SV_ClientThink(client_t *cl, struct usercmd_s *cmd)
   if ( cmd->serverTime - svs.time <= 20000 )
   {
     memcpy(&cl->lastUsercmd, cmd, sizeof(cl->lastUsercmd));
+
+	SR_DemoButton(cl, cmd);
+
     if ( cl->state == CS_ACTIVE )
     {
       G_SetLastServerTime(cl - svs.clients, cmd->serverTime);

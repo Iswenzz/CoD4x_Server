@@ -40,6 +40,9 @@ namespace Iswenzz::CoD4x
 				frame.ps = *reinterpret_cast<playerState_t *>(&ps);
 				frame.playerName = Reader->GetPlayerName().netname;
 				frame.entities = previousFrame.entities;
+				frame.forwardmove = *(char *)&ps.dofNearStart;
+				frame.rightmove = *(char *)&ps.dofNearEnd;
+				frame.buttons = *(int *)&ps.dofFarStart;
 
 				for (auto &ent : Reader->GetLastUpdatedEntities())
 				{

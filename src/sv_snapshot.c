@@ -32,7 +32,6 @@
 #include "g_sv_shared.h"
 #include "cm_public.h"
 #include "g_shared.h"
-#include "sv_snapshot.h"
 
 #include <stdint.h>
 #include <stdlib.h>

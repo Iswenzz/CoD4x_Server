@@ -22,6 +22,9 @@ namespace Iswenzz::CoD4x
 		std::string playerName;
 		std::vector<std::string> chat;
 		std::map<int, entityState_t> entities;
+		char forwardmove;
+		char rightmove;
+		int buttons;
 	};
 
 	/// @brief Game demo.
