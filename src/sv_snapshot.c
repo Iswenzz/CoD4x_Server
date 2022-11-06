@@ -263,10 +263,7 @@ __cdecl void SV_WriteSnapshotToClient(client_t* client, msg_t* msg){
 			// this is a new entity, send it from the baseline
 			snapInfo.fromBaseline = 1;
 	//		Com_Printf(CON_CHANNEL_SERVER,"Delta Add Entity: %i\n", newent->number);
-			if (SR_DemoIsPlaying(client))
-				SR_DemoUpdateEntity(client, &snapInfo, msg, svsHeader.time, &svsHeader.svEntities[newnum].baseline.s, newent, qtrue);
-			else
-				MSG_WriteDeltaEntity(&snapInfo, msg, svsHeader.time, &svsHeader.svEntities[newnum].baseline.s, newent, qtrue);
+			MSG_WriteDeltaEntity(&snapInfo, msg, svsHeader.time, &svsHeader.svEntities[newnum].baseline.s, newent, qtrue);
 			snapInfo.fromBaseline = 0;
 			newindex++;
 			continue;
@@ -275,10 +272,7 @@ __cdecl void SV_WriteSnapshotToClient(client_t* client, msg_t* msg){
 		if ( newnum > oldnum ) {
 			// the old entity isn't present in the new message
 	//		Com_Printf(CON_CHANNEL_SERVER,"Delta Remove Entity: %i\n", oldent->number);
-			if (SR_DemoIsPlaying(client))
-				SR_DemoUpdateEntity(client, &snapInfo, msg, svsHeader.time, oldent, NULL, qtrue);
-			else
-				MSG_WriteDeltaEntity( &snapInfo, msg, svsHeader.time, oldent, NULL, qtrue );
+			MSG_WriteDeltaEntity( &snapInfo, msg, svsHeader.time, oldent, NULL, qtrue );
 			oldindex++;
 			continue;
 		}
