@@ -172,6 +172,7 @@ namespace Iswenzz::CoD4x
 		VectorCopy(originalPS.delta_angles, Player->ps->delta_angles);
 		VectorCopy(CurrentFrame.ps.viewangles, Entity->r.currentAngles);
 		VectorCopy(CurrentFrame.ps.origin, Player->ps->origin);
+		VectorCopy(CurrentFrame.ps.velocity, Player->ps->velocity);
 	}
 
 	void DemoPlayer::Frame()
@@ -179,6 +180,7 @@ namespace Iswenzz::CoD4x
 		if (!Demo || !ComputeFrame()) return;
 
 		clientSnapshot_t *frame = Player->GetFrame();
+		Player->cl->clFPS = CurrentFrame.fps;
 
 		// Movement
 		VectorCopy(CurrentFrame.ps.origin, frame->ps.origin);
