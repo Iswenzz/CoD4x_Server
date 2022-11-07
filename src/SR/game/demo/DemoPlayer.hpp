@@ -54,6 +54,10 @@ namespace Iswenzz::CoD4x
 		/// @brief Compute the current demo frame.
 		bool ComputeFrame();
 
+		/// @brief Process the slowmotion.
+		/// @param frame - The demo frame.
+		void ComputeSlowmotion(DemoFrame &frame);
+
 		/// @brief Demo player packet.
 		void Packet();
 

@@ -85,10 +85,33 @@ namespace Iswenzz::CoD4x
 		PreviousFrameIndex = FrameIndex;
 		Slowmo = Player->cl->lastUsercmd.buttons & KEY_MASK_JUMP;
 		FrameIndex += !Slowmo ? direction : 0;
-		SlowmoIndex = !Slowmo ? FrameIndex + direction : SlowmoIndex;
-		SlowmoThreshold = Slowmo ? SlowmoThreshold : 0;
 
-		// Slowmo
+		// EOF
+		if (FrameIndex >= Demo->Frames.size())
+		{
+			Demo.reset();
+			return false;
+		}
+
+		DemoFrame frame = Demo->Frames.at(FrameIndex);
+		ComputeSlowmotion(frame);
+		CurrentFrame = frame;
+
+		return true;
+	}
+
+	void DemoPlayer::ComputeSlowmotion(DemoFrame &frame)
+	{
+		int direction = Player->cl->lastUsercmd.forwardmove < 0 ? -1 : 1;
+
+		if (!Slowmo)
+		{
+			SlowmoIndex = FrameIndex + direction;
+			SlowmoThreshold = 0;
+			return;
+		}
+
+		// Interpolation range forward/backward
 		if (SlowmoThreshold > 10)
 		{
 			if (SlowmoIndex > FrameIndex)
@@ -103,42 +126,29 @@ namespace Iswenzz::CoD4x
 			SlowmoIndex = FrameIndex - 1;
 			SlowmoThreshold = 10;
 		}
-		// EOF
-		if (FrameIndex >= Demo->Frames.size())
-		{
-			Demo.reset();
-			return false;
-		}
-		DemoFrame frame = Demo->Frames.at(FrameIndex);
+		if (SlowmoIndex < 0 || SlowmoIndex >= Demo->Frames.size() || FrameIndex >= Demo->Frames.size())
+			return;
 
-		if (Slowmo)
-		{
-			if (SlowmoIndex < 0 || SlowmoIndex >= Demo->Frames.size() || FrameIndex >= Demo->Frames.size())
-				return false;
+		frame = Demo->Frames.at(FrameIndex);
+		DemoFrame interpolateFrame = Demo->Frames.at(SlowmoIndex);
+		float interpolate = static_cast<float>(SlowmoThreshold) / 10;
+		interpolate = SlowmoIndex > FrameIndex ? interpolate : 1.0 - interpolate;
 
-			DemoFrame interpolateFrame = Demo->Frames.at(SlowmoIndex);
-			float interpolate = static_cast<float>(SlowmoThreshold) / 10;
-			interpolate = SlowmoIndex > FrameIndex ? interpolate : 1.0 - interpolate;
+		frame.ps.commandTime = std::lerp(frame.ps.commandTime, interpolateFrame.ps.commandTime, interpolate);
 
-			Log::WriteLine("%d %d %d %f", FrameIndex, SlowmoIndex, SlowmoThreshold, interpolate);
+		frame.ps.origin[0] = std::lerp(frame.ps.origin[0], interpolateFrame.ps.origin[0], interpolate);
+		frame.ps.origin[1] = std::lerp(frame.ps.origin[1], interpolateFrame.ps.origin[1], interpolate);
+		frame.ps.origin[2] = std::lerp(frame.ps.origin[2], interpolateFrame.ps.origin[2], interpolate);
 
-			frame.ps.commandTime = std::lerp(frame.ps.commandTime, interpolateFrame.ps.commandTime, interpolate);
+		// Prevent angle clamp interpolation
+		if (std::abs(frame.ps.viewangles[0] - interpolateFrame.ps.viewangles[0]) < 170)
+			frame.ps.viewangles[0] = std::lerp(frame.ps.viewangles[0], interpolateFrame.ps.viewangles[0], interpolate);
+		if (std::abs(frame.ps.viewangles[1] - interpolateFrame.ps.viewangles[1]) < 170)
+			frame.ps.viewangles[1] = std::lerp(frame.ps.viewangles[1], interpolateFrame.ps.viewangles[1], interpolate);
+		if (std::abs(frame.ps.viewangles[2] - interpolateFrame.ps.viewangles[2]) < 170)
+			frame.ps.viewangles[2] = std::lerp(frame.ps.viewangles[2], interpolateFrame.ps.viewangles[2], interpolate);
 
-			frame.ps.origin[0] = std::lerp(frame.ps.origin[0], interpolateFrame.ps.origin[0], interpolate);
-			frame.ps.origin[1] = std::lerp(frame.ps.origin[1], interpolateFrame.ps.origin[1], interpolate);
-			frame.ps.origin[2] = std::lerp(frame.ps.origin[2], interpolateFrame.ps.origin[2], interpolate);
-
-			if (std::abs(frame.ps.viewangles[0] - interpolateFrame.ps.viewangles[0]) < 170)
-				frame.ps.viewangles[0] = std::lerp(frame.ps.viewangles[0], interpolateFrame.ps.viewangles[0], interpolate);
-			if (std::abs(frame.ps.viewangles[1] - interpolateFrame.ps.viewangles[1]) < 170)
-				frame.ps.viewangles[1] = std::lerp(frame.ps.viewangles[1], interpolateFrame.ps.viewangles[1], interpolate);
-			if (std::abs(frame.ps.viewangles[2] - interpolateFrame.ps.viewangles[2]) < 170)
-				frame.ps.viewangles[2] = std::lerp(frame.ps.viewangles[2], interpolateFrame.ps.viewangles[2], interpolate);
-
-			SlowmoThreshold += direction;
-		}
-		CurrentFrame = frame;
-		return true;
+		SlowmoThreshold += direction;
 	}
 
 	void DemoPlayer::Packet()
