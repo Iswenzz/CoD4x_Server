@@ -85,12 +85,23 @@ namespace Iswenzz::CoD4x
 		PreviousFrameIndex = FrameIndex;
 		Slowmo = Player->cl->lastUsercmd.buttons & KEY_MASK_JUMP;
 		FrameIndex += !Slowmo ? direction : 0;
+		SlowmoIndex = !Slowmo ? FrameIndex + direction : SlowmoIndex;
+		SlowmoThreshold = Slowmo ? SlowmoThreshold : 0;
 
 		// Slowmo
-		if (SlowmoIndex > 10 || SlowmoIndex < 0)
+		if (SlowmoThreshold > 10)
 		{
-			SlowmoIndex = 0;
-			FrameIndex += direction;
+			if (SlowmoIndex > FrameIndex)
+				FrameIndex++;
+			SlowmoIndex = FrameIndex + 1;
+			SlowmoThreshold = 0;
+		}
+		else if (SlowmoThreshold < 0)
+		{
+			if (SlowmoIndex < FrameIndex)
+				FrameIndex--;
+			SlowmoIndex = FrameIndex - 1;
+			SlowmoThreshold = 10;
 		}
 		// EOF
 		if (FrameIndex >= Demo->Frames.size())
@@ -102,12 +113,14 @@ namespace Iswenzz::CoD4x
 
 		if (Slowmo)
 		{
-			int interpolateIndex = FrameIndex + direction;
-			if (interpolateIndex < 0 || interpolateIndex >= Demo->Frames.size())
+			if (SlowmoIndex < 0 || SlowmoIndex >= Demo->Frames.size() || FrameIndex >= Demo->Frames.size())
 				return false;
 
-			DemoFrame interpolateFrame = Demo->Frames.at(interpolateIndex);
-			float interpolate = static_cast<float>(SlowmoIndex) / 10;
+			DemoFrame interpolateFrame = Demo->Frames.at(SlowmoIndex);
+			float interpolate = static_cast<float>(SlowmoThreshold) / 10;
+			interpolate = SlowmoIndex > FrameIndex ? interpolate : 1.0 - interpolate;
+
+			Log::WriteLine("%d %d %d %f", FrameIndex, SlowmoIndex, SlowmoThreshold, interpolate);
 
 			frame.ps.commandTime = std::lerp(frame.ps.commandTime, interpolateFrame.ps.commandTime, interpolate);
 
@@ -115,11 +128,14 @@ namespace Iswenzz::CoD4x
 			frame.ps.origin[1] = std::lerp(frame.ps.origin[1], interpolateFrame.ps.origin[1], interpolate);
 			frame.ps.origin[2] = std::lerp(frame.ps.origin[2], interpolateFrame.ps.origin[2], interpolate);
 
-			frame.ps.viewangles[0] = std::lerp(frame.ps.viewangles[0], interpolateFrame.ps.viewangles[0], interpolate);
-			frame.ps.viewangles[1] = std::lerp(frame.ps.viewangles[1], interpolateFrame.ps.viewangles[1], interpolate);
-			frame.ps.viewangles[2] = std::lerp(frame.ps.viewangles[2], interpolateFrame.ps.viewangles[2], interpolate);
+			if (std::abs(frame.ps.viewangles[0] - interpolateFrame.ps.viewangles[0]) < 170)
+				frame.ps.viewangles[0] = std::lerp(frame.ps.viewangles[0], interpolateFrame.ps.viewangles[0], interpolate);
+			if (std::abs(frame.ps.viewangles[1] - interpolateFrame.ps.viewangles[1]) < 170)
+				frame.ps.viewangles[1] = std::lerp(frame.ps.viewangles[1], interpolateFrame.ps.viewangles[1], interpolate);
+			if (std::abs(frame.ps.viewangles[2] - interpolateFrame.ps.viewangles[2]) < 170)
+				frame.ps.viewangles[2] = std::lerp(frame.ps.viewangles[2], interpolateFrame.ps.viewangles[2], interpolate);
 
-			SlowmoIndex++;
+			SlowmoThreshold += direction;
 		}
 		CurrentFrame = frame;
 		return true;

@@ -18,8 +18,10 @@ namespace Iswenzz::CoD4x
 		int StartTime = 0;
 		int FrameIndex = 0;
 		int PreviousFrameIndex = 0;
+
 		bool Slowmo = false;
 		int SlowmoIndex = 0;
+		int SlowmoThreshold = 0;
 
 		int Velocity = 0;
 		std::string Weapon = "";
