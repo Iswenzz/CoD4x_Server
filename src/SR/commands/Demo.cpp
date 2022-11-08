@@ -13,6 +13,7 @@ namespace Iswenzz::CoD4x
 		Scr_AddMethod("getdemorightmove", GetDemoRightMove, qfalse);
 		Scr_AddMethod("getdemoforwardmove", GetDemoForwardMove, qfalse);
 		Scr_AddMethod("getdemobuttons", GetDemoButtons, qfalse);
+		Scr_AddMethod("getdemotimer", GetDemoTimer, qfalse);
 		Scr_AddMethod("stopdemo", StopDemo, qfalse);
 	}
 
@@ -131,6 +132,22 @@ namespace Iswenzz::CoD4x
 		auto player = SR->Players[num.entnum];
 
 		Scr_AddInt(player->DemoPlayer->Demo ? player->DemoPlayer->CurrentFrame.forwardmove : 0);
+	}
+
+	void DemoCommands::GetDemoTimer(scr_entref_t num)
+	{
+		CHECK_PARAMS(0, "Usage: GetDemoTimer()");
+
+		gentity_t *ent = VM_GetGEntityForNum(num);
+
+		if (!ent || !ent->client)
+		{
+			Scr_ObjectError("not a client\n");
+			return;
+		}
+		auto player = SR->Players[num.entnum];
+
+		Scr_AddInt(player->DemoPlayer->Demo ? player->DemoPlayer->CurrentFrame.time : 0);
 	}
 
 	void DemoCommands::GetDemoButtons(scr_entref_t num)

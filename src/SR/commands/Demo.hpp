@@ -21,6 +21,9 @@ namespace Iswenzz::CoD4x
 		/// @brief Get the speedrun velocity.
 		static void GetSpeedrunVelocity(scr_entref_t num);
 
+		/// @brief Get the demo timer.
+		static void GetDemoTimer(scr_entref_t num);
+
 		/// @brief Get the demo weapon.
 		static void GetDemoWeapon(scr_entref_t num);
 
