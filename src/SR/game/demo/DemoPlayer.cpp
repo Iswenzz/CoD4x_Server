@@ -82,9 +82,11 @@ namespace Iswenzz::CoD4x
 	{
 		// Controls
 		int direction = Player->cl->lastUsercmd.forwardmove < 0 ? -1 : 1;
+		bool fastForward = Player->cl->lastUsercmd.forwardmove > 0;
 		PreviousFrameIndex = FrameIndex;
 		Slowmo = Player->cl->lastUsercmd.buttons & KEY_MASK_JUMP;
 		FrameIndex += !Slowmo ? direction : 0;
+		FrameIndex += fastForward ? 1 : 0;
 
 		// EOF
 		if (FrameIndex >= Demo->Frames.size())
