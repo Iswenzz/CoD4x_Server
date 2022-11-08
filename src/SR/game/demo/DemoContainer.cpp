@@ -6,9 +6,8 @@ namespace Iswenzz::CoD4x
 {
 	DemoContainer::DemoContainer()
 	{
-		RegisterDemoFolder(R"(L:\migration\output)");
-		RegisterDemoFolder(R"(D:\Program Files (x86)\Activision\Cod4Mod\mods\sr_speedrun\demos)");
-		// RegisterDemoFolder(Environment::ModDirectory / "demos");
+		RegisterDemoFolder(Environment::ModDirectory / "demos");
+		RegisterDemoFolder(Environment::ModDirectory / "wrs");
 	}
 
 	void DemoContainer::RegisterDemoFolder(const std::filesystem::path &path)
