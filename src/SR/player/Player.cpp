@@ -57,7 +57,7 @@ C_EXTERN
 {
 	void SR_InitializePlayer(client_t *cl)
 	{
-		if (!cl) return;
+		if (!cl || !cl->gentity || !cl->gentity->client) return;
 
 		Log::WriteLine("[Player] Connected %d", cl->gentity->client->ps.clientNum);
 
@@ -69,7 +69,7 @@ C_EXTERN
 
 	void SR_FreePlayer(client_t *cl)
 	{
-		if (!cl) return;
+		if (!cl || !cl->gentity || !cl->gentity->client) return;
 
 		Log::WriteLine("[Player] Disconnected %d", cl->gentity->client->ps.clientNum);
 

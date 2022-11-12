@@ -45,6 +45,7 @@ C_EXTERN
 
 	OPTIMIZE3 int Pmove_GetSpeed(playerState_t *ps)
 	{
+		Log::WriteLine("%d %d", SR->Players[ps->clientNum]->ps->speed, SR->Players[ps->clientNum]->ps->commandTime);
 		return SR->Players[ps->clientNum]->ps->speed;
 	}
 
