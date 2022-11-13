@@ -15,13 +15,11 @@ extern "C" cvar_t* jump_slowdownEnable;
 extern "C" cvar_t* jump_ladderPushVel;
 extern "C" cvar_t* jump_spreadAdd;
 
-extern "C" float Dirty_GetJumpHeight(unsigned int num);
 extern "C" void Jump_UpdateSurface(playerState_t* ps, pml_t* pml);
-
 
 __cdecl __optimize3 float Jump_GetHeight( playerState_t *ps) {
 
-    float jumph = Dirty_GetJumpHeight(ps->clientNum);
+    float jumph = Pmove_GetJumpHeight(ps->clientNum);
 	if(jumph > 0)
     {
         return jumph;

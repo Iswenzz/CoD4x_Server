@@ -82,6 +82,11 @@ extern "C" void __cdecl ClientSpawn(gentity_s *ent, const float *spawn_origin, c
   
   savedSpawnCount = client->ps.stats[4];
   savedServerTime = client->lastServerTime;
+
+  int speed = client->ps.speed;
+  float speedScale = client->ps.moveSpeedScaleMultiplier;
+  int gravity = client->ps.gravity;
+  int jumpHeight = client->jumpHeight;
   
   ClientClearFields(client);
 
@@ -129,7 +134,11 @@ extern "C" void __cdecl ClientSpawn(gentity_s *ent, const float *spawn_origin, c
   VectorCopy(spawn_origin, client->ps.origin);
 
   client->ps.pm_flags |= 0x400u;
-  client->ps.gravity = (int)g_gravity->value;
+
+  client->ps.speed = speed;
+  client->ps.moveSpeedScaleMultiplier = speedScale;
+  client->ps.gravity = gravity;
+  svs.clients[index].jumpHeight = jumpHeight;
 
   clean_spawn_angles[0] = spawn_angles[0];
   clean_spawn_angles[1] = spawn_angles[1];
@@ -165,6 +174,7 @@ extern "C" void __cdecl ClientSpawn(gentity_s *ent, const float *spawn_origin, c
     SV_GameSetUndercoverState(index, false);
 	}
 
+  SR_ClientSpawn(client);
 }
 
 const char *__cdecl CS_DisplayName(clientState_t *cs, int type)

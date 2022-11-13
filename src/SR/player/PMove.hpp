@@ -24,12 +24,14 @@ namespace Iswenzz::CoD4x
 		PMove(class Player *player);
 		virtual ~PMove() = default;
 
-		/// @brief Set the player speed.
-		/// @param speed - The speed.
-		void SetSpeed(int speed);
-
 		/// @brief Get the player speed.
 		int GetSpeed();
+
+		/// @brief Get the player speed scale.
+		float GetSpeedScale();
+
+		/// @brief Get the player gravity.
+		int GetGravity();
 
 		/// @brief Get the player jump height.
 		float GetJumpHeight();

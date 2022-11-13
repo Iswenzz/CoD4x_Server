@@ -14,10 +14,14 @@ void SR_FreePlayer(client_t *cl);
 
 void SR_Frame();
 void SR_Packet(netadr_t *from, client_t* cl, msg_t *msg);
+void SR_ClientSpawn(gclient_t *client);
 
 qboolean SR_DemoIsPlaying(client_t *cl);
 void SR_DemoButton(client_t *cl, usercmd_t *cmd);
 void SR_DemoUpdateEntity(client_t *cl, snapshotInfo_t *snapInfo, msg_t* msg, const int time, entityState_t* from, entityState_t* to, qboolean force);
+
+float Pmove_GetJumpHeight(unsigned int num);
+float Pmove_GetSpeedScale(playerState_t *ps);
 
 #ifdef __cplusplus
 }

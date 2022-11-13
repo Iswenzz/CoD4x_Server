@@ -19,6 +19,11 @@ namespace Iswenzz::CoD4x
 		this->SurfaceFlags = 0;
 	}
 
+	void Player::Spawn()
+	{
+		
+	}
+
 	void Player::CalculateFPS()
 	{
 		if (FrameTimes.empty())
@@ -74,5 +79,12 @@ C_EXTERN
 		Log::WriteLine("[Player] Disconnected %d", cl->gentity->client->ps.clientNum);
 
 		SR->Players[cl->gentity->client->ps.clientNum].reset();
+	}
+
+	void SR_ClientSpawn(gclient_t *client)
+	{
+		if (!client) return;
+
+		SR->Players[client->ps.clientNum]->Spawn();
 	}
 }

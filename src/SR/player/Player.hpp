@@ -21,8 +21,7 @@ namespace Iswenzz::CoD4x
 
 		std::unique_ptr<PMove> PMove;
 		std::unique_ptr<DemoPlayer> DemoPlayer;
-
-		int Speed = 0;
+		
 		int SurfaceFlags = 0;
 
 		int CurrentFrameTime = 0;
@@ -36,6 +35,9 @@ namespace Iswenzz::CoD4x
 
 		/// @brief Initialize the player.
 		void Initialize();
+
+		/// @brief Player spawn.
+		void Spawn();
 
 		/// @brief Calculate the player FPS.
 		void CalculateFPS();

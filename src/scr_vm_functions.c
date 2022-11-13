@@ -799,7 +799,7 @@ void PlayerCmd_SetMoveSpeed(scr_entref_t arg)
     }
 
     // Pmove_ExtendedTurnOn();
-	Pmove_SetSpeed(entityNum, speed);
+    gentity->client->ps.speed = speed;
 }
 
 /*
