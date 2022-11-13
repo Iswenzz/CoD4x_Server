@@ -86,7 +86,7 @@ extern "C" void __cdecl ClientSpawn(gentity_s *ent, const float *spawn_origin, c
   int speed = client->ps.speed;
   float speedScale = client->ps.moveSpeedScaleMultiplier;
   int gravity = client->ps.gravity;
-  int jumpHeight = client->jumpHeight;
+  float jumpHeight = svs.clients[index].jumpHeight;
   
   ClientClearFields(client);
 
