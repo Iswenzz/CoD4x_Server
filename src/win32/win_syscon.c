@@ -487,6 +487,75 @@ char *CON_Input( void ) {
 }
 
 /*
+=================
+Sys_AnsiColorPrint
+
+Transform Q3 colour codes to ANSI escape sequences
+=================
+*/
+void Sys_AnsiColorPrint( const char *msg )
+{
+	static char buffer[ MAXPRINTMSG ];
+	int         length = 0;
+	static int  q3ToAnsi[ 8 ] =
+	{
+		30, // COLOR_BLACK
+		31, // COLOR_RED
+		32, // COLOR_GREEN
+		33, // COLOR_YELLOW
+		34, // COLOR_BLUE
+		36, // COLOR_CYAN
+		35, // COLOR_MAGENTA
+		0   // COLOR_WHITE
+	};
+
+	while( *msg )
+	{
+		if( Q_IsColorString( msg ) || *msg == '\n' )
+		{
+			// First empty the buffer
+			if( length > 0 )
+			{
+				buffer[ length ] = '\0';
+				fputs( buffer, stderr );
+				length = 0;
+			}
+
+			if( *msg == '\n' )
+			{
+				// Issue a reset and then the newline
+				fputs( "\033[0m\n", stderr );
+				msg++;
+			}
+			else
+			{
+				// Print the color code
+				Com_sprintf( buffer, sizeof( buffer ), "\033[1;%dm",
+						q3ToAnsi[ ColorIndex( *( msg + 1 ) ) ] );
+				fputs( buffer, stderr );
+				msg += 2;
+			}
+		}
+		else
+		{
+			if( length >= MAXPRINTMSG - 1 )
+				break;
+
+			buffer[ length ] = *msg;
+			length++;
+			msg++;
+		}
+	}
+
+	// Empty anything still left in the buffer
+	if( length > 0 )
+	{
+		buffer[ length ] = '\0';
+		fputs( buffer, stderr );
+	}
+}
+
+/*
 ** Conbuf_AppendText
 */
 void CON_Print( const char *pMsg ) {
@@ -498,6 +567,8 @@ void CON_Print( const char *pMsg ) {
 	int bufLen;
 	int i = 0;
 	static unsigned long s_totalChars;
+
+	Sys_AnsiColorPrint(pMsg);
 
 	//
 	// if the message is REALLY long, use just the last portion of it
@@ -558,18 +629,19 @@ void CON_Print( const char *pMsg ) {
 	SendMessageA( s_wcd.hwndBuffer, EM_LINESCROLL, 0, 0xffff );
 	SendMessageA( s_wcd.hwndBuffer, EM_SCROLLCARET, 0, 0 );
 
-	
+
 	SendMessageA( s_wcd.hwndBuffer, EM_REPLACESEL, 0, (LPARAM) buffer );
+
 	//
     //InvalidateRect(s_wcd.hwndBuffer, NULL, TRUE);
 }
 
-void CON_DisableDraw() 
+void CON_DisableDraw()
 {
 	SendMessage(  s_wcd.hwndBuffer, WM_SETREDRAW, (WPARAM) FALSE, 0);
 }
 
-void CON_EnableDraw() 
+void CON_EnableDraw()
 {
 	SendMessageA( s_wcd.hwndBuffer, WM_SETREDRAW,  (WPARAM) TRUE, 0);
 }

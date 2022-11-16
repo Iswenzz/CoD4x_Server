@@ -21,7 +21,6 @@ namespace Iswenzz::CoD4x
 
 		strcat(msg, "\n\0");
 
-		fprintf(stderr, msg);
 		Sys_Print(msg);
 		Com_PrintLogfile(msg);
 	}
@@ -37,7 +36,6 @@ namespace Iswenzz::CoD4x
 		Q_vsnprintf(msg, sizeof(msg), cfmt, argptr);
 		va_end(argptr);
 
-		fprintf(stderr, msg);
 		Sys_Print(msg);
 		Com_PrintLogfile(msg);
 	}

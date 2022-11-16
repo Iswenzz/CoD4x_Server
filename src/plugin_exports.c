@@ -1088,15 +1088,15 @@ A Com_Printf that only shows up if the "developer" cvar is set
 P_P_F void Plugin_DPrintf( const char *fmt, ...) {
 	va_list		argptr;
 	char		msg[MAXPRINTMSG];
-		
+
 	if ( !Com_IsDeveloper() ) {
 		return;			// don't confuse non-developers with techie stuff...
 	}
-	
+
 	msg[0] = '^';
 	msg[1] = '2';
 
-	va_start (argptr,fmt);	
+	va_start (argptr,fmt);
 	Q_vsnprintf (&msg[2], (sizeof(msg)-3), fmt, argptr);
 	va_end (argptr);
 
