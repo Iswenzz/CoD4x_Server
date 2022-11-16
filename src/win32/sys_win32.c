@@ -891,8 +891,6 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 	char *lastSep;
 	DWORD copylen;
 
-	SymInitialize(GetCurrentProcess(), NULL, true);
-
 	if(lpCmdLine != NULL)
 		Q_strncpyz( sys_cmdline, lpCmdLine, sizeof( sys_cmdline ) );
 	else
@@ -1134,6 +1132,9 @@ void Sys_PrintBacktrace(CONTEXT *ctx)
     stack.AddrFrame.Mode = AddrModeFlat;
 #endif
 
+	SymSetOptions(SYMOPT_UNDNAME | SYMOPT_DEFERRED_LOADS);
+	SymInitialize(process, NULL, true);
+
 	Com_Printf(CON_CHANNEL_SR_DEBUG, "---------- Backtrace ----------\n");
 
     for (frame = 0; ; frame++)
@@ -1155,7 +1156,7 @@ void Sys_PrintBacktrace(CONTEXT *ctx)
             SymGetModuleBase64,
             NULL
         );
-        if (!result)
+        if (!result || stack.AddrPC.Offset == 0)
 			break;
 
         pSymbol->SizeOfStruct = sizeof(SYMBOL_INFO);

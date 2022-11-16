@@ -136,14 +136,6 @@ __cdecl void Com_PrintMessage( conChannel_t channel, char *msg, msgtype_t type) 
 		Sys_LeaveCriticalSection(CRITSECT_RD_BUFFER);
 
 	}
-
-
-	// echo to dedicated console and early console
-	Sys_Print( msg );
-
-	// logfile
-	Com_PrintLogfile( msg );
-
 	SR_Print(channel, msg);
 }
 

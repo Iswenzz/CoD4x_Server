@@ -5,8 +5,7 @@ namespace Iswenzz::CoD4x
 {
 	void Log::Print(conChannel_t channel, std::string msg)
 	{
-		if (channel == CON_CHANNEL_SR_DEBUG)
-			Log::Write(msg);
+		Log::Write(msg);
 	}
 
 	void Log::WriteLine(std::string fmt, ...)
@@ -20,7 +19,11 @@ namespace Iswenzz::CoD4x
 		Q_vsnprintf(msg, sizeof(msg), cfmt, argptr);
 		va_end(argptr);
 
-		fprintf(stderr, "%s\n", msg);
+		strcat(msg, "\n\0");
+
+		fprintf(stderr, msg);
+		Sys_Print(msg);
+		Com_PrintLogfile(msg);
 	}
 
 	void Log::Write(std::string fmt, ...)
@@ -34,7 +37,9 @@ namespace Iswenzz::CoD4x
 		Q_vsnprintf(msg, sizeof(msg), cfmt, argptr);
 		va_end(argptr);
 
-		fprintf(stderr, "%s", msg);
+		fprintf(stderr, msg);
+		Sys_Print(msg);
+		Com_PrintLogfile(msg);
 	}
 }
 
