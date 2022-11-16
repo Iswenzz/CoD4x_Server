@@ -148,7 +148,7 @@ void Sys_DumpCrash(int signal,struct sigcontext *ctx)
 	Sys_PrintBacktrace();
 	Com_Printf(CON_CHANNEL_SR_DEBUG,"\n-- Registers ---\n");
 	Com_Printf(CON_CHANNEL_SR_DEBUG,"edi 0x%lx\nesi 0x%lx\nebp 0x%lx\nesp 0x%lx\neax 0x%lx\nebx 0x%lx\necx 0x%lx\nedx 0x%lx\neip 0x%lx\n",ctx->edi,ctx->esi,ctx->ebp,ctx->esp,ctx->eax,ctx->ebx,ctx->ecx,ctx->edx,ctx->eip);
-	Com_Printf(CON_CHANNEL_SCON_CHANNEL_SR_DEBUGYSTEM,"-------- Backtrace Completed --------\n");
+	Com_Printf(CON_CHANNEL_SR_DEBUG,"-------- Backtrace Completed --------\n");
 }
 
 /*
