@@ -27,6 +27,7 @@
 #include "qcommon_io.h"
 #include "qcommon_logprint.h"
 #include "qcommon.h"
+#include "server.h"
 #include "sys_main.h"
 #include <string.h>
 #include <time.h>
@@ -102,7 +103,7 @@ __cdecl void Com_PrintMessage( conChannel_t channel, char *msg, msgtype_t type) 
 
 	if(type != MSG_NORDPRINT && !lock)
 	{
-	
+
 		Sys_EnterCriticalSection(CRITSECT_RD_BUFFER);
 
 		if ( !lock) {
@@ -270,15 +271,15 @@ A Com_Printf that only shows up if the "developer" cvar is set
 void QDECL Com_DPrintf( conChannel_t channel, const char *fmt, ...) {
 	va_list		argptr;
 	char		msg[MAXPRINTMSG];
-		
+
 	if ( !Com_IsDeveloper() ) {
 		return;			// don't confuse non-developers with techie stuff...
 	}
-	
+
 	msg[0] = '^';
 	msg[1] = '2';
 
-	va_start (argptr,fmt);	
+	va_start (argptr,fmt);
 	Q_vsnprintf (&msg[2], (sizeof(msg)-3), fmt, argptr);
 	va_end (argptr);
 
@@ -302,11 +303,11 @@ void QDECL Com_DPrintNoRedirect( conChannel_t channel, const char *fmt, ... ) {
 	if ( !Com_IsDeveloper() ) {
 		return;			// don't confuse non-developers with techie stuff...
 	}
-	
+
 	msg[0] = '^';
 	msg[1] = '2';
 
-	va_start (argptr,fmt);	
+	va_start (argptr,fmt);
 	Q_vsnprintf (&msg[2], (sizeof(msg)-3), fmt, argptr);
 	va_end (argptr);
 
