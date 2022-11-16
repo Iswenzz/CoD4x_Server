@@ -45,6 +45,8 @@ C_EXTERN
 {
 	OPTIMIZE3 int Pmove_GetSpeed(playerState_t *ps)
 	{
+		if (!ps || !SR->Players[ps->clientNum])
+			return 0;
 		return SR->Players[ps->clientNum]->PMove->GetSpeed();
 	}
 
