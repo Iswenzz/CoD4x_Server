@@ -123,13 +123,13 @@ void Sys_PrintBacktrace()
 	void** traces;
 	char** symbols;
 
-	Com_Printf(CON_CHANNEL_SYSTEM,"---------- Backtrace ----------\n");
+	Com_Printf(CON_CHANNEL_SR_DEBUG,"---------- Backtrace ----------\n");
 	traces = malloc(65536*sizeof(void*));
 	numFrames = backtrace(traces, 65536);
 	symbols = backtrace_symbols(traces, numFrames);
 	for(i = 0; i < numFrames; i++)
 	{
-		Com_Printf(CON_CHANNEL_SYSTEM,"%5d: %s\n", numFrames - i -1, symbols[i]);
+		Com_Printf(CON_CHANNEL_SR_DEBUG,"%5d: %s\n", numFrames - i -1, symbols[i]);
 	}
 	free(traces);
 }
@@ -138,17 +138,17 @@ void Sys_DumpCrash(int signal,struct sigcontext *ctx)
 {
 	char hash[65];
 	long unsigned size = sizeof(hash);
-	
-	Com_Printf(CON_CHANNEL_SYSTEM,"This program has crashed with signal: %s\n", strsignal(signal));
-	Com_Printf(CON_CHANNEL_SYSTEM,"The current Gameversion is: %s %s %s type '%c' build %i %s\n", GAME_STRING,Q3_VERSION,PLATFORM_STRING, SEC_TYPE,Sys_GetBuild(), __DATE__); 
+
+	Com_Printf(CON_CHANNEL_SR_DEBUG,"This program has crashed with signal: %s\n", strsignal(signal));
+	Com_Printf(CON_CHANNEL_SR_DEBUG,"The current Gameversion is: %s %s %s type '%c' build %i %s\n", GAME_STRING,Q3_VERSION,PLATFORM_STRING, SEC_TYPE,Sys_GetBuild(), __DATE__);
 	Sec_HashFile(SEC_HASH_SHA256, Sys_ExeFile(), hash, &size, qfalse);
 	//Q_strncpyz(hash, "File Hashing has not been implemented yet", sizeof(hash));
 	hash[64] = '\0';
-	Com_Printf(CON_CHANNEL_SYSTEM,"File is %s Hash is: %s\n", Sys_ExeFile(), hash);
+	Com_Printf(CON_CHANNEL_SR_DEBUG,"File is %s Hash is: %s\n", Sys_ExeFile(), hash);
 	Sys_PrintBacktrace();
-	Com_Printf(CON_CHANNEL_SYSTEM,"\n-- Registers ---\n");
-	Com_Printf(CON_CHANNEL_SYSTEM,"edi 0x%lx\nesi 0x%lx\nebp 0x%lx\nesp 0x%lx\neax 0x%lx\nebx 0x%lx\necx 0x%lx\nedx 0x%lx\neip 0x%lx\n",ctx->edi,ctx->esi,ctx->ebp,ctx->esp,ctx->eax,ctx->ebx,ctx->ecx,ctx->edx,ctx->eip);
-	Com_Printf(CON_CHANNEL_SYSTEM,"-------- Backtrace Completed --------\n");
+	Com_Printf(CON_CHANNEL_SR_DEBUG,"\n-- Registers ---\n");
+	Com_Printf(CON_CHANNEL_SR_DEBUG,"edi 0x%lx\nesi 0x%lx\nebp 0x%lx\nesp 0x%lx\neax 0x%lx\nebx 0x%lx\necx 0x%lx\nedx 0x%lx\neip 0x%lx\n",ctx->edi,ctx->esi,ctx->ebp,ctx->esp,ctx->eax,ctx->ebx,ctx->ecx,ctx->edx,ctx->eip);
+	Com_Printf(CON_CHANNEL_SCON_CHANNEL_SR_DEBUGYSTEM,"-------- Backtrace Completed --------\n");
 }
 
 /*

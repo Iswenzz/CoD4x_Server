@@ -25,9 +25,12 @@
 #include "../objfile_parser.h"
 #include "../sys_main.h"
 #include "../sys_cod4defs.h"
+#include "../sec_crypto.h"
+#include "../sec_update.h"
 #include "sys_win32.h"
 
 #include <windows.h>
+#include <imagehlp.h>
 #include <wincrypt.h>
 #include <direct.h>
 #include <stdlib.h>
@@ -858,6 +861,28 @@ void Sys_WaitForErrorConfirmation(const char* error)
 
 }
 
+LONG WINAPI Sys_DumpCrash(EXCEPTION_POINTERS *ex)
+{
+	char hash[65];
+	long unsigned size = sizeof(hash);
+
+	Com_Printf(CON_CHANNEL_SR_DEBUG, "This program has crashed with code: %u\n", ex->ExceptionRecord->ExceptionCode);
+	Com_Printf(CON_CHANNEL_SR_DEBUG, "The current Gameversion is: %s %s %s type '%c' build %i %s\n", GAME_STRING, Q3_VERSION,PLATFORM_STRING, SEC_TYPE, Sys_GetBuild(), __DATE__);
+	Sec_HashFile(SEC_HASH_SHA256, Sys_ExeFile(), hash, &size, qfalse);
+	//Q_strncpyz(hash, "File Hashing has not been implemented yet", sizeof(hash));
+	hash[64] = '\0';
+	Com_Printf(CON_CHANNEL_SR_DEBUG, "File is %s Hash is: %s\n", Sys_ExeFile(), hash);
+	Sys_PrintBacktrace(ex->ContextRecord);
+	Com_Printf(CON_CHANNEL_SR_DEBUG, "\n-- Registers ---\n");
+	Com_Printf(CON_CHANNEL_SR_DEBUG, "edi 0x%lx\nesi 0x%lx\nebp 0x%lx\nesp 0x%lx\neax 0x%lx\nebx 0x%lx\necx 0x%lx\nedx 0x%lx\neip 0x%lx\n",
+		ex->ContextRecord->Edi, ex->ContextRecord->Esi, ex->ContextRecord->Ebp, ex->ContextRecord->Esp,
+		ex->ContextRecord->Eax, ex->ContextRecord->Ebx, ex->ContextRecord->Ecx, ex->ContextRecord->Edx,
+		ex->ContextRecord->Eip);
+	Com_Printf(CON_CHANNEL_SR_DEBUG, "-------- Backtrace Completed --------\n");
+
+    return EXCEPTION_EXECUTE_HANDLER;
+}
+
 int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow )
 {
 
@@ -865,6 +890,8 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
     char sys_cmdline[MAX_STRING_CHARS];
 	char *lastSep;
 	DWORD copylen;
+
+	SymInitialize(GetCurrentProcess(), NULL, true);
 
 	if(lpCmdLine != NULL)
 		Q_strncpyz( sys_cmdline, lpCmdLine, sizeof( sys_cmdline ) );
@@ -901,6 +928,9 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 		}
 	}
 	Sys_InitThreadContext();
+
+	SetUnhandledExceptionFilter(Sys_DumpCrash);
+
     return Sys_Main(sys_cmdline);
 }
 
@@ -975,7 +1005,7 @@ void** Sys_GetThreadLocalStorage()
 }
 
 #ifdef __GNUC__
- 
+
 
 struct tagTHREADNAME_INFO
 {
@@ -1005,7 +1035,7 @@ HANDLE __cdecl Sys_CreateEvent(qboolean bManualReset, qboolean bInitialState, co
 	sa.nLength = sizeof(sa);
 	sa.lpSecurityDescriptor = NULL;
 	sa.bInheritHandle = false;
-	
+
 	return CreateEventA(&sa, bManualReset, bInitialState, NULL); //Name must be NULL or it will interact with other processes
 }
 
@@ -1063,6 +1093,93 @@ int Sys_ReadCertificate(void* cacert, int (*store_callback)(void* ca_ctx, const 
 	return i;
 }
 
+int addr2line(char const *const program_name, void const *const addr)
+{
+	char addr2line_cmd[512] = { 0 };
 
-void Sys_PrintBacktrace()
-{}
+	sprintf(addr2line_cmd, "addr2line -f -p -e %.256s %p", program_name, addr);
+	return system(addr2line_cmd);
+}
+
+void Sys_PrintBacktrace(CONTEXT *ctx)
+{
+	BOOL result;
+    HANDLE process;
+    HANDLE thread;
+    HMODULE hModule;
+    STACKFRAME64 stack;
+    ULONG frame;
+    DWORD64 displacement;
+    DWORD disp;
+    IMAGEHLP_LINE64 *line;
+
+	int MaxNameLen = 256;
+    char buffer[sizeof(SYMBOL_INFO) + MAX_SYM_NAME * sizeof(TCHAR)];
+    char module[MaxNameLen];
+    PSYMBOL_INFO pSymbol = (PSYMBOL_INFO)buffer;
+
+    CONTEXT ctxCopy;
+    memcpy(&ctxCopy, ctx, sizeof(CONTEXT));
+    memset(&stack, 0, sizeof(STACKFRAME64));
+
+    process = GetCurrentProcess();
+    thread = GetCurrentThread();
+    displacement = 0;
+#if !defined(_M_AMD64)
+    stack.AddrPC.Offset = (*ctx).Eip;
+    stack.AddrPC.Mode = AddrModeFlat;
+    stack.AddrStack.Offset = (*ctx).Esp;
+    stack.AddrStack.Mode = AddrModeFlat;
+    stack.AddrFrame.Offset = (*ctx).Ebp;
+    stack.AddrFrame.Mode = AddrModeFlat;
+#endif
+
+	Com_Printf(CON_CHANNEL_SR_DEBUG, "---------- Backtrace ----------\n");
+
+    for (frame = 0; ; frame++)
+    {
+        result = StackWalk64
+        (
+#if defined(_M_AMD64)
+            IMAGE_FILE_MACHINE_AMD64
+#else
+            IMAGE_FILE_MACHINE_I386
+#endif
+            ,
+            process,
+            thread,
+            &stack,
+            &ctxCopy,
+            NULL,
+            SymFunctionTableAccess64,
+            SymGetModuleBase64,
+            NULL
+        );
+        if (!result)
+			break;
+
+        pSymbol->SizeOfStruct = sizeof(SYMBOL_INFO);
+        pSymbol->MaxNameLen = MAX_SYM_NAME;
+        SymFromAddr(process, (ULONG64)stack.AddrPC.Offset, &displacement, pSymbol);
+
+        line = (IMAGEHLP_LINE64 *)malloc(sizeof(IMAGEHLP_LINE64));
+        line->SizeOfStruct = sizeof(IMAGEHLP_LINE64);
+
+		hModule = NULL;
+		lstrcpyA(module, "");
+		GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
+			*(LPCSTR *)(void *)&stack.AddrPC.Offset, &hModule);
+		if (hModule != NULL)
+			GetModuleFileNameA(hModule, module, MaxNameLen);
+
+		if (SymGetLineFromAddr64(process, stack.AddrPC.Offset, &disp, line))
+		{
+			Com_Printf(CON_CHANNEL_SR_DEBUG, "%5ld: %s %s(%s+0x%0lX) [0x%0llX]\n", frame, module, pSymbol->Name,
+				line->FileName, line->LineNumber, pSymbol->Address);
+		}
+		else
+			Com_Printf(CON_CHANNEL_SR_DEBUG, "%5ld: %s(%s) [0x%0llX]\n", frame, module, pSymbol->Name, pSymbol->Address);
+
+        free(line);
+    }
+}

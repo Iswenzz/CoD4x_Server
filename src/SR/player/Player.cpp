@@ -21,7 +21,7 @@ namespace Iswenzz::CoD4x
 
 	void Player::Spawn()
 	{
-		
+
 	}
 
 	void Player::CalculateFPS()
