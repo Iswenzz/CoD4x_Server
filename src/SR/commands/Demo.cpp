@@ -66,7 +66,7 @@ namespace Iswenzz::CoD4x
 			return;
 		}
 		auto player = SR->Players[num.entnum];
-		Scr_AddBool(static_cast<qboolean>(!!player->DemoPlayer->Demo.get()));
+		Scr_AddBool(static_cast<qboolean>(!!player->DemoPlayer->Demo));
 	}
 
 	void DemoCommands::GetSpeedrunVelocity(scr_entref_t num)

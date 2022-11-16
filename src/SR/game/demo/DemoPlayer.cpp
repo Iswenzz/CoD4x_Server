@@ -80,6 +80,8 @@ namespace Iswenzz::CoD4x
 
 	bool DemoPlayer::ComputeFrame()
 	{
+		if (!Demo) return false;
+
 		// Controls
 		int direction = Player->cl->lastUsercmd.forwardmove < 0 ? -1 : 1;
 		bool fastForward = Player->cl->lastUsercmd.forwardmove > 0;
@@ -205,7 +207,7 @@ namespace Iswenzz::CoD4x
 
 	void DemoPlayer::Frame()
 	{
-		if (!Demo || !ComputeFrame()) return;
+		if (!ComputeFrame()) return;
 
 		clientSnapshot_t *frame = Player->GetFrame();
 		Player->cl->clFPS = CurrentFrame.fps;
@@ -225,21 +227,17 @@ C_EXTERN
 {
 	qboolean SR_DemoIsPlaying(client_t *cl)
 	{
-		return static_cast<qboolean>(!!(cl && SR->Players[cl->gentity->client->ps.clientNum]->DemoPlayer->Demo));
+		return static_cast<qboolean>(!!SR->Players[cl->gentity->client->ps.clientNum]->DemoPlayer->Demo);
 	}
 
 	void SR_DemoUpdateEntity(client_t *cl, snapshotInfo_t *snapInfo, msg_t* msg, const int time, entityState_t* from, entityState_t* to, qboolean force)
 	{
-		if (!cl) return;
-
 		auto player = SR->Players[cl->gentity->client->ps.clientNum];
 		player->DemoPlayer->UpdateEntity(snapInfo, msg, time, from, to, force);
 	}
 
 	void SR_DemoButton(client_t *cl, usercmd_t *cmd)
 	{
-		if (!cl) return;
-
 		cl->gentity->client->ps.dofNearStart = *(float *)&cmd->forwardmove;
 		cl->gentity->client->ps.dofNearEnd = *(float *)&cmd->rightmove;
 		cl->gentity->client->ps.dofFarStart = *(float *)&cmd->buttons;

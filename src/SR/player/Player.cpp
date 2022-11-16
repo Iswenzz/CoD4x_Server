@@ -64,9 +64,6 @@ C_EXTERN
 	{
 		if (!cl || !cl->gentity || !cl->gentity->client) return;
 
-		char *a = 0;
-		*a = 5;
-
 		Log::WriteLine("[Player] Connected %d", cl->gentity->client->ps.clientNum);
 
 		auto player = std::make_shared<Player>(cl);
@@ -80,8 +77,6 @@ C_EXTERN
 		if (!cl || !cl->gentity || !cl->gentity->client) return;
 
 		Log::WriteLine("[Player] Disconnected %d", cl->gentity->client->ps.clientNum);
-
-		SR->Players[cl->gentity->client->ps.clientNum].reset();
 	}
 
 	void SR_ClientSpawn(gclient_t *client)
