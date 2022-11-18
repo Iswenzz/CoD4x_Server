@@ -14,8 +14,6 @@ namespace Iswenzz::CoD4x
 	public:
 		gentity_t *g;
 
-		bool HasFxOnTag = false;
-
 		/// @brief Initialize a new Entity.
 		/// @param ent - The entity.
 		Entity(gentity_t *ent);
