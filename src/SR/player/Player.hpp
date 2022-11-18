@@ -21,7 +21,7 @@ namespace Iswenzz::CoD4x
 
 		std::unique_ptr<PMove> PMove;
 		std::unique_ptr<DemoPlayer> DemoPlayer;
-		
+
 		int SurfaceFlags = 0;
 
 		int CurrentFrameTime = 0;
@@ -31,10 +31,7 @@ namespace Iswenzz::CoD4x
 		/// @brief Initialize a new player.
 		/// @param cl - The client.
 		Player(client_t *cl);
-		~Player() { }
-
-		/// @brief Initialize the player.
-		void Initialize();
+		~Player() = default;
 
 		/// @brief Player spawn.
 		void Spawn();

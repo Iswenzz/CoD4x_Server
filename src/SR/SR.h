@@ -11,6 +11,7 @@ void SR_Shutdown();
 void SR_SpawnServer(const char *levelname);
 void SR_InitializePlayer(client_t *cl);
 void SR_FreePlayer(client_t *cl);
+void SR_InitializeEntity(gentity_t *ent);
 
 void SR_Frame();
 void SR_Packet(netadr_t *from, client_t* cl, msg_t *msg);

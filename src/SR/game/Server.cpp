@@ -11,7 +11,10 @@ namespace Iswenzz::CoD4x
 	void Server::Spawn(std::string levelName)
 	{
 		Log::WriteLine("[Server] Spawn server");
+
 		SR->Players = { };
+		SR->Entities = { };
+
 		SR->DemoContainer->Demos.clear();
 	}
 

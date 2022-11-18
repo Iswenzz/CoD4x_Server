@@ -3,6 +3,7 @@
 
 #include "game/demo/DemoContainer.hpp"
 #include "game/Debug.hpp"
+#include "game/Entity.hpp"
 #include "game/Server.hpp"
 #include "net/Netchan.hpp"
 #include "commands/Container.hpp"
@@ -20,7 +21,8 @@ namespace Iswenzz::CoD4x
 		std::unique_ptr<Netchan> Netchan;
 		std::unique_ptr<DemoContainer> DemoContainer;
 
-		std::array<std::shared_ptr<Player>, MAX_CLIENTS> Players{};
+		std::array<std::shared_ptr<Player>, MAX_CLIENTS> Players{ };
+		std::array<std::shared_ptr<Entity>, MAX_GENTITIES> Entities{ };
 
 		/// @brief Server module initialization.
 		Game();

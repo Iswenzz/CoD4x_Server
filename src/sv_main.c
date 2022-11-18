@@ -4698,6 +4698,7 @@ void SV_CreateBaseline( void ) {
         {
           svent->s.clientNum = 64;
         }
+		SR_InitializeEntity(svent);
     }
 }
 

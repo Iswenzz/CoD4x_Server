@@ -8,8 +8,5 @@ namespace Iswenzz::CoD4x
 	public:
 		/// @brief Register commands.
 		static void Register();
-
-		/// @brief Play FX on tag.
-		static void PlayFXOnTag();
 	};
 }

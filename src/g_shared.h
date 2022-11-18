@@ -643,7 +643,8 @@ void __cdecl G_FreeTurret(struct gentity_s *ent);
 void __cdecl G_FreeEntityRefs(struct gentity_s *ent);
 void __cdecl XAnimClearTree(struct XAnimTree_s *tree);
 void __cdecl G_LocationalTrace(trace_t *results, const float *start, const float *end, int passEntityNum, int contentmask, char *priorityMap);
-
+void __cdecl G_AddEvent(gentity_t *ent, int event, unsigned int eventParm);
+int __cdecl G_FindConfigstringIndex(const char *name, int start, int max, int create, const char *errormsg);
 
 void __cdecl Touch_Multi(struct gentity_s *, struct gentity_s *, int);
 void __cdecl hurt_use(struct gentity_s *, struct gentity_s *, struct gentity_s *);

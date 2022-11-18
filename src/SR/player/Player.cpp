@@ -11,11 +11,8 @@ namespace Iswenzz::CoD4x
 		this->ps = &cl->gentity->client->ps;
 
 		this->DemoPlayer = std::make_unique<class DemoPlayer>(this);
-	}
-
-	void Player::Initialize()
-	{
 		this->PMove = std::make_unique<class PMove>(this);
+
 		this->SurfaceFlags = 0;
 	}
 
@@ -66,10 +63,7 @@ C_EXTERN
 
 		Log::WriteLine("[Player] Connected %d", cl->gentity->client->ps.clientNum);
 
-		auto player = std::make_shared<Player>(cl);
-		player->Initialize();
-
-		SR->Players[cl->gentity->client->ps.clientNum] = player;
+		SR->Players[cl->gentity->client->ps.clientNum] = std::make_shared<Player>(cl);
 	}
 
 	void SR_FreePlayer(client_t *cl)

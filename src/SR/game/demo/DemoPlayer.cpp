@@ -48,15 +48,17 @@ namespace Iswenzz::CoD4x
 
 	void DemoPlayer::UpdateEntity(snapshotInfo_t *snapInfo, msg_t* msg, const int time, entityState_t* from, entityState_t* to, qboolean force)
 	{
-		if (!to)
+		if (!from || !to)
 		{
 			MSG_WriteDeltaEntity(snapInfo, msg, time, from, to, force);
 			return;
 		}
 		entityState_t entity = *to;
+		gentity_t *gEntity = &g_entities[to->number];
+		bool shouldUpdate = gEntity && gEntity->classname == scr_const.script_brushmodel;
 
 		auto it = CurrentFrame.entities.find(to->number);
-		if (it != CurrentFrame.entities.end())
+		if (it != CurrentFrame.entities.end() && shouldUpdate)
 		{
 			entityState_t demoEntity = it->second;
 			vec3_t pos;
@@ -88,7 +90,7 @@ namespace Iswenzz::CoD4x
 		PreviousFrameIndex = FrameIndex;
 		Slowmo = Player->cl->lastUsercmd.buttons & KEY_MASK_JUMP;
 		FrameIndex += !Slowmo ? direction : 0;
-		FrameIndex += fastForward ? 1 : 0;
+		FrameIndex += !Slowmo && fastForward ? 1 : 0;
 
 		// EOF
 		if (FrameIndex >= Demo->Frames.size())

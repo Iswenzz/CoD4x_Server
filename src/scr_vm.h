@@ -709,6 +709,7 @@ float __cdecl Scr_GetFloat( unsigned int );
 char* __cdecl Scr_GetString( unsigned int );
 gentity_t* __cdecl Scr_GetEntity( unsigned int );
 short __cdecl Scr_GetConstString( unsigned int );
+short __cdecl Scr_GetConstLowercaseString( unsigned int );
 unsigned int __cdecl Scr_GetType( unsigned int );
 unsigned int __cdecl Scr_GetPointerType( unsigned int );
 void __cdecl Scr_GetVector( unsigned int, float* );

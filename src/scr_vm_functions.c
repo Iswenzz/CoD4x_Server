@@ -2495,6 +2495,7 @@ void GScr_Spawn()
     if (G_CallSpawnEntity(gentity))
     {
         Scr_AddEntity(gentity);
+		SR_InitializeEntity(gentity);
     }
     else
     {
