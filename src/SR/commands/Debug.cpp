@@ -35,7 +35,7 @@ namespace Iswenzz::CoD4x
 
 		#ifdef _WIN32
 			DebugBreak();
-		#elif
+		#else
 			raise(SIGINT);
 		#endif
 	}
