@@ -15,6 +15,10 @@ C_EXTERN
 	{
 		if (!ent) return;
 
-		SR->Entities[ent->s.number] = std::make_shared<Entity>(ent);
+		int num = ent->s.number;
+		if (num < 0 || num >= MAX_GENTITIES)
+			return;
+
+		SR->Entities[num] = std::make_shared<Entity>(ent);
 	}
 }

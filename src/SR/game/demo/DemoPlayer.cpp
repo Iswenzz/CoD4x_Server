@@ -123,14 +123,14 @@ namespace Iswenzz::CoD4x
 			if (SlowmoIndex > FrameIndex)
 				FrameIndex++;
 			SlowmoIndex = FrameIndex + 1;
-			SlowmoThreshold = 0;
+			SlowmoThreshold = 1;
 		}
 		else if (SlowmoThreshold < 0)
 		{
 			if (SlowmoIndex < FrameIndex)
 				FrameIndex--;
 			SlowmoIndex = FrameIndex - 1;
-			SlowmoThreshold = 10;
+			SlowmoThreshold = 9;
 		}
 		if (SlowmoIndex < 0 || SlowmoIndex >= Demo->Frames.size() || FrameIndex >= Demo->Frames.size())
 			return;
