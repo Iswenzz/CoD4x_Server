@@ -46,6 +46,21 @@ namespace Iswenzz::CoD4x
 			return mode;
 		}
 
+		/// @brief Average mean a given vector.
+		/// @tparam T - The elemements type.
+		/// @param vec - The vector source.
+		/// @return
+		template <class T>
+		static T VectorAverageMean(const std::vector<T>& vec)
+		{
+			T mean = 0;
+			std::size_t size = vec.size();
+
+			for (int i = 0; i < size; i++)
+				mean += vec[i];
+			return mean / size;
+		}
+
 		/// @brief Get the difference between 2 containers.
 		/// @tparam T - The vector type.
 		/// @tparam Container - STL container class.

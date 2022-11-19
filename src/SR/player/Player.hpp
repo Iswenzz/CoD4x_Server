@@ -36,6 +36,10 @@ namespace Iswenzz::CoD4x
 		/// @brief Player spawn.
 		void Spawn();
 
+		/// @brief Calculate the player Frame.
+		/// @param time - The frame time.
+		void CalculateFrame(int time);
+
 		/// @brief Calculate the player FPS.
 		void CalculateFPS();
 

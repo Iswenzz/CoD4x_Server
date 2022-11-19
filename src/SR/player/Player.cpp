@@ -12,13 +12,21 @@ namespace Iswenzz::CoD4x
 
 		this->DemoPlayer = std::make_unique<class DemoPlayer>(this);
 		this->PMove = std::make_unique<class PMove>(this);
-
-		this->SurfaceFlags = 0;
 	}
 
 	void Player::Spawn()
 	{
 
+	}
+
+	void Player::CalculateFrame(int time)
+	{
+		if (time > CurrentFrameTime)
+		{
+			PreviousFrameTime = CurrentFrameTime;
+			CurrentFrameTime = time;
+			FrameTimes.push_back(1000 / (CurrentFrameTime - PreviousFrameTime));
+		}
 	}
 
 	void Player::CalculateFPS()
@@ -27,21 +35,14 @@ namespace Iswenzz::CoD4x
 			return;
 
 		cl->clFPS = Utils::VectorAverageMode(FrameTimes);
+		cl->clFrames = 0;
 		FrameTimes.clear();
+
+		Log::WriteLine("[Player] %d %d %d", cl->clFPS, cl->clFrames, cl->ping);
 	}
 
 	void Player::Packet(msg_t *msg)
 	{
-		PreviousFrameTime = CurrentFrameTime;
-		CurrentFrameTime = ps->commandTime;
-
-		int frameDifference = (CurrentFrameTime - PreviousFrameTime);
-		if (frameDifference > 0)
-		{
-			int fps = cl->clFrames * static_cast<double>(1000.0 / frameDifference);
-			FrameTimes.push_back(fps);
-			cl->clFrames = 0;
-		}
 		DemoPlayer->Packet();
 	}
 
@@ -82,5 +83,10 @@ C_EXTERN
 		if (!client) return;
 
 		SR->Players[client->ps.clientNum]->Spawn();
+	}
+
+	void SR_CalculateFrame(playerState_t *ps)
+	{
+		SR->Players[ps->clientNum]->CalculateFrame(ps->commandTime);
 	}
 }
