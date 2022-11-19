@@ -32,11 +32,15 @@ namespace Iswenzz::CoD4x
 
 	void Player::Packet(msg_t *msg)
 	{
-		if (ps->commandTime > CurrentFrameTime)
+		PreviousFrameTime = CurrentFrameTime;
+		CurrentFrameTime = ps->commandTime;
+
+		int frameDifference = (CurrentFrameTime - PreviousFrameTime);
+		if (frameDifference > 0)
 		{
-			PreviousFrameTime = CurrentFrameTime;
-			CurrentFrameTime = ps->commandTime;
-			FrameTimes.push_back(1000 / (CurrentFrameTime - PreviousFrameTime));
+			int fps = cl->clFrames * static_cast<double>(1000.0 / frameDifference);
+			FrameTimes.push_back(fps);
+			cl->clFrames = 0;
 		}
 		DemoPlayer->Packet();
 	}
