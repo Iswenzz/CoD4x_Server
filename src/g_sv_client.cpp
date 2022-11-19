@@ -128,6 +128,8 @@ void ClientCleanName( const char *in, char *out, int outSize, qboolean allowColo
 	char    *p;
 	int spaces;
 
+	const char *allowedCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~ ";
+
 	//save room for trailing null byte
 	outSize--;
 
@@ -145,6 +147,11 @@ void ClientCleanName( const char *in, char *out, int outSize, qboolean allowColo
 
 		// don't allow leading spaces
 		if ( !*p && ch == ' ' ) {
+			continue;
+		}
+
+		// don't allow non-alpha characters
+		if (!strchr(allowedCharacters, ch)) {
 			continue;
 		}
 
