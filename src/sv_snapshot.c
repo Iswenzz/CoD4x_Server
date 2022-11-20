@@ -220,7 +220,6 @@ __cdecl void SV_WriteSnapshotToClient(client_t* client, msg_t* msg){
 
     MSG_ClearLastReferencedEntity(msg);
 
-
     newindex = 0;
     oldindex = 0;
 
@@ -283,7 +282,6 @@ __cdecl void SV_WriteSnapshotToClient(client_t* client, msg_t* msg){
 			continue;
 		}
     }
-
 
     MSG_WriteEntityIndex(&snapInfo, msg, ( MAX_GENTITIES - 1 ), GENTITYNUM_BITS);
     MSG_ClearLastReferencedEntity(msg);
