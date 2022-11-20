@@ -23,13 +23,18 @@ namespace Iswenzz::CoD4x
 		template <class T>
 		static T VectorAverageMode(const std::vector<T>& vec)
 		{
+			std::size_t size = vec.size();
+
+			if (size <= 0)
+				return 0;
+
 			const T* set = vec.data();
 			T mode = set[0];
 
 			int current = 0;
 			int mostOccured = 0;
 
-			for (int x = 0; x < vec.size(); x++)
+			for (int x = 0; x < size && size > 1; x++)
 			{
 				if (set[x] == set[x + 1])
 					current++;
@@ -55,6 +60,9 @@ namespace Iswenzz::CoD4x
 		{
 			T mean = 0;
 			std::size_t size = vec.size();
+
+			if (size <= 0)
+				return 0;
 
 			for (int i = 0; i < size; i++)
 				mean += vec[i];
