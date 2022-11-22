@@ -381,7 +381,6 @@ qboolean FS_FCloseDemoFile( fileHandleData_t *fh, qboolean save ) {
 		L_Free(fh->writebuffer);
 	    }
 	    fclose (fh->handleFiles.file.o);
-		fprintf(stderr, "demo: %s\n", fh->name);
 		if (!save && FS_FileExistsOSPath(fh->name)) {
 			FS_RemoveOSPath(fh->name);
 		}
