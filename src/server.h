@@ -667,7 +667,7 @@ void SV_ShowClientUnAckCommands( client_t *client );
 
 
 void SV_WriteDemoMessageForClient( byte *msg, int dataLen, client_t *client );
-void SV_StopRecord( client_t *cl );
+void SV_StopRecord( client_t *cl, qboolean save );
 void SV_RecordClient( client_t* cl, char* basename );
 void SV_DemoSystemShutdown( void );
 void SV_WriteDemoArchive(client_t *client);

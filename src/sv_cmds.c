@@ -663,7 +663,7 @@ static void SV_Status_f( void ) {
 	char 		psti[128];
 	char 		ssti[128];
 
-	
+
 
 	// make sure server is running
 	if ( !com_sv_running->boolean ) {
@@ -697,10 +697,10 @@ static void SV_Status_f( void ) {
 	{
 		if (!cl->state)
 			continue;
-		
+
 		Com_Printf(CON_CHANNEL_DONT_FILTER,"%3i ", i);
 		Com_Printf(CON_CHANNEL_DONT_FILTER,"%5i ", gclient->sess.score);
-		
+
 		if (cl->state == CS_CONNECTED)
 			Com_Printf(CON_CHANNEL_DONT_FILTER,"CNCT ");
 		else if (cl->state == CS_ZOMBIE)
@@ -786,7 +786,7 @@ static void SV_Status_f( void ) {
 			{
 				Com_Printf(CON_CHANNEL_DONT_FILTER," ");
 				j++;
-			} 
+			}
 			while(j < l);
 		}
 
@@ -1514,7 +1514,7 @@ static void Cmd_AddTranslatedCommand_f() {
 
 /*
 ====================
-SV_StopRecording_f
+SV_StopRecord_f
 
 stop recording a demo
 ====================
@@ -1534,7 +1534,7 @@ static void SV_StopRecord_f( void ) {
 		for(i = 0, cl.cl = svs.clients; i < sv_maxclients->integer; i++, cl.cl++)
 		{
 			if(cl.cl->demorecording)
-				SV_StopRecord(cl.cl);
+				SV_StopRecord(cl.cl, qtrue);
 		}
 		return;
 	}
@@ -1545,7 +1545,7 @@ static void SV_StopRecord_f( void ) {
 		// Com_Printf(CON_CHANNEL_DONT_FILTER,"Error: This player is not online and can not be recorded\n");
 		return;
 	}
-	SV_StopRecord(cl.cl);
+	SV_StopRecord(cl.cl, qtrue);
 }
 
 

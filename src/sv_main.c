@@ -4788,7 +4788,7 @@ void SV_SpawnServer(const char *mapname)
         {
             if(cl->demorecording)
             {
-                SV_StopRecord(cl);
+                SV_StopRecord(cl, qfalse);
                 cl->demorecording = qtrue; //Making a new demo later when server is spawned
                 char shortdmname[1024];
                 int demonamelen = strlen(cl->demoName);

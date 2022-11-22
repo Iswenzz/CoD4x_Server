@@ -40,7 +40,7 @@
 
 int FS_DemoWrite( const void *buffer, int len, fileHandleData_t* h );
 qboolean FS_FOpenDemoFileWrite( const char *filename, fileHandleData_t* h );
-qboolean FS_FCloseDemoFile( fileHandleData_t* f );
+qboolean FS_FCloseDemoFile( fileHandleData_t* f, qboolean save );
 qboolean FS_DemoFileExists( const char *file );
 void FS_DemoForceFlush(fileHandleData_t *fh);
 int FS_DemoFlush( fileHandleData_t *fh );
@@ -118,7 +118,7 @@ SV_StopRecord
 stop recording a demo
 ====================
 */
-void SV_StopRecord( client_t *cl ) {
+void SV_StopRecord( client_t *cl, qboolean save ) {
 	int len;
 	byte null;
 	static char cmdline[1024];
@@ -138,7 +138,7 @@ void SV_StopRecord( client_t *cl ) {
 	FS_DemoWrite( &len, 4, &cl->demofile );
 	FS_DemoWrite( &len, 4, &cl->demofile );
 
-	FS_FCloseDemoFile( &cl->demofile );
+	FS_FCloseDemoFile( &cl->demofile, save );
 	cl->demorecording = qfalse;
 	// Com_Printf(CON_CHANNEL_SERVERDEMO, "Stopped demo for: %s\n", cl->name);
 
@@ -313,7 +313,7 @@ void SV_DemoSystemShutdown( ) {
 	for(i = 0, cl = svs.clients; i < sv_maxclients->integer; i++, cl++)
 	{
 		if(cl->demorecording)
-			SV_StopRecord(cl);
+			SV_StopRecord(cl, qfalse);
 	}
 }
 
@@ -372,7 +372,7 @@ For some reason, other dll's can't just cal fclose()
 on files returned by FS_FOpenFile...
 ==============
 */
-qboolean FS_FCloseDemoFile( fileHandleData_t *fh ) {
+qboolean FS_FCloseDemoFile( fileHandleData_t *fh, qboolean save ) {
 	// we didn't find it as a pak, so close it as a unique file
 
 	if (fh->handleFiles.file.o) {
@@ -381,6 +381,10 @@ qboolean FS_FCloseDemoFile( fileHandleData_t *fh ) {
 		L_Free(fh->writebuffer);
 	    }
 	    fclose (fh->handleFiles.file.o);
+		fprintf(stderr, "demo: %s\n", fh->name);
+		if (!save && FS_FileExistsOSPath(fh->name)) {
+			FS_RemoveOSPath(fh->name);
+		}
 	    Com_Memset( fh, 0, sizeof( fileHandleData_t ) );
 	    return qtrue;
 	}
@@ -460,7 +464,7 @@ int FS_DemoWrite( const void *buffer, int len, fileHandleData_t *fh ) {
 
 		if(FS_DemoFlush( fh ) != oldBufferPos){ //Fatal file write error
 			Com_Printf(CON_CHANNEL_SERVERDEMO,"Demo file write error. Closing file %s\n", fh->name);
-			FS_FCloseDemoFile( fh );
+			FS_FCloseDemoFile( fh, qfalse );
 			return 0;
 		}
 
@@ -473,7 +477,7 @@ int FS_DemoWrite( const void *buffer, int len, fileHandleData_t *fh ) {
 	if(len + fh->bufferPos > fh->bufferSize){ //If the buffer is too small to take more data flush it
 		if(FS_DemoFlush( fh ) != oldBufferPos){ //Fatal file write error
 			Com_Printf(CON_CHANNEL_SERVERDEMO,"Demo file write error. Closing file %s\n", fh->name);
-			FS_FCloseDemoFile( fh );
+			FS_FCloseDemoFile( fh, qfalse );
 			return 0;
 		}
 	}

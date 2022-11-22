@@ -844,7 +844,7 @@ void SV_CloseAllClientHandles(client_t *drop)
 {
 	if(drop->demorecording)
 	{
-		SV_StopRecord(drop);
+		SV_StopRecord(drop, qfalse);
 	}
 
 	SV_NotifySApiDisconnect(drop);
