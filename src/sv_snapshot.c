@@ -146,10 +146,7 @@ __cdecl void SV_WriteSnapshotToClient(client_t* client, msg_t* msg){
         client->demowaiting = qfalse;
         Com_DPrintf(CON_CHANNEL_SERVER,"Force a nondelta frame for %s for demo recording\n", client->name);
 
-        if(client->demoMaxDeltaFrames < 1024)
-        {
-            client->demoMaxDeltaFrames <<= 1;
-        }
+       	client->demoMaxDeltaFrames = 1;
         client->demoDeltaFrameCount = client->demoMaxDeltaFrames;
 
 
@@ -157,7 +154,7 @@ __cdecl void SV_WriteSnapshotToClient(client_t* client, msg_t* msg){
         oldframe = &client->frames[client->deltaMessage & PACKET_MASK];
         lastframe = client->netchan.outgoingSequence - client->deltaMessage;
         var_x = oldframe->var_03;
-        client->demoDeltaFrameCount--;
+        // client->demoDeltaFrameCount--;
 
         if(oldframe->first_entity <  svsHeader.nextSnapshotEntities - svsHeader.numSnapshotEntities) {
             Com_PrintWarning(CON_CHANNEL_SERVER,"%s: Delta request from out of date entities - delta against entity %i, oldest is %i, current is %i.  Their old snapshot had %i entities in it\n",
