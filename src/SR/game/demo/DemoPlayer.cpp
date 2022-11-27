@@ -226,11 +226,12 @@ namespace Iswenzz::CoD4x
 }
 
 C_EXTERN
-{
+	{
 	qboolean SR_DemoIsPlaying(client_t *cl)
 	{
-		auto player = SR->Players[cl->gentity->client->ps.clientNum];
-		return static_cast<qboolean>(player && player->DemoPlayer->Demo);
+		if (!cl || !cl->gentity || !cl->gentity->client)
+			return qfalse;
+		return static_cast<qboolean>(!!SR->Players[cl->gentity->client->ps.clientNum]->DemoPlayer->Demo);
 	}
 
 	void SR_DemoUpdateEntity(client_t *cl, snapshotInfo_t *snapInfo, msg_t* msg, const int time, entityState_t* from, entityState_t* to, qboolean force)
