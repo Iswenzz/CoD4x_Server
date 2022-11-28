@@ -10,12 +10,13 @@ A compatible client modification can be found here: [client](https://github.com/
 [Website](http://cod4x.ovh/) - [Forums](https://cod4x.ovh/index.php?/forums/) - [Documentation](http://docs.cod4x.ovh/) - [Masterserver](http://cod4master.cod4x.ovh/)
 
 # SR Features
-* CGSC
-* gsclib
-* Client g_speed
-* Increased weapon assets pool
+* CGSC & gsclib
+* Extended player movements
+* Increased assets pool
 * Record demos
-* Faster FPS calculation
+* FPS calculation
+* Demo player
+* Netcode optimization
 
 ## CoD4x Features
 * Administration commands
