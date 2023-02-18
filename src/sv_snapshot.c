@@ -139,15 +139,6 @@ __cdecl void SV_WriteSnapshotToClient(client_t* client, msg_t* msg){
         lastframe = 0;
         var_x = 0;
 
-    } else if(client->demoDeltaFrameCount <= 0 && client->demorecording){
-
-        oldframe = NULL;
-        lastframe = 0;
-        var_x = 0;
-        client->demowaiting = qfalse;
-        client->demoDeltaFrameCount = client->demoMaxDeltaFrames;
-
-        Com_DPrintf(CON_CHANNEL_SERVER,"Force a nondelta frame for %s for demo recording\n", client->name);
     } else {
         oldframe = &client->frames[client->deltaMessage & PACKET_MASK];
         lastframe = client->netchan.outgoingSequence - client->deltaMessage;
@@ -457,7 +448,7 @@ __cdecl void SV_SendMessageToClient( msg_t *msg, client_t *client ) {
 		SV_DropClient(client, client->delayDropMsg);
 	}
 
-	if(client->demorecording && !client->demowaiting && client->demofile.handleFiles.file.o)
+	if(client->demorecording && client->demoSynced && client->demofile.handleFiles.file.o)
 	{
 #ifdef SV_SEND_HUFFMAN
 		SV_WriteDemoMessageForClient(svCompressBuf, len, client);
@@ -1123,6 +1114,8 @@ void SV_SendClientMessages( void ) {
 
 		if(snapClients[i] == 0)
 			continue;
+
+		SV_WriteDemoSnapshot(c);
 
 		SV_BeginClientSnapshot( c, &msg );
 

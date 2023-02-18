@@ -138,8 +138,8 @@ struct client_s
 	qboolean			demowaiting;
 	char				demoName[MAX_QPATH];
 	int					demoArchiveIndex;
-	int					demoMaxDeltaFrames;
-	int					demoDeltaFrameCount;
+	qboolean			demoSynced;
+	qboolean			demoNonDeltaFrame;
 	qboolean				undercover;
 	int					bantime;
 	int					clienttimeout;
@@ -663,7 +663,8 @@ void SV_GetServerStaticHeader(void);
 
 void SV_ShowClientUnAckCommands( client_t *client );
 
-
+void SV_DemoWriteSnapshotToClient(client_t *client, msg_t* msg);
+void SV_WriteDemoSnapshot(client_t *client);
 void SV_WriteDemoMessageForClient( byte *msg, int dataLen, client_t *client );
 void SV_StopRecord( client_t *cl );
 void SV_RecordClient( client_t* cl, char* basename );
